@@ -1,0 +1,7 @@
+input AuthInput {
+  password: String!
+}
+
+input TokenInput {
+  token: String!
+}

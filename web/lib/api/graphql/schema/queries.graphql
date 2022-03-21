@@ -1,0 +1,7 @@
+query VerifyComingSoonLogin($input: TokenInput!) {
+  verifyComingSoonLogin(input: $input)
+}
+
+query CheckEmail($email: String!) {
+  checkEmail(email: $email)
+}

@@ -1,0 +1,8 @@
+{
+  "packages": [
+    "web",
+    "studio"
+  ],
+  "npmClient": "npm",
+  "version": "independent"
+}
