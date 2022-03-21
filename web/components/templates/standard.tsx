@@ -24,7 +24,7 @@ export const StandardLayout = memo(
               {...((layout.footer as unknown) /* convert to unknown because TS freaks out over blockcontent */ as CMSFooter)}
             />
           </Box>
-          {layout.cookieConsent.showCookieConsent ? <CookieConsent /> : null}
+          {layout?.cookieConsent?.showCookieConsent ? <CookieConsent /> : null}
         </>
       );
     },
