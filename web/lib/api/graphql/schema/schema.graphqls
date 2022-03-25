@@ -1,8 +1,0 @@
-type Query {
-  verifyComingSoonLogin(input: TokenInput!): Boolean
-  checkEmail(email: String!): String!
-}
-
-type Mutation {
-  comingSoonLogin(input: AuthInput!): String
-}

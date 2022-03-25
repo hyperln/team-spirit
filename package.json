@@ -1,49 +1,28 @@
 {
-  "name": "nextjs-starter",
-  "version": "0.0.0",
-  "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
-  "main": "index.js",
+  "name": "team-spirit",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "npm run lint -- --fix",
-    "dev": "lerna run dev"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/beppek/nextjs-starter.git"
+  "dependencies": {
+    "@chakra-ui/react": "^1.8.6",
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "date-fns": "^2.28.0",
+    "framer-motion": "^6.2.8",
+    "next": "12.1.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/beppek/nextjs-starter/issues"
-  },
-  "homepage": "https://github.com/beppek/nextjs-starter#readme",
   "devDependencies": {
-    "@types/storybook__react": "^5.2.1",
-    "@typescript-eslint/eslint-plugin": "^4.24.0",
-    "@typescript-eslint/parser": "^4.24.0",
-    "eslint": "^7.26.0",
-    "eslint-config-airbnb-typescript": "^12.3.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-config-typescript": "^3.0.0",
-    "eslint-plugin-import": "^2.23.2",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.23.2",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "husky": "^6.0.0",
-    "lerna": "^4.0.0",
-    "lint-staged": "^11.0.0",
-    "prettier": "^2.3.0",
-    "typescript": "^4.2.4"
-  },
-  "lint-staged": {
-    "web/**/*.{ts,tsx}": "npm run lint:fix"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "@types/node": "17.0.23",
+    "@types/react": "17.0.43",
+    "eslint": "8.11.0",
+    "eslint-config-next": "12.1.0",
+    "typescript": "4.6.3"
   }
 }

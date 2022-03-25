@@ -1,7 +1,0 @@
-schema: 'lib/api/graphql/**/*.graphqls'
-documents:
-  - 'lib/api/graphql/**/*.graphql'
-  - 'lib/api/graphql/**/*.tsx'
-plugins:
-  - typescript-operations
-  - typescript-react-apollo
