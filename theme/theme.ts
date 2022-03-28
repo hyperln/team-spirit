@@ -43,4 +43,38 @@ export const styles = {
   }),
 };
 
-export const theme = extendTheme({ config, colors, styles });
+const components = {
+  // Custom components
+  Banner: {
+    baseStyle: {
+      position: 'fixed',
+      bottom: 0,
+      py: '2',
+      px: '6',
+      w: 'full',
+      backgroundColor: 'black',
+      color: 'white',
+    },
+  },
+  Header: {
+    baseStyle: {
+      position: 'fixed',
+      zIndex: 3,
+      top: 0,
+      px: {
+        base: '2',
+        lg: '6',
+      },
+      w: 'full',
+      overflow: 'hidden',
+    },
+  },
+  Hero: {
+    baseStyle: {
+      backgroundGradient: {},
+    },
+  },
+  Footer: {},
+};
+
+export const theme = extendTheme({ config, colors, styles, components });
