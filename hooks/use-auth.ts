@@ -56,6 +56,11 @@ export function useAuth() {
         title: error.status,
       });
     }
+    return toast({
+      status: 'success',
+      description: 'You signed out!',
+      title: 'Success',
+    });
   };
 
   return {
