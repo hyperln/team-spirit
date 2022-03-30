@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 /* eslint-disable react/destructuring-assignment */
 import { Center } from '@components/atoms/center';
 // import { PuffLoader } from '@components/atoms/spinners';
@@ -7,7 +8,6 @@ import { useRouter } from 'next/router';
 import { ComponentType, FC, useEffect } from 'react';
 
 type Props = any;
-
 export const withRequireAuth =
   <P extends object>(Component: ComponentType<P>): FC<P & Props> =>
   (props: Props) => {
@@ -27,7 +27,7 @@ export const withRequireAuth =
       return () => {
         listener?.unsubscribe();
       };
-    }, []);
+    }, [onAuthStateChange, router]);
 
     useEffect(() => {
       if (!user) {
