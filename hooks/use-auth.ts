@@ -44,12 +44,12 @@ export function useAuth() {
         title: error.status,
       });
     }
+
     return toast({
       status: 'success',
       description: 'You successfully signed in!',
       title: 'Success',
     });
-    return { user, session };
   };
 
   const handleSignOut = async () => {
