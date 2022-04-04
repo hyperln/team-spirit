@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 /* eslint-disable react/destructuring-assignment */
 import { Center } from '@components/atoms/center';
 // import { PuffLoader } from '@components/atoms/spinners';
@@ -7,7 +8,6 @@ import { useRouter } from 'next/router';
 import { ComponentType, FC, useEffect } from 'react';
 
 type Props = any;
-
 export const withRequireAuth =
   <P extends object>(Component: ComponentType<P>): FC<P & Props> =>
   (props: Props) => {
@@ -15,7 +15,7 @@ export const withRequireAuth =
     const router = useRouter();
 
     useEffect(() => {
-      const { data: listener } = onAuthStateChange(async (event, session) => {
+      const { data: listener } = onAuthStateChange((event, session) => {
         if (!session?.user) {
           router.push(
             `/${config.site.auth.signInPath}?redirect=${encodeURIComponent(
@@ -27,7 +27,7 @@ export const withRequireAuth =
       return () => {
         listener?.unsubscribe();
       };
-    }, []);
+    }, [onAuthStateChange, router]);
 
     useEffect(() => {
       if (!user) {

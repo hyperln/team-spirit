@@ -3,7 +3,7 @@
 import { AuthChangeEvent, Session, UserCredentials } from '@supabase/gotrue-js';
 import { client } from './client';
 
-export const currentUser = client.auth.user();
+export const currentUser = () => client.auth.user();
 export const signUp = (data: UserCredentials) => client.auth.signUp(data);
 export const signIn = (data: UserCredentials) => client.auth.signIn(data);
 export const signOut = () => client.auth.signOut();
