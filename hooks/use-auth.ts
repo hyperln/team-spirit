@@ -64,8 +64,6 @@ export function useAuth() {
     });
   };
 
-  console.log('currentUser :>> ', currentUser);
-
   return {
     user: getCurrentUser(),
     signUp: handleSignUp,
