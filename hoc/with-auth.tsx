@@ -15,7 +15,7 @@ export const withRequireAuth =
     const router = useRouter();
 
     useEffect(() => {
-      const { data: listener } = onAuthStateChange(async (event, session) => {
+      const { data: listener } = onAuthStateChange((event, session) => {
         if (!session?.user) {
           router.push(
             `/${config.site.auth.signInPath}?redirect=${encodeURIComponent(

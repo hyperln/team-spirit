@@ -10,6 +10,8 @@ import {
 export function useAuth() {
   const toast = useToast();
 
+  const getCurrentUser = () => currentUser();
+
   const handleSignUp = async ({
     email,
     password,
@@ -62,8 +64,10 @@ export function useAuth() {
     });
   };
 
+  console.log('currentUser :>> ', currentUser);
+
   return {
-    user: currentUser,
+    user: getCurrentUser(),
     signUp: handleSignUp,
     signIn: handleSignIn,
     signOut: handleSignOut,
