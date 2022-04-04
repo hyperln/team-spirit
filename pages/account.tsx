@@ -1,15 +1,17 @@
-import { Box } from '@components/atoms/box';
-import { Link } from '@components/atoms/link';
-import { useAuth } from '@hooks/use-auth';
+import { AccountPageTemplate } from '@components/templates/account-page-template';
+import { withRequireAuth } from '@hoc/with-auth';
+import withTransition from '@hoc/with-transition';
+import Head from 'next/head';
 
-export default function Account() {
-  const { user } = useAuth();
+function Account() {
   return (
-    <Box>
-      This is your account page: {user?.email}
-      <Box>
-        <Link href="/">Home</Link>
-      </Box>
-    </Box>
+    <>
+      <Head>
+        <title>Account | Team Spirit</title>
+      </Head>
+      <AccountPageTemplate />
+    </>
   );
 }
+
+export default withTransition(withRequireAuth(Account));
