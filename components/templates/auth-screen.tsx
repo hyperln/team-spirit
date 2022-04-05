@@ -71,7 +71,7 @@ const fields = [
 
 export function AuthScreen() {
   const auth = useAuth();
-  const [step, setStep] = useState(Steps.register);
+  const [step, setStep] = useState(Steps.login);
   const {
     register,
     handleSubmit,

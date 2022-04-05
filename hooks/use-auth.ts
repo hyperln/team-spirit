@@ -9,7 +9,8 @@ import {
 
 export function useAuth() {
   const toast = useToast();
-  const getCurrentUser = () => currentUser;
+
+  const getCurrentUser = () => currentUser();
 
   const handleSignUp = async ({
     email,

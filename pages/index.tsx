@@ -1,7 +1,10 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
 import withTransition from '@hoc/with-transition';
-import { AuthScreen } from '@components/templates/auth-screen';
+import { withRequireAuth } from '@hoc/with-auth';
+import { Link } from '@components/atoms/link';
+import { Box } from '@components/atoms/box';
+import { Flex } from '@components/atoms/flex';
 
 function Home(): ReactElement {
   return (
@@ -10,9 +13,16 @@ function Home(): ReactElement {
         <title>TeamSpirit | Team Management</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AuthScreen />
+      <main>
+        <Box w="full">
+          <Flex flexDirection="column" alignItems="center" w="full" mx="auto">
+            <Link href="authed">Authed page</Link>
+            <Link href="account">Account</Link>
+          </Flex>
+        </Box>
+      </main>
     </>
   );
 }
 
-export default withTransition(Home);
+export default withTransition(withRequireAuth(Home));
