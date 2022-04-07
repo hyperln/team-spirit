@@ -1,3 +1,4 @@
+import { useToast } from '@hooks/use-toast';
 import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
 import { Input } from '@components/atoms/input';
@@ -10,12 +11,12 @@ import { useEffect, useState } from 'react';
 
 export function AccountPageTemplate() {
 
+  const toast = useToast();
   const { user } = useAuth()
   const [ image, setImage ] = useState(null) 
   const [ firstname, setFirstname] = useState("")
   const [ lastname, setLastname] = useState("")
   const [ avatarurl, setAvatarUrl] = useState("")
-  const [ message, setMessage] = useState("")
   
   const handleSubmit = async(e) => {
     e.preventDefault()
@@ -42,17 +43,23 @@ export function AccountPageTemplate() {
       })
 
       if(error) {
-        console.log(error)
+        return toast({
+          status: 'error',
+          description: error.message,
+          title: 'error'
+        });
       }
+    
       if(data) {
-        setMessage("Profile has been updated!")
-      }
+        return toast ({
+          status: 'success',
+          description: 'Profile has been updated!',
+          title: 'Success'  
+      });
   }
-
-
+}
   return (
     <Box>
-      {message && message}
       Welcome, {user?.email}
       <Input 
       type="text" 
@@ -67,7 +74,7 @@ export function AccountPageTemplate() {
       <Input 
       type="file" 
       placeholder="profile pic" 
-      accept={"image/jpeg image/png"} 
+      accept={"image/jpeg image/jpg image/png"} 
       onChange={e => setImage(e.target.files)} />
       <Button onClick={handleSubmit} >
       Save Profile
@@ -75,3 +82,4 @@ export function AccountPageTemplate() {
     </Box>
   );
 }
+
