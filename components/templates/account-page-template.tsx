@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 
 
 export function AccountPageTemplate() {
-  // const Profile = () => 
+
   const { user } = useAuth()
   const [ image, setImage ] = useState(null) 
   const [ firstname, setFirstname] = useState("")
@@ -24,7 +24,6 @@ export function AccountPageTemplate() {
     if(image) {
       const {data, error} = await client.storage.from("avatars").upload(`${Date.now()}_${image.name}`, image)
       
-
       if(error) {
         console.log(error)
       }
@@ -76,31 +75,3 @@ export function AccountPageTemplate() {
     </Box>
   );
 }
-// 
-
-// const [ profiles, setProfiles] = useState([])
-// const [profile, setProfile] = useState({ firstName: "", lastName: "", avatarUrl: "" })
-// const { firstName, lastName, avatarUrl } = profile
-//   useEffect(() => {
-  //   fetchProfiles()
-  // }, [])
-  
-  // async function fetchProfiles() {
-    //   const { data } = await client.from('profiles').select();
-    //   setProfile(data)
-    // }
-    
-    // async function createProfile() {
-      //   await client.from('profiles').insert([
-        //     { firstName, lastName, avatarUrl}
-        //   ])
-//   .single()
-//   setProfile({ firstName: "", lastName: "", avatarUrl: ""})
-//   fetchProfiles()
-// profiles.map(profile => (
-//   <Box key={profile.id}>
-//     <Text>{profile.firstName}</Text>
-//     <Text>{profile.lastName}</Text>
-//     <Text>{profile.avatarUrl}</Text>
-//     </Box>
-//   ))
