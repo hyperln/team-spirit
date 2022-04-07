@@ -17,6 +17,7 @@ export function AccountPageTemplate() {
   const [ firstname, setFirstname] = useState("")
   const [ lastname, setLastname] = useState("")
   const [ avatarurl, setAvatarUrl] = useState("")
+
   
   const handleSubmit = async(e) => {
     e.preventDefault()
@@ -39,7 +40,8 @@ export function AccountPageTemplate() {
       id: user.id,
       first_name: firstname,
       last_name: lastname,
-      avatar_url: avatarurl
+      avatar_url: avatarurl,
+      updated_at: new Date()
       })
 
       if(error) {
