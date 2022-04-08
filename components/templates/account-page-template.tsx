@@ -10,6 +10,7 @@ import { Flex } from '@components/atoms/flex';
 import { uploadAvatarImage } from '@lib/storage/storage';
 import { Avatar } from '@components/molecules/avatar-image';
 import { useProfile } from '@hooks/use-profile';
+import { Spinner } from '@components/atoms/spinner';
 
 export function AccountPageTemplate() {
   const toast = useToast();
@@ -21,6 +22,7 @@ export function AccountPageTemplate() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [gender, setGender] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (profile) {
@@ -49,6 +51,7 @@ export function AccountPageTemplate() {
   };
 
   const handleSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
 
     let avatarUrl = '';
@@ -87,6 +90,8 @@ export function AccountPageTemplate() {
         description: error.message,
         title: 'error',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -126,7 +131,22 @@ export function AccountPageTemplate() {
             name="avatar"
           />
           <Avatar src={previewImageUrl} name={firstName || user.email} />
-          <Button type="submit">Save Profile</Button>
+          <Button
+            type="submit"
+            isLoading={isLoading}
+            spinner={
+              <Spinner
+                color="brand.50"
+                variant="outline"
+                thickness="3.8px"
+                emptyColor="gray.600"
+                speed="0.75s"
+                size="lg"
+              />
+            }
+          >
+            Save Profile
+          </Button>
         </form>
       </Box>
     </Flex>
