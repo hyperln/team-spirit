@@ -29,6 +29,7 @@ export function ProfileProvider({ children }) {
         },
         actions: {
           setProfile,
+          fetchProfile,
         },
       }}
     >
