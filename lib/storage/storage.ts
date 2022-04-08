@@ -15,6 +15,5 @@ export async function getAvatarImage(imageId: string) {
     .from('avatars')
     .createSignedUrl(imageId, 3600);
 
-  if (error) throw error;
-  return signedURL;
+  return { signedURL, error };
 }
