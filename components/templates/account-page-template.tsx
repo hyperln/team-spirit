@@ -63,21 +63,25 @@ export function AccountPageTemplate() {
   return (
     <Box>
       Welcome, {user?.email}
+      
       <Input 
       type="text" 
       placeholder="First Name" 
       onChange={e => setFirstname(e.target.value)} 
       value={firstname} />
+      
       <Input 
       type="text" 
       placeholder="Last Name" 
       onChange={e => setLastname(e.target.value)} 
       value={lastname}/>
+      
       <Input 
       type="file" 
       placeholder="profile pic" 
-      accept={"image/jpeg image/jpg image/png"} 
+      accept="image/*" 
       onChange={e => setImage(e.target.files)} />
+
       <Button onClick={handleSubmit} >
       Save Profile
       </Button>
