@@ -32,37 +32,38 @@ export function Navigation() {
       />
       <nav>
         <MenuList>
-          <Center>
-            <MenuGroup
-              title={`Welcome${
-                profile?.firstName ? `, ${profile.firstName}` : ''
-              }`}
+          <MenuGroup
+            title={`Welcome${
+              profile?.firstName ? `, ${profile.firstName}` : ''
+            }`}
+          >
+            <MenuItem
+              as={Link}
+              href="account"
+              icon={
+                profile ? (
+                  <Avatar
+                    ml="-1"
+                    mr="2"
+                    size="xs"
+                    src={profile.previewUrl}
+                    name={profile.firstName}
+                  />
+                ) : (
+                  <AtSignIcon />
+                )
+              }
             >
-              <MenuItem
-                as={Link}
-                href="account"
-                icon={
-                  profile ? (
-                    <Avatar
-                      size="xs"
-                      src={profile.previewUrl}
-                      name={profile.firstName}
-                    />
-                  ) : (
-                    <AtSignIcon />
-                  )
-                }
-              >
-                Account
-              </MenuItem>
-              <MenuItem as={Link} href="/" icon={<StarIcon />}>
-                Home
-              </MenuItem>
-              <MenuItem onClick={signOut} icon={<LockIcon />}>
-                Log out
-              </MenuItem>
-            </MenuGroup>
-          </Center>
+              Account
+            </MenuItem>
+
+            <MenuItem as={Link} href="/" icon={<StarIcon mr="3.5" />}>
+              Home
+            </MenuItem>
+            <MenuItem onClick={signOut} icon={<LockIcon mr="3.5" />}>
+              Log out
+            </MenuItem>
+          </MenuGroup>
         </MenuList>
       </nav>
     </Menu>
