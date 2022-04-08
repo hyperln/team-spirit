@@ -125,9 +125,7 @@ export function AccountPageTemplate() {
             onChange={onSelectFile}
             name="avatar"
           />
-          {previewImageUrl ? (
-            <Avatar src={previewImageUrl} name={firstName || user.email} />
-          ) : null}
+          <Avatar src={previewImageUrl} name={firstName || user.email} />
           <Button type="submit">Save Profile</Button>
         </form>
       </Box>
