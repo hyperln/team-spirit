@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { ProfileContext } from '@state/profile-context';
 
-export function UseProfile() {
+export function useProfile() {
   const { state, actions } = useContext(ProfileContext);
 
   return {
