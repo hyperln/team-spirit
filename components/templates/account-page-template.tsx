@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useToast } from '@hooks/use-toast';
 import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
@@ -8,22 +8,19 @@ import { updateUserProfile } from '@lib/db';
 import { Select } from '@components/atoms/select';
 import { Flex } from '@components/atoms/flex';
 import { uploadAvatarImage } from '@lib/storage/storage';
-import { ProfileContext } from '@state/profile-context';
 import { Avatar } from '@components/molecules/avatar-image';
+import { useProfile } from '@hooks/use-profile';
 
 export function AccountPageTemplate() {
   const toast = useToast();
   const { user } = useAuth();
+  const { profile, fetchProfile } = useProfile();
+
   const [image, setImage] = useState(null);
   const [previewImageUrl, setPreviewImageUrl] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [gender, setGender] = useState('');
-
-  const {
-    state: { profile },
-    actions: { fetchProfile },
-  } = useContext(ProfileContext);
 
   useEffect(() => {
     if (profile) {
@@ -79,13 +76,13 @@ export function AccountPageTemplate() {
 
       fetchProfile();
 
-      return toast({
+      toast({
         status: 'success',
         description: 'Profile has been updated!',
         title: 'Success',
       });
     } catch (error) {
-      return toast({
+      toast({
         status: 'error',
         description: error.message,
         title: 'error',
