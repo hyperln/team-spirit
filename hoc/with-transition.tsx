@@ -22,7 +22,9 @@ const SlideOut = styled(motion.div)`
   transform-origin: right;
 `;
 
-const Wrapper = styled(motion.div)``;
+const Wrapper = styled(motion.div)`
+  min-height: calc(100vh - 80px);
+`;
 
 const withTransition = (Component) => (props) =>
   (

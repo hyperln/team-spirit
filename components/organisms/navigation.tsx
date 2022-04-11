@@ -5,17 +5,23 @@ import {
   StarIcon,
 } from '@chakra-ui/icons';
 import { IconButton } from '@components/atoms/button';
+import { Center } from '@components/atoms/center';
+import { Flex } from '@components/atoms/flex';
 import { Link } from '@components/atoms/link';
+import { Avatar } from '@components/molecules/avatar-image';
 import {
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
+  MenuGroup,
 } from '@components/organisms/menu';
 import { useAuth } from '@hooks/use-auth';
+import { useProfile } from '@hooks/use-profile';
 
 export function Navigation() {
-  const { user, signOut } = useAuth();
+  const { profile } = useProfile();
+  const { signOut } = useAuth();
   return (
     <Menu placement="bottom">
       <MenuButton
@@ -26,15 +32,36 @@ export function Navigation() {
       />
       <nav>
         <MenuList>
-          <MenuItem as={Link} href="account" icon={<AtSignIcon />}>
-            Account
-          </MenuItem>
-          <MenuItem as={Link} href="/" icon={<StarIcon />}>
-            Home
-          </MenuItem>
-          <MenuItem onClick={signOut} icon={<LockIcon />}>
-            Log out
-          </MenuItem>
+          <MenuGroup
+            title={`Welcome${
+              profile?.firstName ? `, ${profile.firstName}` : ''
+            }`}
+          >
+            <MenuItem
+              as={Link}
+              href="account"
+              icon={
+                profile ? (
+                  <Avatar
+                    size="xs"
+                    src={profile.previewUrl}
+                    name={profile.firstName}
+                  />
+                ) : (
+                  <AtSignIcon />
+                )
+              }
+            >
+              Account
+            </MenuItem>
+
+            <MenuItem as={Link} href="/" icon={<StarIcon w={6} />}>
+              Home
+            </MenuItem>
+            <MenuItem onClick={signOut} icon={<LockIcon w={6} />}>
+              Log out
+            </MenuItem>
+          </MenuGroup>
         </MenuList>
       </nav>
     </Menu>

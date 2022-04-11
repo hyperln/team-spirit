@@ -17,7 +17,13 @@ export function Layout({ children }) {
       >
         <Navigation />
       </Flex>
-      <Box mt={{ lg: '20' }}>{children}</Box>
+      <Box
+        minH="calc(100vh - 80px)"
+        mb={{ base: '20', lg: undefined }}
+        mt={{ lg: '20' }}
+      >
+        {children}
+      </Box>
     </Box>
   );
 }
