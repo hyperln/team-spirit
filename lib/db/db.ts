@@ -39,3 +39,12 @@ export async function updateUserProfile(
   if (error) throw error;
   return keysToCamel(data);
 }
+
+export async function createClub(userId: string, clubData: UpdateProfileData) {
+  const { data, error } = await client
+    .from('clubs')
+    .update(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)))
+    .match({ id: userId });
+  if (error) throw error;
+  return keysToCamel(data);
+}
