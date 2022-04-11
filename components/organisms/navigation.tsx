@@ -43,8 +43,6 @@ export function Navigation() {
               icon={
                 profile ? (
                   <Avatar
-                    ml="-1"
-                    mr="2"
                     size="xs"
                     src={profile.previewUrl}
                     name={profile.firstName}
@@ -57,10 +55,10 @@ export function Navigation() {
               Account
             </MenuItem>
 
-            <MenuItem as={Link} href="/" icon={<StarIcon mr="3.5" />}>
+            <MenuItem as={Link} href="/" icon={<StarIcon w={6} />}>
               Home
             </MenuItem>
-            <MenuItem onClick={signOut} icon={<LockIcon mr="3.5" />}>
+            <MenuItem onClick={signOut} icon={<LockIcon w={6} />}>
               Log out
             </MenuItem>
           </MenuGroup>
