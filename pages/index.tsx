@@ -18,6 +18,7 @@ function Home(): ReactElement {
           <Flex flexDirection="column" alignItems="center" w="full" mx="auto">
             <Link href="authed">Authed page</Link>
             <Link href="account">Account</Link>
+            <Link href="club-registration">Register Club</Link>
           </Flex>
         </Box>
       </main>
