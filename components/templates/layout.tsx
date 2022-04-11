@@ -18,7 +18,7 @@ export function Layout({ children }) {
         <Navigation />
       </Flex>
       <Box
-        h="calc(100vh - 80px)"
+        minH="calc(100vh - 80px)"
         mb={{ base: '20', lg: undefined }}
         mt={{ lg: '20' }}
       >
