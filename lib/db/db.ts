@@ -5,12 +5,12 @@ import {
 } from '@utils/object-utils';
 import { client } from './client';
 
-export async function listClubs({}) {
-  //fetch clubs from database
-  const { data, error } = await client.from('clubs').select();
-  if (error) throw error;
-  return data;
-}
+// export async function listClubs({}) {
+//   //fetch clubs from database
+//   const { data, error } = await client.from('clubs').select();
+//   if (error) throw error;
+//   return data;
+// }
 
 export async function listTeams({}) {
   // fetch teams from database
@@ -25,10 +25,10 @@ interface UpdateProfileData {
   avatarUrl?: string;
   gender?: string;
 }
-interface CreateClub {
-  clubName?: string;
-  clubEstablished?: string;
-}
+// interface CreateClub {
+//   clubName?: string;
+//   clubEstablished?: string;
+// }
 
 export async function getUserProfile(userId: string) {
   const { data, error } = await client
@@ -51,11 +51,11 @@ export async function updateUserProfile(
   return keysToCamel(data);
 }
 
-export async function createClub(userId: string, clubData: CreateClub) {
-  const { data, error } = await client
-    .from('clubs')
-    .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)))
-    .match({ id: userId });
-  if (error) throw error;
-  return keysToCamel(data);
-}
+// export async function createClub(userId: string, clubData: CreateClub) {
+//   const { data, error } = await client
+//     .from('clubs')
+//     .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)))
+//     .match({ id: userId });
+//   if (error) throw error;
+//   return keysToCamel(data);
+// }
