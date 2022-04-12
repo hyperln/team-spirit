@@ -11,6 +11,8 @@ import { uploadAvatarImage } from '@lib/storage/storage';
 import { Avatar } from '@components/molecules/avatar-image';
 import { useProfile } from '@hooks/use-profile';
 import { Spinner } from '@components/atoms/spinner';
+import { Heading } from '@components/atoms/typography/heading';
+import { FormControl, FormLabel } from '@components/molecules/form';
 
 export function AccountPageTemplate() {
   const toast = useToast();
@@ -96,57 +98,146 @@ export function AccountPageTemplate() {
   };
 
   return (
-    <Flex justifyContent="center">
-      <Box>
-        Welcome, {profile?.firstName || user.email}
+    <Flex
+      justifyContent="center"
+      minH="calc(100vh - 80px)"
+      bgGradient="linear(brand.900 10%, brand.600 60%)"
+    >
+      <Box
+        justifyContent={{ base: 'center', lg: 'right' }}
+        position="absolute"
+        top="10%"
+        p="6%"
+        left={{ base: '2%', lg: '15%', xl: '20%' }}
+        right={{ base: '2%', lg: '15%', xl: '20%' }}
+        width="400px"
+        background="rgba(0,0,0,.4)"
+        boxSize="border-box"
+        boxShadow="0 15px 25px rgba(0,0,0,.5)"
+        borderRadius="10px"
+      >
+        <Heading as="h2" size="lg" m="0 0 50px" p="0" textAlign="center">
+          Welcome, {profile?.firstName || user.email}{' '}
+        </Heading>
         <form onSubmit={handleSubmit}>
-          <Input
-            type="text"
-            placeholder="First Name"
-            onChange={(e) => setFirstName(e.target.value)}
-            value={firstName}
-            name="firstName"
-          />
-          <Input
-            type="text"
-            placeholder="Last Name"
-            onChange={(e) => setLastName(e.target.value)}
-            value={lastName}
-            name="lastName"
-          />
-          <Select
-            onChange={handleGenderSelect}
-            placeholder="gender"
-            variant="flushed"
-            value={gender}
-          >
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </Select>
-          <Input
-            type="file"
-            placeholder="Profile picture"
-            accept="image/*"
-            onChange={onSelectFile}
-            name="avatar"
-          />
-          <Avatar src={previewImageUrl} name={firstName || user.email} />
-          <Button
-            type="submit"
-            isLoading={isLoading}
-            spinner={
-              <Spinner
-                color="brand.50"
-                variant="outline"
-                thickness="3.8px"
-                emptyColor="gray.600"
-                speed="0.75s"
-                size="lg"
+          <FormControl mb="5%" variant="floating" position="relative">
+            <FormLabel
+              position="absolute"
+              top="0"
+              left="0"
+              p="10px 0"
+              fontSize="16px"
+              pointerEvents="none"
+              outline="none"
+              transition="0.5s"
+              _focus={{
+                top: '-30px',
+                left: '0',
+                color: '#03e9f4',
+                fontSize: '12px',
+                outline: 'none',
+              }}
+            >
+              First Name
+            </FormLabel>
+            <Input
+              placeholder=" "
+              w="100%"
+              p="10px 0"
+              mb="10px"
+              border="none"
+              borderBottom="1px solid #fff"
+              outline="none"
+              background="transparent"
+              type="text"
+              onChange={(e) => setFirstName(e.target.value)}
+              value={firstName}
+              name="firstName"
+            />
+          </FormControl>
+          <FormControl mb="5%" variant="floating" position="relative">
+            <FormLabel
+              position="absolute"
+              top="0"
+              left="0"
+              p="10px 0"
+              fontSize="16px"
+              pointerEvents="none"
+              outline="none"
+              transition="0.5s"
+              _focus={{
+                top: '-30px',
+                left: '0',
+                color: '#03e9f4',
+                fontSize: '12px',
+                outline: 'none',
+              }}
+            >
+              Last Name
+            </FormLabel>
+            <Input
+              placeholder=" "
+              w="100%"
+              p="10px 0"
+              mb="10px"
+              border="none"
+              borderBottom="1px solid #fff"
+              outline="none"
+              background="transparent"
+              type="text"
+              onChange={(e) => setLastName(e.target.value)}
+              value={lastName}
+              name="lastName"
+            />
+          </FormControl>
+          <FormControl mb="5%">
+            <Select
+              onChange={handleGenderSelect}
+              placeholder="Gender"
+              variant="flushed"
+              value={gender}
+            >
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </Select>
+          </FormControl>
+          <FormControl mb="5%" position="relative">
+            <Flex align="center">
+              <Input
+                mb="3%"
+                type="file"
+                placeholder="Profile picture"
+                accept="image/*"
+                onChange={onSelectFile}
+                name="avatar"
               />
-            }
-          >
-            Save Profile
-          </Button>
+
+              <Avatar
+                ml="4"
+                size="xl"
+                src={previewImageUrl}
+                name={firstName || user.email}
+              />
+            </Flex>
+          </FormControl>
+          <Box textAlign="center">
+            <Button
+              type="submit"
+              isLoading={isLoading}
+              spinner={
+                <Spinner
+                  color="brand.50"
+                  variant="outline"
+                  thickness="3.8px"
+                  emptyColor="gray.600"
+                  speed="0.75s"
+                  size="lg"
+                />
+              }
+            >
+              Save Profile
+            </Button>
+          </Box>
         </form>
       </Box>
     </Flex>
