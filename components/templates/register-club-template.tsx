@@ -1,15 +1,12 @@
+import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
-import { Center } from '@components/atoms/center';
 import { Flex } from '@components/atoms/flex';
 import { Input } from '@components/atoms/input';
-import { Select } from '@components/atoms/select';
 import { Spinner } from '@components/atoms/spinner';
-import { FormControl, FormLabel } from '@components/molecules/form';
 import { useAuth } from '@hooks/use-auth';
 import { useProfile } from '@hooks/use-profile';
 import { useToast } from '@hooks/use-toast';
-import { createClub } from '@lib/db';
-import { client } from '@lib/db/client';
+import { createClub, listClubs } from '@lib/db';
 import { useEffect, useState } from 'react';
 
 export function RegisterClubTemplate() {
