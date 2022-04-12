@@ -18,11 +18,8 @@ interface UpdateProfileData {
   avatarUrl?: string;
   gender?: string;
 }
-interface UpdateClubData {
+interface CreateClub {
   clubName?: string;
-  clubCity?: string;
-  clubCountry?: string;
-  clubState?: string;
   clubEstablished?: string;
 }
 
@@ -47,11 +44,11 @@ export async function updateUserProfile(
   return keysToCamel(data);
 }
 
-export async function createClub(clubId: string, clubData: UpdateClubData) {
+export async function createClub(userId: string, clubData: CreateClub) {
   const { data, error } = await client
     .from('clubs')
-    .update(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)))
-    .match({ id: clubId });
+    .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)))
+    .match({ id: userId });
   if (error) throw error;
   return keysToCamel(data);
 }
