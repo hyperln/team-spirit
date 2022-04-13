@@ -25,10 +25,10 @@ interface UpdateProfileData {
   avatarUrl?: string;
   gender?: string;
 }
-// interface CreateClub {
-//   clubName?: string;
-//   clubEstablished?: string;
-// }
+interface CreateClubData {
+  name: string;
+  established?: string;
+}
 
 export async function getUserProfile(userId: string) {
   const { data, error } = await client
@@ -51,11 +51,10 @@ export async function updateUserProfile(
   return keysToCamel(data);
 }
 
-// export async function createClub(userId: string, clubData: CreateClub) {
-//   const { data, error } = await client
-//     .from('clubs')
-//     .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)))
-//     .match({ id: userId });
-//   if (error) throw error;
-//   return keysToCamel(data);
-// }
+export async function createClub(clubData: CreateClubData) {
+  const { data, error } = await client
+    .from('clubs')
+    .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)));
+  if (error) throw error;
+  return keysToCamel(data);
+}
