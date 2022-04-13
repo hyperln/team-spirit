@@ -5,12 +5,12 @@ import {
 } from '@utils/object-utils';
 import { client } from './client';
 
-// export async function listClubs({}) {
-//   //fetch clubs from database
-//   const { data, error } = await client.from('clubs').select();
-//   if (error) throw error;
-//   return data;
-// }
+export async function listClubs() {
+  //fetch clubs from database
+  const { data, error } = await client.from('clubs').select().order('name');
+  if (error) throw error;
+  return data;
+}
 
 export async function listTeams({}) {
   // fetch teams from database
