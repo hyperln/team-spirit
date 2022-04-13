@@ -5,6 +5,13 @@ import {
 } from '@utils/object-utils';
 import { client } from './client';
 
+export async function listClubs() {
+  //fetch clubs from database
+  const { data, error } = await client.from('clubs').select().order('name');
+  if (error) throw error;
+  return data;
+}
+
 export async function listTeams({}) {
   // fetch teams from database
   const { data, error } = await client.from('teams').select();
@@ -17,6 +24,10 @@ interface UpdateProfileData {
   lastName?: string;
   avatarUrl?: string;
   gender?: string;
+}
+interface CreateClubData {
+  name: string;
+  established?: string;
 }
 
 export async function getUserProfile(userId: string) {
@@ -36,6 +47,14 @@ export async function updateUserProfile(
     .from('profiles')
     .update(keysToSnake(removeNullUndefinedAndEmptyStrings(profileData)))
     .match({ id: userId });
+  if (error) throw error;
+  return keysToCamel(data);
+}
+
+export async function createClub(clubData: CreateClubData) {
+  const { data, error } = await client
+    .from('clubs')
+    .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)));
   if (error) throw error;
   return keysToCamel(data);
 }
