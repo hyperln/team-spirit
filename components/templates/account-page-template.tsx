@@ -104,107 +104,105 @@ export function AccountPageTemplate() {
       bgGradient="linear(brand.900 10%, brand.600 60%)"
     >
       <Box
+        mb="5"
         justifyContent={{ base: 'center', lg: 'right' }}
         position="absolute"
-        top="10%"
+        top={{ base: '4', lg: '24' }}
+        bottom={{ base: '0', lg: '10' }}
         p="6%"
-        left={{ base: '2%', lg: '15%', xl: '20%' }}
-        right={{ base: '2%', lg: '15%', xl: '20%' }}
-        width="400px"
+        left={{ base: '1', lg: '7', xl: '60' }}
+        right={{ base: '1', lg: '7', xl: '60' }}
+        width="200"
         background="rgba(0,0,0,.4)"
         boxSize="border-box"
         boxShadow="0 15px 25px rgba(0,0,0,.5)"
-        borderRadius="10px"
+        borderRadius="10"
       >
-        <Heading as="h2" size="lg" m="0 0 50px" p="0" textAlign="center">
+        <Heading as="h2" size="lg" mb="8" textAlign="center">
           Welcome, {profile?.firstName || user.email}{' '}
         </Heading>
         <form onSubmit={handleSubmit}>
-          <FormControl mb="5%" variant="floating" position="relative">
-            <FormLabel
-              position="absolute"
-              top="0"
-              left="0"
-              p="10px 0"
-              fontSize="16px"
-              pointerEvents="none"
-              outline="none"
-              transition="0.5s"
-              _focus={{
-                top: '-30px',
-                left: '0',
-                color: '#03e9f4',
-                fontSize: '12px',
-                outline: 'none',
-              }}
-            >
-              First Name
-            </FormLabel>
-            <Input
-              placeholder=" "
-              w="100%"
-              p="10px 0"
-              mb="10px"
-              border="none"
-              borderBottom="1px solid #fff"
-              outline="none"
-              background="transparent"
-              type="text"
-              onChange={(e) => setFirstName(e.target.value)}
-              value={firstName}
-              name="firstName"
-            />
-          </FormControl>
-          <FormControl mb="5%" variant="floating" position="relative">
-            <FormLabel
-              position="absolute"
-              top="0"
-              left="0"
-              p="10px 0"
-              fontSize="16px"
-              pointerEvents="none"
-              outline="none"
-              transition="0.5s"
-              _focus={{
-                top: '-30px',
-                left: '0',
-                color: '#03e9f4',
-                fontSize: '12px',
-                outline: 'none',
-              }}
-            >
-              Last Name
-            </FormLabel>
-            <Input
-              placeholder=" "
-              w="100%"
-              p="10px 0"
-              mb="10px"
-              border="none"
-              borderBottom="1px solid #fff"
-              outline="none"
-              background="transparent"
-              type="text"
-              onChange={(e) => setLastName(e.target.value)}
-              value={lastName}
-              name="lastName"
-            />
-          </FormControl>
-          <FormControl mb="5%">
-            <Select
-              onChange={handleGenderSelect}
-              placeholder="Gender"
-              variant="flushed"
-              value={gender}
-            >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </Select>
-          </FormControl>
-          <FormControl mb="5%" position="relative">
+          <FormControl mb="6" variant="floating" position="relative">
+            <Box mb="2" position="relative">
+              <FormLabel
+                position="absolute"
+                top={firstName ? '-10' : '0'}
+                left="0"
+                py="4"
+                fontSize={firstName ? 'sm' : 'md'}
+                pointerEvents="none"
+                outline="none"
+                transition="0.5s"
+                _focus={{
+                  top: '-10',
+                  color: '#03e9f4',
+                  fontSize: 'sm',
+                }}
+              >
+                First Name
+              </FormLabel>
+              <Input
+                placeholder=" "
+                w="100%"
+                py="4"
+                mb="3"
+                border="none"
+                borderBottom="1px solid #fff"
+                outline="none"
+                background="transparent"
+                type="text"
+                onChange={(e) => setFirstName(e.target.value)}
+                value={firstName}
+                name="firstName"
+              />
+            </Box>
+            <Box mb="2" position="relative">
+              <FormLabel
+                position="absolute"
+                top={lastName ? '-10' : '0'}
+                left="0"
+                py="4"
+                fontSize={lastName ? 'sm' : 'md'}
+                pointerEvents="none"
+                outline="none"
+                transition="0.5s"
+                _focus={{
+                  top: '-10',
+                  color: '#03e9f4',
+                  fontSize: 'sm',
+                }}
+              >
+                Last Name
+              </FormLabel>
+              <Input
+                placeholder=" "
+                w="100%"
+                py="4"
+                mb="3"
+                border="none"
+                borderBottom="1px solid #fff"
+                outline="none"
+                background="transparent"
+                type="text"
+                onChange={(e) => setLastName(e.target.value)}
+                value={lastName}
+                name="lastName"
+              />
+            </Box>
+            <Box mb="12">
+              <Select
+                onChange={handleGenderSelect}
+                placeholder="Gender"
+                variant="flushed"
+                value={gender}
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </Select>
+            </Box>
             <Flex align="center">
               <Input
-                mb="3%"
+                mb="1"
                 type="file"
                 placeholder="Profile picture"
                 accept="image/*"
