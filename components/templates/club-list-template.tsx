@@ -12,7 +12,9 @@ export function ClubListTemplate({ clubs }) {
         <Link href="/clubs/new">Register new club</Link>
         <UnorderedList>
           {clubs.map((club) => (
-            <ListItem key={club.id}>{club.name}</ListItem>
+            <ListItem key={club.id}>
+              <Link href={`/clubs/${club.id}`}>{club.name}</Link>
+            </ListItem>
           ))}
         </UnorderedList>
       </Box>

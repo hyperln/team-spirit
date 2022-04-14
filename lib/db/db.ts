@@ -1,8 +1,10 @@
+import { currentUser } from '@lib/auth';
 import {
   keysToCamel,
   keysToSnake,
   removeNullUndefinedAndEmptyStrings,
 } from '@utils/object-utils';
+import { Club } from 'shared/types';
 import { client } from './client';
 
 export async function listClubs() {
@@ -57,4 +59,48 @@ export async function createClub(clubData: CreateClubData) {
     .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)));
   if (error) throw error;
   return keysToCamel(data);
+}
+
+export async function fetchClub(clubId: number): Promise<Club> {
+  const { data, error } = await client
+    .from('clubs')
+    .select()
+    .match({ id: clubId });
+  if (error) throw error;
+  return keysToCamel(data[0]);
+}
+
+export async function joinClub(clubId: number) {
+  const user = currentUser();
+  const { data, error } = await client
+    .from('club_members')
+    .insert({
+      club_id: clubId,
+      user_id: user.id,
+    })
+    .match({ id: clubId });
+  if (error) throw error;
+  return keysToCamel(data);
+}
+
+export async function leaveClub(clubId: number) {
+  const user = currentUser();
+  const { data, error } = await client
+    .from('club_members')
+    .delete()
+    .match(keysToSnake({ clubId, userId: user.id }));
+  console.log('data :>> ', data);
+  console.log('error :>> ', error);
+  if (error) throw error;
+  return keysToCamel(data);
+}
+
+export async function isUserMember(clubId: number): Promise<boolean> {
+  const user = currentUser();
+  const { data, error } = await client
+    .from('club_members')
+    .select()
+    .match({ club_id: clubId, user_id: user.id });
+  if (error) throw error;
+  return data.length > 0;
 }
