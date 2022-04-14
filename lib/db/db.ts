@@ -3,6 +3,7 @@ import {
   keysToSnake,
   removeNullUndefinedAndEmptyStrings,
 } from '@utils/object-utils';
+import { Club } from 'shared/types';
 import { client } from './client';
 
 export async function listClubs() {
@@ -57,4 +58,13 @@ export async function createClub(clubData: CreateClubData) {
     .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)));
   if (error) throw error;
   return keysToCamel(data);
+}
+
+export async function fetchClub(clubId: number): Promise<Club> {
+  const { data, error } = await client
+    .from('clubs')
+    .select()
+    .match({ id: clubId });
+  if (error) throw error;
+  return keysToCamel(data[0]);
 }
