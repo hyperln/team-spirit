@@ -109,7 +109,6 @@ export async function isUserAdmin(clubId: number): Promise<boolean> {
     .from('club_admins')
     .select()
     .match({ club_id: clubId, user_id: user.id });
-  console.log('data :>> ', data);
   if (error) throw error;
   return data.length > 0;
 }
