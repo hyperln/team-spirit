@@ -112,3 +112,9 @@ export async function isUserAdmin(clubId: number): Promise<boolean> {
   if (error) throw error;
   return data.length > 0;
 }
+
+export async function fetchGenders() {
+  const { data, error } = await client.from('genders').select();
+  if (error) throw error;
+  return data;
+}
