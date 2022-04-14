@@ -89,8 +89,6 @@ export async function leaveClub(clubId: number) {
     .from('club_members')
     .delete()
     .match(keysToSnake({ clubId, userId: user.id }));
-  console.log('data :>> ', data);
-  console.log('error :>> ', error);
   if (error) throw error;
   return keysToCamel(data);
 }
