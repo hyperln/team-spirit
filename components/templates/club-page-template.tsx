@@ -105,7 +105,9 @@ export function ClubPageTemplate({ club }: Props) {
         {!state.isMemberLoading && !state.isAdminLoading ? (
           <Flex flexDir="column" gap="8">
             {userIsAdmin ? (
-              <Link href="/clubs/teams/team-registration">Create Team</Link>
+              <Link href={`/clubs/${club.id}/teams/team-registration`}>
+                Create Team
+              </Link>
             ) : null}
             {!userIsMember ? (
               <Button
