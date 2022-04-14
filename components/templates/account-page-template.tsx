@@ -112,7 +112,6 @@ export function AccountPageTemplate() {
         p="6%"
         left={{ base: '1', lg: '7', xl: '60' }}
         right={{ base: '1', lg: '7', xl: '60' }}
-        width="200"
         background="rgba(0,0,0,.4)"
         boxSize="border-box"
         boxShadow="0 15px 25px rgba(0,0,0,.5)"
