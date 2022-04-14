@@ -39,7 +39,7 @@ export function Navigation() {
           >
             <MenuItem
               as={Link}
-              href="account"
+              href="/account"
               icon={
                 profile ? (
                   <Avatar
