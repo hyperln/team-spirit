@@ -104,3 +104,14 @@ export async function isUserMember(clubId: number): Promise<boolean> {
   if (error) throw error;
   return data.length > 0;
 }
+
+export async function isUserAdmin(clubId: number): Promise<boolean> {
+  const user = currentUser();
+  const { data, error } = await client
+    .from('club_admins')
+    .select()
+    .match({ club_id: clubId, user_id: user.id });
+  console.log('data :>> ', data);
+  if (error) throw error;
+  return data.length > 0;
+}
