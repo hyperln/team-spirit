@@ -8,6 +8,7 @@ import { useToast } from '@hooks/use-toast';
 import { isUserAdmin, isUserMember, joinClub, leaveClub } from '@lib/db';
 import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
+import { Link } from '@components/atoms/link';
 
 interface Props {
   club: Club;
@@ -103,7 +104,9 @@ export function ClubPageTemplate({ club }: Props) {
         <Text>{club.established}</Text>
         {!state.isMemberLoading && !state.isAdminLoading ? (
           <Flex flexDir="column" gap="8">
-            {userIsAdmin ? <Button>Create Team</Button> : null}
+            {userIsAdmin ? (
+              <Link href="/clubs/teams/team-registration">Create Team</Link>
+            ) : null}
             {!userIsMember ? (
               <Button
                 isLoading={state.isMemberLoading || state.isAdminLoading}
