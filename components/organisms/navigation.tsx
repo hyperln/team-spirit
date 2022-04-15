@@ -6,6 +6,7 @@ import {
 } from '@chakra-ui/icons';
 import { DrawerCloseButton } from '@chakra-ui/react';
 import { Button, IconButton } from '@components/atoms/button';
+import { Flex } from '@components/atoms/flex';
 import { Link } from '@components/atoms/link';
 import { Avatar } from '@components/molecules/avatar-image';
 import { Menu, MenuItem, MenuGroup } from '@components/organisms/menu';
@@ -43,7 +44,11 @@ export function Navigation() {
 
       <Drawer onClose={onClose} isOpen={isOpen} size={size}>
         <DrawerOverlay />
-        <DrawerContent alignItems="center">
+        <DrawerContent
+          alignItems="center"
+          fontSize="lg"
+          bgGradient="linear(brand.900 10%, brand.600 60%)"
+        >
           <DrawerCloseButton />
           <DrawerBody>
             <MenuGroup
