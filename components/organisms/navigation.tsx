@@ -47,11 +47,15 @@ export function Navigation() {
           <DrawerCloseButton />
           <DrawerBody>
             <MenuGroup
+              pt="2"
+              pb="2"
               title={`Welcome${
                 profile?.firstName ? `, ${profile.firstName}` : ''
               }`}
             >
               <MenuItem
+                pt="2"
+                pb="2"
                 as={Link}
                 href="/account"
                 onClick={onClose}
@@ -70,6 +74,8 @@ export function Navigation() {
                 Account
               </MenuItem>
               <MenuItem
+                pt="2"
+                pb="2"
                 as={Link}
                 href="/"
                 icon={<StarIcon w={6} />}
@@ -78,6 +84,8 @@ export function Navigation() {
                 Home
               </MenuItem>
               <MenuItem
+                pt="2"
+                pb="2"
                 as={Link}
                 href="/clubs"
                 icon={<StarIcon w={6} />}
@@ -85,7 +93,12 @@ export function Navigation() {
               >
                 Clubs
               </MenuItem>
-              <MenuItem onClick={signOut} icon={<LockIcon w={6} />}>
+              <MenuItem
+                pt="2"
+                pb="2"
+                onClick={signOut}
+                icon={<LockIcon w={6} />}
+              >
                 Log out
               </MenuItem>
             </MenuGroup>
