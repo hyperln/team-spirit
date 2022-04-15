@@ -64,7 +64,11 @@ export function ClubPageTemplate({ club }: Props) {
   };
 
   return (
-    <Flex justifyContent="center">
+    <Flex
+      justifyContent="center"
+      minH="calc(100vh - 80px)"
+      bgGradient="linear(brand.900 10%, brand.600 60%)"
+    >
       <Box display="block">
         <Heading>{club.name}</Heading>
         <Text>{club.established}</Text>
