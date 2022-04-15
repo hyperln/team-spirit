@@ -58,6 +58,10 @@ export function Navigation() {
             <MenuItem as={Link} href="/" icon={<StarIcon w={6} />}>
               Home
             </MenuItem>
+            <MenuItem as={Link} href="/clubs" icon={<StarIcon w={6} />}>
+              Clubs
+            </MenuItem>
+
             <MenuItem onClick={signOut} icon={<LockIcon w={6} />}>
               Log out
             </MenuItem>
