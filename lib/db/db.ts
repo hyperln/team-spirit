@@ -98,7 +98,7 @@ export async function isUserMember(clubId: number): Promise<boolean> {
   const { data, error } = await client
     .from('club_members')
     .select()
-    .match({ club_id: clubId, user_id: user.id });
+    .match(keysToSnake({ clubId, userId: user.id }));
   if (error) throw error;
   return data.length > 0;
 }
