@@ -14,7 +14,7 @@ export function Layout({ children }) {
         alignItems="center"
         w="full"
         h="20"
-        bgColor="green.500"
+        bgColor="red.500"
       >
         <Navigation />
       </Flex>
