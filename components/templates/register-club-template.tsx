@@ -34,7 +34,7 @@ export function RegisterClubTemplate() {
         <FormControl>
           <form onSubmit={addClub}>
             <FormLabel textAlign="center" my="2" htmlFor="clubName">
-              Club Name
+              Register Your Club
             </FormLabel>
             <Input
               my="2"
@@ -48,7 +48,7 @@ export function RegisterClubTemplate() {
               min={1800}
               max={currentYear}
             >
-              <NumberInputField id="established" />
+              <NumberInputField placeholder="Established" id="established" />
               <NumberInputStepper>
                 <NumberIncrementStepper />
                 <NumberDecrementStepper />
