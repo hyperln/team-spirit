@@ -5,6 +5,8 @@ import {
   StarIcon,
 } from '@chakra-ui/icons';
 import { IconButton } from '@components/atoms/button';
+import { Center } from '@components/atoms/center';
+import { Flex } from '@components/atoms/flex';
 import { Link } from '@components/atoms/link';
 import { Avatar } from '@components/molecules/avatar-image';
 import {

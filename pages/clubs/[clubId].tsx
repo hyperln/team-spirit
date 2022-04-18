@@ -21,14 +21,13 @@ function ClubDetails({ club }: Props) {
 }
 
 export async function getServerSideProps(context) {
-  const { clubId, teamId = [] } = context.query;
+  const { clubId } = context.query;
   const club = await fetchClub(clubId);
 
   return {
     props: {
       clubId,
       club,
-      teamId,
     },
   };
 }

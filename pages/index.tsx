@@ -5,9 +5,6 @@ import { withRequireAuth } from '@hoc/with-auth';
 import { Link } from '@components/atoms/link';
 import { Box } from '@components/atoms/box';
 import { Flex } from '@components/atoms/flex';
-import { LinkList } from '@components/organisms/linkList';
-import teams from './clubs/teams';
-import clubs from './clubs';
 
 function Home(): ReactElement {
   return (
@@ -17,7 +14,14 @@ function Home(): ReactElement {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <LinkList clubs={clubs} teams={teams} />
+        <Box w="full">
+          <Flex flexDirection="column" alignItems="center" w="full" mx="auto">
+            <Link href="/authed">Authed page</Link>
+            <Link href="/account">Account</Link>
+            <Link href="/clubs">View clubs</Link>
+            <Link href="/clubs/club-registration">Register club</Link>
+          </Flex>
+        </Box>
       </main>
     </>
   );
