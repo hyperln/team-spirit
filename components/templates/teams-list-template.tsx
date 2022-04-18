@@ -4,16 +4,19 @@ import { Link } from '@components/atoms/link';
 import { ListItem, UnorderedList } from '@components/atoms/list';
 import { Heading } from '@components/atoms/typography/heading';
 
-export function ClubListTemplate({ clubs }) {
+export function TeamsListTemplate({ clubs, teams }) {
+  const club = clubs;
   return (
     <Flex justifyContent="center">
       <Box display="block">
-        <Heading>Clubs</Heading>
-        <Link href="/clubs/club-registration">Register new club</Link>
+        <Heading>Teams</Heading>
+        <Link href={`/clubs/${club.id}/teams/team-registration`}>
+          Register new team
+        </Link>
         <UnorderedList>
-          {clubs.map((club) => (
-            <ListItem key={club.id}>
-              <Link href={`/clubs/${club.id}`}>{club.name}</Link>
+          {teams.map((club, team) => (
+            <ListItem key={team.id}>
+              <Link href={`/clubs/${club.id}/${team.id}`}>{team.name}</Link>
             </ListItem>
           ))}
         </UnorderedList>

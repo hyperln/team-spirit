@@ -3,3 +3,8 @@ export interface Club {
   name: string;
   id: number;
 }
+export interface Team {
+  gender: number;
+  name: string;
+  id: number;
+}
