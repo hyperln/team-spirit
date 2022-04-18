@@ -6,6 +6,7 @@ import {
   StarIcon,
   SunIcon,
 } from '@chakra-ui/icons';
+import { Box } from '@components/atoms/box';
 import { IconButton } from '@components/atoms/button';
 import { Center } from '@components/atoms/center';
 import { Flex } from '@components/atoms/flex';
@@ -48,6 +49,9 @@ export function Navigation() {
               profile?.firstName ? `, ${profile.firstName}` : ''
             }`}
           >
+            <MenuItem as={Link} href="/" icon={<StarIcon w={6} />}>
+              Home
+            </MenuItem>
             <MenuItem
               as={Link}
               href="/account"
@@ -81,17 +85,6 @@ export function Navigation() {
               icon={<AtSignIcon w={6} />}
             >
               Register club
-            </MenuItem>
-            <MenuItem
-              as={Link}
-              href="/account/payment-methods"
-              icon={<AtSignIcon w={6} />}
-            >
-              Payment Methods
-            </MenuItem>
-
-            <MenuItem as={Link} href="/" icon={<StarIcon w={6} />}>
-              Home
             </MenuItem>
             <MenuItem onClick={toggleColorMode} icon={<ColorModeIcon w={6} />}>
               Switch to {colorMode === 'light' ? 'dark' : 'light'} mode

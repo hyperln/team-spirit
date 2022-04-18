@@ -7,6 +7,7 @@ export function Layout({ children }) {
     <Box>
       <Flex
         position="fixed"
+        zIndex="dropdown"
         bottom={{ base: '0', lg: undefined }}
         top={{ lg: '0' }}
         justifyContent={{ base: 'center', lg: 'right' }}
