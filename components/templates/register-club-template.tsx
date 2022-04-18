@@ -11,6 +11,7 @@ import {
   NumberInputStepper,
 } from '@components/molecules/number-input';
 import { createClub } from '@lib/db';
+import { Center } from '@components/atoms/center';
 
 export function RegisterClubTemplate() {
   const addClub = async (e) => {
@@ -32,8 +33,16 @@ export function RegisterClubTemplate() {
       <Box>
         <FormControl>
           <form onSubmit={addClub}>
-            <FormLabel htmlFor="clubName">Club Name</FormLabel>
-            <Input required id="clubName" type="text" placeholder="Club Name" />
+            <FormLabel textAlign="center" my="2" htmlFor="clubName">
+              Club Name
+            </FormLabel>
+            <Input
+              my="2"
+              required
+              id="clubName"
+              type="text"
+              placeholder="Club Name"
+            />
             <NumberInput
               defaultValue={currentYear}
               min={1800}
@@ -45,7 +54,11 @@ export function RegisterClubTemplate() {
                 <NumberDecrementStepper />
               </NumberInputStepper>
             </NumberInput>
-            <Button type="submit">Add Club</Button>
+            <Center>
+              <Button my="3" type="submit">
+                Add Club
+              </Button>
+            </Center>
           </form>
         </FormControl>
       </Box>
