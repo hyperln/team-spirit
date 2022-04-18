@@ -4,7 +4,7 @@ import {
   keysToSnake,
   removeNullUndefinedAndEmptyStrings,
 } from '@utils/object-utils';
-import { Club } from 'shared/types';
+import { Club, Team } from 'shared/types';
 import { client } from './client';
 
 export async function listClubs() {
@@ -14,9 +14,9 @@ export async function listClubs() {
   return data;
 }
 
-export async function listTeams({}) {
+export async function listTeams() {
   // fetch teams from database
-  const { data, error } = await client.from('teams').select();
+  const { data, error } = await client.from('teams').select().order('name');
   if (error) throw error;
   return data;
 }
@@ -30,6 +30,11 @@ interface UpdateProfileData {
 interface CreateClubData {
   name: string;
   established?: string;
+}
+
+interface CreateTeamData {
+  name: string;
+  gender?: string;
 }
 
 export async function getUserProfile(userId: string) {
@@ -117,4 +122,44 @@ export async function fetchGenders() {
   const { data, error } = await client.from('genders').select();
   if (error) throw error;
   return data;
+}
+
+export async function fetchTeam(teamId: number): Promise<Team> {
+  const { data, error } = await client
+    .from('teams')
+    .select()
+    .match({ id: teamId });
+  if (error) throw error;
+  return keysToCamel(data[0]);
+}
+
+export async function createTeam(teamData: CreateTeamData) {
+  const { data, error } = await client
+    .from('teams')
+    .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(teamData)));
+  if (error) throw error;
+  return keysToCamel(data);
+}
+
+export async function joinTeam(teamId: number) {
+  const user = currentUser();
+  const { data, error } = await client
+    .from('team_members')
+    .insert({
+      team_id: teamId,
+      user_id: user.id,
+    })
+    .match({ id: teamId });
+  if (error) throw error;
+  return keysToCamel(data);
+}
+
+export async function leaveTeam(teamId: number) {
+  const user = currentUser();
+  const { data, error } = await client
+    .from('team_members')
+    .delete()
+    .match(keysToSnake({ teamId, userId: user.id }));
+  if (error) throw error;
+  return keysToCamel(data);
 }
