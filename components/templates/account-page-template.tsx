@@ -13,6 +13,7 @@ import { useProfile } from '@hooks/use-profile';
 import { Spinner } from '@components/atoms/spinner';
 import { Heading } from '@components/atoms/typography/heading';
 import { FormControl, FormLabel } from '@components/molecules/form';
+import { Center } from '@components/atoms/center';
 
 export function AccountPageTemplate() {
   const toast = useToast();
@@ -126,7 +127,7 @@ export function AccountPageTemplate() {
               <FormLabel
                 position="absolute"
                 top={firstName ? '-10' : '0'}
-                left="0"
+                left="4"
                 py="4"
                 fontSize={firstName ? 'sm' : 'md'}
                 pointerEvents="none"
@@ -159,8 +160,8 @@ export function AccountPageTemplate() {
               <FormLabel
                 position="absolute"
                 top={lastName ? '-10' : '0'}
-                left="0"
-                py="4"
+                left="4"
+                py="6"
                 fontSize={lastName ? 'sm' : 'md'}
                 pointerEvents="none"
                 outline="none"
@@ -190,6 +191,7 @@ export function AccountPageTemplate() {
             </Box>
             <Box mb="12">
               <Select
+                left="3"
                 onChange={handleGenderSelect}
                 placeholder="Gender"
                 variant="flushed"
@@ -199,9 +201,9 @@ export function AccountPageTemplate() {
                 <option value="female">Female</option>
               </Select>
             </Box>
-            <Flex align="center">
+
+            <Flex alignItems="center">
               <Input
-                mb="1"
                 type="file"
                 placeholder="Profile picture"
                 accept="image/*"
