@@ -39,8 +39,12 @@ export function Navigation() {
       <MenuButton
         as={IconButton}
         aria-label="Options"
-        icon={<HamburgerIcon />}
-        variant="outline"
+        icon={<HamburgerIcon w={8} h={8} />}
+        variant="ghost"
+        color="white"
+        bg="transparent"
+        _hover={{ bg: 'transparent' }}
+        _active={{ bg: 'transparent' }}
       />
       <nav>
         <MenuList>
