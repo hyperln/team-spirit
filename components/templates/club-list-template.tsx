@@ -8,11 +8,7 @@ import { Button } from '@components/atoms/button';
 
 export function ClubListTemplate({ clubs }) {
   return (
-    <Flex
-      justifyContent="center"
-      bgGradient="linear(brand.900 10%, brand.600 60%)"
-      minH="calc(100vh - 80px)"
-    >
+    <Flex justifyContent="center" minH="calc(100vh - 80px)">
       <Box display="block">
         <Heading>Clubs</Heading>
         <Button

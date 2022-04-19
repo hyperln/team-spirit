@@ -105,11 +105,7 @@ export function AccountPageTemplate() {
   };
 
   return (
-    <Flex
-      justifyContent="center"
-      bgGradient="linear(brand.900 10%, brand.600 60%)"
-      h="full"
-    >
+    <Flex justifyContent="center" h="full">
       <Box
         justifyContent={{ base: 'center', lg: 'right' }}
         p="12"
