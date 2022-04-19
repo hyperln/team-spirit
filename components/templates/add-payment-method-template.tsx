@@ -1,3 +1,4 @@
+import { ArrowRightIcon } from '@chakra-ui/icons';
 import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
 import { Input } from '@components/atoms/input';
@@ -116,8 +117,9 @@ function AddressForm() {
         isLoading={state.loadingState === 'loading'}
         w="full"
         type="submit"
+        rightIcon={<ArrowRightIcon />}
       >
-        Submit
+        Next
       </Button>
     </form>
   );
