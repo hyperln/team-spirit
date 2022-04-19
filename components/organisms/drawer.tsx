@@ -14,4 +14,4 @@ export const DrawerFooter = ChakraDrawerFooter;
 export const DrawerHeader = ChakraDrawerHeader;
 export const DrawerOverlay = ChakraDrawerOverlay;
 export const DrawerContent = ChakraDrawerContent;
-export const DrawerCloseButto = ChakraDrawerCloseButton;
+export const DrawerCloseButton = ChakraDrawerCloseButton;
