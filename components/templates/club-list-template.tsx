@@ -9,7 +9,7 @@ export function ClubListTemplate({ clubs }) {
     <Flex justifyContent="center">
       <Box display="block">
         <Heading>Clubs</Heading>
-        <Link href="/clubs/new">Register new club</Link>
+        <Link href="/clubs/club-registration">Register new club</Link>
         <UnorderedList>
           {clubs.map((club) => (
             <ListItem key={club.id}>
