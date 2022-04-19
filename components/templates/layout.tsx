@@ -45,29 +45,29 @@ export function Layout({ children }) {
       >
         <Navigation />
       </Flex>
-      <Flex alignItems="center" m="2">
-        <IconButton
-          display={{ lg: 'none' }}
-          variant="unstyled"
-          aria-label="Back"
-          onClick={() => router.back()}
-          icon={<ArrowBackIcon />}
-        />
-        <Breadcrumb fontSize="sm">
-          {router.asPath !== '/' ? (
+      {router.asPath !== '/' ? (
+        <Flex alignItems="center" m="2">
+          <IconButton
+            display={{ lg: 'none' }}
+            variant="unstyled"
+            aria-label="Back"
+            onClick={() => router.back()}
+            icon={<ArrowBackIcon />}
+          />
+          <Breadcrumb fontSize="sm">
             <BreadcrumbItem>
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
-          ) : null}
-          {breadcrumbs.map((breadcrumb) => (
-            <BreadcrumbItem key={breadcrumb.path}>
-              <BreadcrumbLink href={breadcrumb.path}>
-                {breadcrumb.name}
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          ))}
-        </Breadcrumb>
-      </Flex>
+            {breadcrumbs.map((breadcrumb) => (
+              <BreadcrumbItem key={breadcrumb.path}>
+                <BreadcrumbLink href={breadcrumb.path}>
+                  {breadcrumb.name}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            ))}
+          </Breadcrumb>
+        </Flex>
+      ) : null}
       <Box
         minH="calc(100vh - 80px)"
         mb={{ base: '20', lg: undefined }}
