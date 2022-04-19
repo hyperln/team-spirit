@@ -10,6 +10,7 @@ import {
   BreadcrumbLink,
 } from '@components/molecules/breadcrumb';
 import { kebabToSentenceCase } from '@utils/string-utils';
+import { useColorModeValue } from '@hooks/use-color-mode';
 
 function buildBreadcrumbs(path) {
   const parts = path.split('/').filter(Boolean);
@@ -30,9 +31,15 @@ function buildBreadcrumbs(path) {
 export function Layout({ children }) {
   const router = useRouter();
   const breadcrumbs = buildBreadcrumbs(router.asPath);
+  const navBackground = useColorModeValue(
+    'rgb(224,173,31)',
+    'RGBA(0, 0, 0, 0.16)',
+  );
+
   return (
     <Box>
       <Flex
+        bg={navBackground}
         position="fixed"
         zIndex="dropdown"
         bottom={{ base: '0', lg: undefined }}
@@ -40,12 +47,19 @@ export function Layout({ children }) {
         justifyContent={{ base: 'center', lg: 'right' }}
         alignItems="center"
         w="full"
-        h="20"
+        h="12"
       >
         <Navigation />
       </Flex>
       {router.asPath !== '/' ? (
-        <Flex alignItems="center" m="2" mt={{ base: undefined, lg: '20' }}>
+        <Flex
+          boxShadow="2xl"
+          rounded="md"
+          bg={navBackground}
+          alignItems="center"
+          m="2"
+          mt={{ base: undefined, lg: '20' }}
+        >
           <IconButton
             display={{ lg: 'none' }}
             variant="unstyled"
