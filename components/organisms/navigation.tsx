@@ -66,7 +66,6 @@ export function Navigation() {
           alignItems="flex-start"
           justifyItems="center"
           fontSize="lg"
-          // bgGradient="linear(brand.900 10%, brand.600 60%)"
         >
           <DrawerCloseButton />
           <DrawerBody>

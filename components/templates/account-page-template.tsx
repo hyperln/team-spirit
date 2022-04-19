@@ -185,7 +185,6 @@ export function AccountPageTemplate() {
             </Box>
             <Box mb="12">
               <Select
-                left="3"
                 onChange={handleGenderSelect}
                 placeholder="Gender"
                 variant="flushed"
