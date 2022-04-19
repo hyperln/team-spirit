@@ -14,7 +14,7 @@ export function Layout({ children }) {
         alignItems="center"
         w="full"
         h="20"
-        bgColor="red.500"
+        bgGradient="linear(to-b, brand.600 10%, brand.800 60%)"
       >
         <Navigation />
       </Flex>

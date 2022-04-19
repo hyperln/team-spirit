@@ -13,6 +13,7 @@ import { useProfile } from '@hooks/use-profile';
 import { Spinner } from '@components/atoms/spinner';
 import { Heading } from '@components/atoms/typography/heading';
 import { FormControl, FormLabel } from '@components/molecules/form';
+import { Center } from '@components/atoms/center';
 import { useColorModeValue } from '@hooks/use-color-mode';
 
 export function AccountPageTemplate() {
@@ -193,9 +194,9 @@ export function AccountPageTemplate() {
                 <option value="female">Female</option>
               </Select>
             </Box>
-            <Flex align="center">
+
+            <Flex alignItems="center">
               <Input
-                mb="1"
                 type="file"
                 placeholder="Profile picture"
                 accept="image/*"
