@@ -68,7 +68,10 @@ export function Layout({ children }) {
         </Flex>
       ) : null}
       <Box
-        minH={{ base: 'calc(100vh - 180px)', lg: 'calc(100vh - 80px)' }}
+        minH={{
+          base: 'calc(100vh - 180px)',
+          lg: 'calc(100vh - 80px)',
+        }}
         mb={{ base: '20', lg: undefined }}
         mt={{ base: '0', lg: '20' }}
       >
