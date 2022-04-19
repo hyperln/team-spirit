@@ -14,6 +14,7 @@ import { Spinner } from '@components/atoms/spinner';
 import { Heading } from '@components/atoms/typography/heading';
 import { FormControl, FormLabel } from '@components/molecules/form';
 import { Center } from '@components/atoms/center';
+import { useColorModeValue } from '@hooks/use-color-mode';
 
 export function AccountPageTemplate() {
   const toast = useToast();
@@ -26,6 +27,11 @@ export function AccountPageTemplate() {
   const [lastName, setLastName] = useState('');
   const [gender, setGender] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const formBackground = useColorModeValue(
+    'rgb(255,255,255)',
+    'rgba(0,0,0,0.4)',
+  );
 
   useEffect(() => {
     if (profile) {
@@ -103,38 +109,31 @@ export function AccountPageTemplate() {
       justifyContent="center"
       minH="calc(100vh - 80px)"
       bgGradient="linear(brand.900 10%, brand.600 60%)"
+      h="full"
     >
       <Box
-        mb="5"
         justifyContent={{ base: 'center', lg: 'right' }}
-        position="absolute"
-        top={{ base: '4', lg: '24' }}
-        bottom={{ base: '0', lg: '10' }}
-        p="6%"
-        left={{ base: '1', lg: '7', xl: '60' }}
-        right={{ base: '1', lg: '7', xl: '60' }}
-        background="rgba(0,0,0,.4)"
+        p="12"
+        background={formBackground}
         boxSize="border-box"
-        boxShadow="0 15px 25px rgba(0,0,0,.5)"
-        borderRadius="10"
       >
         <Heading as="h2" size="lg" mb="8" textAlign="center">
           Welcome, {profile?.firstName || user.email}{' '}
         </Heading>
         <form onSubmit={handleSubmit}>
-          <FormControl mb="6" variant="floating" position="relative">
+          <FormControl mb="6" variant="floating">
             <Box mb="2" position="relative">
               <FormLabel
                 position="absolute"
-                top={firstName ? '-10' : '0'}
-                left="4"
+                top={firstName ? '-8' : '0'}
+                left="0"
                 py="4"
                 fontSize={firstName ? 'sm' : 'md'}
                 pointerEvents="none"
                 outline="none"
                 transition="0.5s"
                 _focus={{
-                  top: '-10',
+                  top: '-8',
                   color: '#03e9f4',
                   fontSize: 'sm',
                 }}
@@ -146,9 +145,7 @@ export function AccountPageTemplate() {
                 w="100%"
                 py="4"
                 mb="3"
-                border="none"
-                borderBottom="1px solid #fff"
-                outline="none"
+                variant="flushed"
                 background="transparent"
                 type="text"
                 onChange={(e) => setFirstName(e.target.value)}
@@ -159,15 +156,14 @@ export function AccountPageTemplate() {
             <Box mb="2" position="relative">
               <FormLabel
                 position="absolute"
-                top={lastName ? '-10' : '0'}
-                left="4"
-                py="6"
+                top={lastName ? '-8' : '0'}
+                left="0"
+                py="4"
                 fontSize={lastName ? 'sm' : 'md'}
                 pointerEvents="none"
-                outline="none"
                 transition="0.5s"
                 _focus={{
-                  top: '-10',
+                  top: '-8',
                   color: '#03e9f4',
                   fontSize: 'sm',
                 }}
@@ -179,9 +175,7 @@ export function AccountPageTemplate() {
                 w="100%"
                 py="4"
                 mb="3"
-                border="none"
-                borderBottom="1px solid #fff"
-                outline="none"
+                variant="flushed"
                 background="transparent"
                 type="text"
                 onChange={(e) => setLastName(e.target.value)}

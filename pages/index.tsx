@@ -1,6 +1,5 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import withTransition from '@hoc/with-transition';
 import { withRequireAuth } from '@hoc/with-auth';
 import { Link } from '@components/atoms/link';
 import { Box } from '@components/atoms/box';
@@ -15,17 +14,8 @@ function Home(): ReactElement {
       </Head>
       <main>
         <Box w="full">
-          <Flex
-            flexDirection="column"
-            alignItems="center"
-            w="full"
-            mx="auto"
-            minH="calc(100vh - 80px)"
-            bgGradient="linear(brand.900 10%, brand.600 60%)"
-          >
-            <Link href="/account">Account</Link>
-            <Link href="/clubs">View clubs</Link>
-            <Link href="/clubs/club-registration">Register club</Link>
+          <Flex flexDirection="column" alignItems="center" w="full" mx="auto">
+            Hello
           </Flex>
         </Box>
       </main>
@@ -33,4 +23,4 @@ function Home(): ReactElement {
   );
 }
 
-export default withTransition(withRequireAuth(Home));
+export default withRequireAuth(Home);

@@ -2,31 +2,49 @@ import {
   AtSignIcon,
   HamburgerIcon,
   LockIcon,
+  MoonIcon,
   StarIcon,
+  SunIcon,
 } from '@chakra-ui/icons';
-import { DrawerCloseButton } from '@chakra-ui/react';
 import { Button, IconButton } from '@components/atoms/button';
+import { Box } from '@components/atoms/box';
+import { Center } from '@components/atoms/center';
 import { Flex } from '@components/atoms/flex';
 import { Link } from '@components/atoms/link';
 import { Avatar } from '@components/molecules/avatar-image';
 import { Menu, MenuItem, MenuGroup } from '@components/organisms/menu';
 import { useAuth } from '@hooks/use-auth';
 import { useDisclosure } from '@hooks/use-disclosure';
+import { useColorMode } from '@hooks/use-color-mode';
 import { useProfile } from '@hooks/use-profile';
 import { useState } from 'react';
-import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from './drawer';
+import {
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
+} from '@components/organisms/drawer';
+
+const colorModeIcons = {
+  dark: SunIcon,
+  light: MoonIcon,
+};
 
 export function Navigation() {
   const { profile } = useProfile();
   const { signOut } = useAuth();
+  const { colorMode, toggleColorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [size, setSize] = useState('full');
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleClick = (newSize) => {
     setSize(newSize);
     onOpen();
   };
+
+  const ColorModeIcon = colorModeIcons[colorMode];
 
   return (
     <Menu placement="bottom">
@@ -45,68 +63,63 @@ export function Navigation() {
       <Drawer onClose={onClose} isOpen={isOpen} size={size}>
         <DrawerOverlay />
         <DrawerContent
-          alignItems="center"
+          alignItems="flex-start"
+          justifyItems="center"
           fontSize="lg"
-          bgGradient="linear(brand.900 10%, brand.600 60%)"
+          // bgGradient="linear(brand.900 10%, brand.600 60%)"
         >
           <DrawerCloseButton />
           <DrawerBody>
-            <MenuGroup
-              pt="2"
-              pb="2"
-              title={`Welcome${
-                profile?.firstName ? `, ${profile.firstName}` : ''
-              }`}
-            >
-              <MenuItem
-                pt="2"
-                pb="2"
-                as={Link}
-                href="/account"
-                onClick={onClose}
-                icon={
-                  profile ? (
-                    <Avatar
-                      size="xs"
-                      src={profile.previewUrl}
-                      name={profile.firstName}
-                    />
-                  ) : (
-                    <AtSignIcon />
-                  )
-                }
-              >
-                Account
-              </MenuItem>
-              <MenuItem
-                pt="2"
-                pb="2"
-                as={Link}
-                href="/"
-                icon={<StarIcon w={6} />}
-                onClick={onClose}
-              >
-                Home
-              </MenuItem>
-              <MenuItem
-                pt="2"
-                pb="2"
-                as={Link}
-                href="/clubs"
-                icon={<StarIcon w={6} />}
-                onClick={onClose}
-              >
-                Clubs
-              </MenuItem>
-              <MenuItem
-                pt="2"
-                pb="2"
-                onClick={signOut}
-                icon={<LockIcon w={6} />}
-              >
-                Log out
-              </MenuItem>
-            </MenuGroup>
+            <nav>
+              <Flex flexDir="column" mt="20" mx="10">
+                <MenuItem as={Link} href="/" icon={<StarIcon w={6} />}>
+                  Home
+                </MenuItem>
+                <MenuItem
+                  as={Link}
+                  href="/account"
+                  icon={
+                    profile ? (
+                      <Avatar
+                        size="xs"
+                        src={profile.previewUrl}
+                        name={profile.firstName}
+                      />
+                    ) : (
+                      <AtSignIcon w={6} />
+                    )
+                  }
+                >
+                  Account
+                </MenuItem>
+                <MenuItem
+                  as={Link}
+                  href="/account/payment-methods"
+                  icon={<AtSignIcon w={6} />}
+                >
+                  Payment Methods
+                </MenuItem>
+                <MenuItem as={Link} href="/clubs" icon={<AtSignIcon w={6} />}>
+                  Clubs
+                </MenuItem>
+                <MenuItem
+                  as={Link}
+                  href="/clubs/club-registration"
+                  icon={<AtSignIcon w={6} />}
+                >
+                  Register club
+                </MenuItem>
+                <MenuItem
+                  onClick={toggleColorMode}
+                  icon={<ColorModeIcon w={6} />}
+                >
+                  Switch to {colorMode === 'light' ? 'dark' : 'light'} mode
+                </MenuItem>
+                <MenuItem onClick={signOut} icon={<LockIcon w={6} />}>
+                  Log out
+                </MenuItem>
+              </Flex>
+            </nav>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
