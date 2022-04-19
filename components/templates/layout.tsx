@@ -46,7 +46,7 @@ export function Layout({ children }) {
         <Navigation />
       </Flex>
       {router.asPath !== '/' ? (
-        <Flex alignItems="center" m="2">
+        <Flex alignItems="center" m="2" mt={{ base: undefined, lg: '20' }}>
           <IconButton
             display={{ lg: 'none' }}
             variant="unstyled"
@@ -69,9 +69,9 @@ export function Layout({ children }) {
         </Flex>
       ) : null}
       <Box
-        minH="calc(100vh - 80px)"
+        minH={{ base: 'calc(100vh - 180px)', lg: 'calc(100vh - 80px)' }}
         mb={{ base: '20', lg: undefined }}
-        mt={{ base: '12', lg: '20' }}
+        mt={{ base: '0', lg: '20' }}
       >
         {children}
       </Box>
