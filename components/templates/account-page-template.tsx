@@ -106,7 +106,6 @@ export function AccountPageTemplate() {
   return (
     <Flex
       justifyContent="center"
-      minH="calc(100vh - 80px)"
       bgGradient="linear(brand.900 10%, brand.600 60%)"
       h="full"
     >
