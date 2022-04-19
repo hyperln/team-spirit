@@ -1,13 +1,8 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
-import withTransition from '@hoc/with-transition';
 import { withRequireAuth } from '@hoc/with-auth';
-import { Link } from '@components/atoms/link';
 import { Box } from '@components/atoms/box';
 import { Flex } from '@components/atoms/flex';
-import { LinkList } from '@components/organisms/linkList';
-import teams from './clubs/teams';
-import clubs from './clubs';
 
 function Home(): ReactElement {
   return (
@@ -17,10 +12,14 @@ function Home(): ReactElement {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <LinkList clubs={clubs} teams={teams} />
+        <Box w="full">
+          <Flex flexDirection="column" alignItems="center" w="full" mx="auto">
+            Hello
+          </Flex>
+        </Box>
       </main>
     </>
   );
 }
 
-export default withTransition(withRequireAuth(Home));
+export default withRequireAuth(Home);

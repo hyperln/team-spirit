@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { ClubPageTemplate } from '@components/templates/club-page-template';
 import { withRequireAuth } from '@hoc/with-auth';
-import withTransition from '@hoc/with-transition';
 import { fetchClub } from '@lib/db';
 import { Club } from 'shared/types';
 
@@ -33,4 +32,4 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default withTransition(withRequireAuth(ClubDetails));
+export default withRequireAuth(ClubDetails);

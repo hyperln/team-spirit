@@ -1,67 +1,162 @@
+import { useState } from 'react';
 import {
   AtSignIcon,
   HamburgerIcon,
   LockIcon,
+  MoonIcon,
   StarIcon,
+  SunIcon,
 } from '@chakra-ui/icons';
-import { IconButton } from '@components/atoms/button';
+
+import { Button, IconButton } from '@components/atoms/button';
+import { Flex } from '@components/atoms/flex';
 import { Link } from '@components/atoms/link';
 import { Avatar } from '@components/molecules/avatar-image';
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuGroup,
-} from '@components/organisms/menu';
 import { useAuth } from '@hooks/use-auth';
+import { useDisclosure } from '@hooks/use-disclosure';
+import { useColorMode } from '@hooks/use-color-mode';
 import { useProfile } from '@hooks/use-profile';
+import {
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
+} from '@components/organisms/drawer';
+
+const colorModeIcons = {
+  dark: SunIcon,
+  light: MoonIcon,
+};
 
 export function Navigation() {
   const { profile } = useProfile();
   const { signOut } = useAuth();
+  const { colorMode, toggleColorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [size, setSize] = useState('full');
+
+  const handleClick = (newSize) => {
+    setSize(newSize);
+    onOpen();
+  };
+
+  const handlClickLogout = () => {
+    signOut();
+    onClose();
+  };
+
+  const handleLinkClick = () => {
+    onClose();
+  };
+
+  const ColorModeIcon = colorModeIcons[colorMode];
+
   return (
-    <Menu placement="bottom">
-      <MenuButton
+    <>
+      <Button
         as={IconButton}
         aria-label="Options"
         icon={<HamburgerIcon />}
         variant="outline"
-      />
-      <nav>
-        <MenuList>
-          <MenuGroup
-            title={`Welcome${
-              profile?.firstName ? `, ${profile.firstName}` : ''
-            }`}
-          >
-            <MenuItem
-              as={Link}
-              href="/account"
-              icon={
-                profile ? (
-                  <Avatar
-                    size="xs"
-                    src={profile.previewUrl}
-                    name={profile.firstName}
-                  />
-                ) : (
-                  <AtSignIcon />
-                )
-              }
-            >
-              Account
-            </MenuItem>
+        onClick={() => handleClick(size)}
+        key={size}
+        m={4}
+      >
+        {`Open ${size} Drawer`}
+      </Button>
 
-            <MenuItem as={Link} href="/" icon={<StarIcon w={6} />}>
-              Home
-            </MenuItem>
-            <MenuItem onClick={signOut} icon={<LockIcon w={6} />}>
-              Log out
-            </MenuItem>
-          </MenuGroup>
-        </MenuList>
-      </nav>
-    </Menu>
+      <Drawer onClose={onClose} isOpen={isOpen} size={size}>
+        <DrawerOverlay />
+        <DrawerContent
+          alignItems="flex-start"
+          justifyItems="center"
+          fontSize="lg"
+        >
+          <DrawerCloseButton />
+          <DrawerBody>
+            <nav>
+              <Flex alignItems="flex-start" flexDir="column" mt="20" mx="10">
+                <Link
+                  onClick={handleLinkClick}
+                  display="flex"
+                  gap="4"
+                  alignItems="center"
+                  href="/"
+                >
+                  <StarIcon w={6} />
+                  Home
+                </Link>
+                <Link
+                  onClick={handleLinkClick}
+                  href="/account"
+                  display="flex"
+                  gap="4"
+                  alignItems="center"
+                >
+                  {profile ? (
+                    <Avatar
+                      size="xs"
+                      src={profile.previewUrl}
+                      name={profile.firstName}
+                    />
+                  ) : (
+                    <AtSignIcon w={6} />
+                  )}
+                  Account
+                </Link>
+                <Link
+                  onClick={handleLinkClick}
+                  href="/account/payment-methods"
+                  display="flex"
+                  gap="4"
+                  alignItems="center"
+                >
+                  <AtSignIcon w={6} />
+                  Payment Methods
+                </Link>
+                <Link
+                  onClick={handleLinkClick}
+                  display="flex"
+                  gap="4"
+                  alignItems="center"
+                  href="/clubs"
+                >
+                  <AtSignIcon w={6} />
+                  Clubs
+                </Link>
+                <Link
+                  onClick={handleLinkClick}
+                  display="flex"
+                  gap="4"
+                  alignItems="center"
+                  href="/clubs/club-registration"
+                >
+                  <AtSignIcon w={6} />
+                  Register club
+                </Link>
+                <Button
+                  fontWeight="normal"
+                  variant="unstyled"
+                  onClick={toggleColorMode}
+                  leftIcon={<ColorModeIcon w={6} />}
+                >
+                  Switch to {colorMode === 'light' ? 'dark' : 'light'} mode
+                </Button>
+                <Button
+                  fontWeight="normal"
+                  variant="unstyled"
+                  onClick={handlClickLogout}
+                  leftIcon={<LockIcon w={6} />}
+                >
+                  Log out
+                </Button>
+              </Flex>
+            </nav>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 }
