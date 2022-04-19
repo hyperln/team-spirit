@@ -47,6 +47,10 @@ export function Navigation() {
     onClose();
   };
 
+  const handleLinkClick = () => {
+    onClose();
+  };
+
   const ColorModeIcon = colorModeIcons[colorMode];
 
   return (
@@ -74,11 +78,18 @@ export function Navigation() {
           <DrawerBody>
             <nav>
               <Flex alignItems="flex-start" flexDir="column" mt="20" mx="10">
-                <Link display="flex" gap="4" alignItems="center" href="/">
+                <Link
+                  onClick={handleLinkClick}
+                  display="flex"
+                  gap="4"
+                  alignItems="center"
+                  href="/"
+                >
                   <StarIcon w={6} />
                   Home
                 </Link>
                 <Link
+                  onClick={handleLinkClick}
                   href="/account"
                   display="flex"
                   gap="4"
@@ -96,6 +107,7 @@ export function Navigation() {
                   Account
                 </Link>
                 <Link
+                  onClick={handleLinkClick}
                   href="/account/payment-methods"
                   display="flex"
                   gap="4"
@@ -104,11 +116,18 @@ export function Navigation() {
                   <AtSignIcon w={6} />
                   Payment Methods
                 </Link>
-                <Link display="flex" gap="4" alignItems="center" href="/clubs">
+                <Link
+                  onClick={handleLinkClick}
+                  display="flex"
+                  gap="4"
+                  alignItems="center"
+                  href="/clubs"
+                >
                   <AtSignIcon w={6} />
                   Clubs
                 </Link>
                 <Link
+                  onClick={handleLinkClick}
                   display="flex"
                   gap="4"
                   alignItems="center"
