@@ -4,13 +4,13 @@ import withTransition from '@hoc/with-transition';
 import { listTeams } from '@lib/db';
 import Head from 'next/head';
 
-function TeamListPage({ clubs, teams }) {
+function TeamListPage({ teams }) {
   return (
     <>
       <Head>
         <title>Teams | Team Spirit</title>
       </Head>
-      <TeamsListTemplate teams={teams} clubs={clubs} />
+      <TeamsListTemplate teams={teams} />
     </>
   );
 }

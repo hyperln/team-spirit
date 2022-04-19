@@ -9,6 +9,7 @@ import { isUserAdmin, isUserMember, joinClub, leaveClub } from '@lib/db';
 import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
+import { useRouter } from 'next/router';
 
 interface Props {
   club: Club;
@@ -35,6 +36,7 @@ function reducer(state, action) {
 }
 
 export function ClubPageTemplate({ club }: Props) {
+  const router = useRouter();
   const [userIsMember, setUserIsMember] = useState(false);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
@@ -42,6 +44,8 @@ export function ClubPageTemplate({ club }: Props) {
     isMember: true,
   });
   const toast = useToast();
+
+  const { clubId } = router.query;
 
   const checkIsUserMember = async () => {
     const isMember = await isUserMember(club.id);
@@ -98,20 +102,19 @@ export function ClubPageTemplate({ club }: Props) {
   };
 
   return (
-    <Flex
-      justifyContent="center"
-      minH="calc(100vh - 80px)"
-      bgGradient="linear(brand.900 10%, brand.600 60%)"
-    >
+    <Flex justifyContent="center" minH="calc(100vh - 80px)">
       <Box display="block">
         <Heading>{club.name}</Heading>
         <Text>{club.established}</Text>
         {!state.isMemberLoading && !state.isAdminLoading ? (
           <Flex flexDir="column" gap="8">
             {userIsAdmin ? (
-              <Link href={`/clubs/${club.id}/teams/team-registration`}>
-                Create Team
-              </Link>
+              <Button
+                href={`/clubs/${clubId}/teams/team-registration`}
+                as={Link}
+              >
+                Create team
+              </Button>
             ) : null}
             {!userIsMember ? (
               <Button
