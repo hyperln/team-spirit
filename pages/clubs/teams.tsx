@@ -16,7 +16,8 @@ function TeamListPage({ clubs, teams }) {
 }
 
 export async function getServerSideProps(context) {
-  const teams = await listTeams();
+  const { clubId } = context.query;
+  const teams = await listTeams(clubId);
   return {
     props: {
       teams,

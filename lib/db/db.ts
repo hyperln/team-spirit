@@ -14,9 +14,13 @@ export async function listClubs() {
   return data;
 }
 
-export async function listTeams() {
+export async function listTeams(clubId: number) {
   // fetch teams from database
-  const { data, error } = await client.from('teams').select().order('name');
+  const { data, error } = await client
+    .from('teams')
+    .select()
+    .match(keysToSnake({ clubId }))
+    .order('name');
   if (error) throw error;
   return data;
 }
