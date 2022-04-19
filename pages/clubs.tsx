@@ -1,6 +1,5 @@
 import { ClubListTemplate } from '@components/templates/club-list-template';
 import { withRequireAuth } from '@hoc/with-auth';
-import withTransition from '@hoc/with-transition';
 import { listClubs } from '@lib/db';
 import Head from 'next/head';
 
@@ -24,4 +23,4 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default withTransition(withRequireAuth(ClubListPage));
+export default withRequireAuth(ClubListPage);
