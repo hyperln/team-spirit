@@ -1,5 +1,6 @@
 import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
+import { Center } from '@components/atoms/center';
 import { Flex } from '@components/atoms/flex';
 import { Heading } from '@components/atoms/typography/heading';
 import { Text } from '@components/atoms/typography/text';
@@ -67,7 +68,7 @@ export function ClubPageTemplate({ club }: Props) {
     <Flex justifyContent="center" minH="calc(100vh - 80px)">
       <Box display="block">
         <Heading>{club.name}</Heading>
-        <Text>{club.established}</Text>
+        <Text fontWeight="semibold">Established: {club.established}</Text>
         {!userIsMember ? (
           <Button isLoading={isLoading} onClick={handleJoinClub}>
             Join club

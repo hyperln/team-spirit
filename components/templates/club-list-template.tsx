@@ -18,7 +18,7 @@ export function ClubListTemplate({ clubs }) {
         >
           Register new club
         </Button>
-        <List fontSize="xl" mt="2" spacing={3}>
+        <List fontWeight="medium" fontSize="lg" mt="2" spacing={3}>
           {clubs.map((club) => (
             <ListItem key={club.id}>
               <Link href={`/clubs/${club.id}`}>
