@@ -8,6 +8,7 @@ interface Props {
 }
 
 export default function TeamRegistration({ club }: Props) {
+  const { test } = club;
   return (
     <>
       <Head>
