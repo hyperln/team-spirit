@@ -4,6 +4,7 @@ import {
   keysToSnake,
   removeNullUndefinedAndEmptyStrings,
 } from '@utils/object-utils';
+import ClubId from 'pages/clubs/[clubId]';
 import { Club, Team } from 'shared/types';
 import { client } from './client';
 
@@ -138,9 +139,11 @@ export async function fetchTeam(teamId: number): Promise<Team> {
 }
 
 export async function createTeam(teamData: CreateTeamData) {
+  const club = fetchClub;
   const { data, error } = await client
     .from('teams')
-    .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(teamData)));
+    .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(teamData)))
+    .match({ id: club });
   if (error) throw error;
   return keysToCamel(data);
 }

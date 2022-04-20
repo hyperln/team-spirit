@@ -10,6 +10,8 @@ import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
 import { useRouter } from 'next/router';
+import { List, ListItem } from '@components/atoms/list';
+import { AddIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 
 interface Props {
   club: Club;
@@ -107,7 +109,7 @@ export function ClubPageTemplate({ club }: Props) {
         <Heading>{club.name}</Heading>
         <Text>{club.established}</Text>
         {!state.isMemberLoading && !state.isAdminLoading ? (
-          <Flex flexDir="column" gap="8">
+          <Flex mt="5" flexDir="column" gap="8">
             {userIsAdmin ? (
               <Button
                 href={`/clubs/${clubId}/teams/team-registration`}
@@ -153,6 +155,16 @@ export function ClubPageTemplate({ club }: Props) {
             )}
           </Flex>
         ) : null}
+
+        <Box mt="5" display="block">
+          <Button
+            leftIcon={<AddIcon />}
+            as={Link}
+            href={`/clubs/${clubId}/teams/team-registration`}
+          >
+            Register new team
+          </Button>
+        </Box>
       </Box>
     </Flex>
   );
