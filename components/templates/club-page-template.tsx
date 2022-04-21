@@ -1,6 +1,7 @@
 import { useEffect, useState, useReducer } from 'react';
 import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
+import { Center } from '@components/atoms/center';
 import { Flex } from '@components/atoms/flex';
 import { Heading } from '@components/atoms/typography/heading';
 import { Text } from '@components/atoms/typography/text';
@@ -107,7 +108,7 @@ export function ClubPageTemplate({ club }: Props) {
     <Flex justifyContent="center" minH="calc(100vh - 80px)">
       <Box display="block">
         <Heading>{club.name}</Heading>
-        <Text>{club.established}</Text>
+        <Text fontWeight="semibold">{club.established}</Text>
         {!state.isMemberLoading && !state.isAdminLoading ? (
           <Flex mt="5" flexDir="column" gap="8">
             {userIsAdmin ? (

@@ -25,11 +25,7 @@ export function RegisterClubTemplate() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Flex
-      justifyContent="center"
-      minH="calc(100vh - 80px)"
-      bgGradient="linear(brand.900 10%, brand.600 60%)"
-    >
+    <Flex justifyContent="center" minH="calc(100vh - 80px)">
       <Box>
         <FormControl>
           <form onSubmit={addClub}>

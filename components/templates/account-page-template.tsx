@@ -28,11 +28,6 @@ export function AccountPageTemplate() {
   const [gender, setGender] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const formBackground = useColorModeValue(
-    'rgb(255,255,255)',
-    'rgba(0,0,0,0.4)',
-  );
-
   useEffect(() => {
     if (profile) {
       setFirstName(profile.firstName);
@@ -105,15 +100,10 @@ export function AccountPageTemplate() {
   };
 
   return (
-    <Flex
-      justifyContent="center"
-      bgGradient="linear(brand.900 10%, brand.600 60%)"
-      h="full"
-    >
+    <Flex justifyContent="center" h="full">
       <Box
         justifyContent={{ base: 'center', lg: 'right' }}
         p="12"
-        background={formBackground}
         boxSize="border-box"
       >
         <Heading as="h2" size="lg" mb="8" textAlign="center">
