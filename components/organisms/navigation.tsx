@@ -74,7 +74,14 @@ export function Navigation() {
           justifyItems="center"
           fontSize="lg"
         >
-          <DrawerCloseButton />
+          <DrawerCloseButton
+            position="fixed"
+            bottom={{ base: '2', lg: undefined }}
+            top={{ lg: '0' }}
+            justifyContent="center"
+            alignItems="center"
+            right="6"
+          />
           <DrawerBody>
             <nav>
               <Flex alignItems="flex-start" flexDir="column" mt="20" mx="10">

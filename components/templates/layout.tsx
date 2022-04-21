@@ -44,7 +44,7 @@ export function Layout({ children }) {
         zIndex="dropdown"
         bottom={{ base: '0', lg: undefined }}
         top={{ lg: '0' }}
-        justifyContent={{ base: 'center', lg: 'right' }}
+        justifyContent={{ base: 'right', lg: 'right' }}
         alignItems="center"
         w="full"
         h="12"
