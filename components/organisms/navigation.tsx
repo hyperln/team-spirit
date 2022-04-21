@@ -62,7 +62,7 @@ export function Navigation() {
         variant="outline"
         onClick={() => handleClick(size)}
         key={size}
-        m={4}
+        m={1}
       >
         {`Open ${size} Drawer`}
       </Button>
@@ -75,12 +75,13 @@ export function Navigation() {
           fontSize="lg"
         >
           <DrawerCloseButton
+            size="lg"
             position="fixed"
-            bottom={{ base: '2', lg: undefined }}
+            bottom={{ base: '1', lg: undefined }}
             top={{ lg: '0' }}
             justifyContent="center"
             alignItems="center"
-            right="6"
+            right="5.5"
           />
           <DrawerBody>
             <nav>
