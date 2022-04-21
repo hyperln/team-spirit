@@ -61,6 +61,7 @@ export function useAuth() {
       status: 'success',
       description: 'You signed out!',
       title: 'Success',
+      isClosable: true,
     });
   };
 
