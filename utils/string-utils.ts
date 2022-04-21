@@ -31,3 +31,12 @@ export function removeLeadingSlash(text: string) {
 export function removeTrailingSlash(text: string) {
   return text.replace(/\/$/, '');
 }
+
+export function kebabToSentenceCase(s: string) {
+  return s
+    .split('-')
+    .map((word) => {
+      return word.slice(0, 1).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
+}

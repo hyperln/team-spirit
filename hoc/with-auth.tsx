@@ -19,7 +19,7 @@ export const withRequireAuth =
         if (!session?.user) {
           router.push(
             `/${config.site.auth.signInPath}?redirect=${encodeURIComponent(
-              router.pathname,
+              router.asPath,
             )}`,
           );
         }
@@ -33,7 +33,7 @@ export const withRequireAuth =
       if (!user) {
         router.push(
           `/${config.site.auth.signInPath}?redirect=${encodeURIComponent(
-            router.pathname,
+            router.asPath,
           )}`,
         );
       }
