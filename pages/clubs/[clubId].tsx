@@ -1,33 +1,38 @@
 import Head from 'next/head';
 import { ClubPageTemplate } from '@components/templates/club-page-template';
 import { withRequireAuth } from '@hoc/with-auth';
-import { fetchClub } from '@lib/db';
-import { Club } from 'shared/types';
+import { fetchClub, listTeams } from '@lib/db';
+import { Club, Team } from 'shared/types';
+import { TeamsListTemplate } from '@components/templates/teams-list-template';
 
 interface Props {
   club: Club;
+  teams: Team[];
 }
 
-function ClubDetails({ club }: Props) {
+function ClubDetails({ club, teams }: Props) {
   return (
     <>
       <Head>
         <title>{club.name} | Team Spirit</title>
       </Head>
       <ClubPageTemplate club={club} />
+      <TeamsListTemplate teams={teams} />
     </>
   );
 }
 
 export async function getServerSideProps(context) {
-  const { clubId, teamId = [] } = context.query;
-  const club = await fetchClub(clubId);
+  const { clubId } = context.query;
+  const [club, teams] = await Promise.all([
+    fetchClub(clubId),
+    listTeams(clubId),
+  ]);
 
   return {
     props: {
-      clubId,
       club,
-      teamId,
+      teams,
     },
   };
 }

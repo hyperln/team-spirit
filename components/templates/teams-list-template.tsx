@@ -10,14 +10,10 @@ import { useRouter } from 'next/router';
 
 export function TeamsListTemplate({ teams }) {
   const router = useRouter();
-
+  console.log(teams);
   const { clubId } = router.query;
   return (
-    <Flex
-      justifyContent="center"
-      bgGradient="linear(brand.900 10%, brand.600 60%)"
-      minH="calc(100vh - 80px)"
-    >
+    <Flex justifyContent="center">
       <Box display="block">
         <Heading>Teams</Heading>
         <Button
@@ -28,11 +24,11 @@ export function TeamsListTemplate({ teams }) {
           Register new team
         </Button>
         <List fontSize="xl" mt="2" spacing={3}>
-          {teams.map((club, team) => (
+          {teams.map((team) => (
             <ListItem key={team.id}>
-              <Link href={`/clubs/${club.id}/${team.id}`}>
+              <Link href={`/clubs/${team.clubId}/teams/${team.id}`}>
                 {team.name}
-                {<ArrowForwardIcon />}
+                <ArrowForwardIcon />
               </Link>
             </ListItem>
           ))}

@@ -21,7 +21,7 @@ interface Props {
 export function RegisterTeamTemplate({ club }: Props) {
   const toast = useToast();
   const { genders } = useGenders();
-  const [gender, setGender] = useState([]);
+  const [gender, setGender] = useState(null);
   const [teamName, setTeamName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,12 +39,11 @@ export function RegisterTeamTemplate({ club }: Props) {
     e.preventDefault();
 
     try {
-      await createTeam,
-        (club.id,
-        {
-          teamName,
-          gender,
-        });
+      await createTeam({
+        clubId: club.id,
+        name: teamName,
+        gender,
+      });
 
       toast({
         status: 'success',
@@ -71,7 +70,6 @@ export function RegisterTeamTemplate({ club }: Props) {
   // };
 
   // save team use gender.id
-
   return (
     <Flex justifyContent="center" minH="calc(100vh - 80px)">
       <Box
@@ -99,11 +97,11 @@ export function RegisterTeamTemplate({ club }: Props) {
               <Select
                 onChange={handleGenderSelect}
                 placeholder="Gender"
+                required
                 variant="flushed"
-                value={gender}
               >
-                {genders?.map((gender, index) => (
-                  <option key={index} value={gender.gender_id}>
+                {genders?.map((gender) => (
+                  <option key={gender.id} value={gender.id}>
                     {capitalizeFirstLetter(gender.name)}
                   </option>
                 ))}

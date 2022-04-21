@@ -140,16 +140,7 @@ export function Navigation() {
                   <AtSignIcon w={6} />
                   Register club
                 </Link>
-                <Link
-                  onClick={handleLinkClick}
-                  display="flex"
-                  gap="4"
-                  alignItems="center"
-                  href="/clubs/teams"
-                >
-                  <AtSignIcon w={6} />
-                  Teams
-                </Link>
+
                 <Button
                   fontWeight="normal"
                   variant="unstyled"

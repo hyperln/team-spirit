@@ -6,9 +6,10 @@ import { Heading } from '@components/atoms/typography/heading';
 import { Text } from '@components/atoms/typography/text';
 import { useToast } from '@hooks/use-toast';
 import { isUserAdmin, isUserMember, leaveTeam } from '@lib/db';
-import { Club, Team } from 'shared/types';
+import { Club, Gender, Team } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
+import { capitalizeFirstLetter } from '@utils/string-utils';
 
 interface Props {
   club: Club;
@@ -80,11 +81,13 @@ export function TeamPageTemplate({ team }: Props) {
     }
   };
 
+  console.log(team);
+
   return (
     <Flex justifyContent="center">
       <Box display="block">
         <Heading>{team.name}</Heading>
-        <Text>{team.gender}</Text>
+        <Text>{capitalizeFirstLetter((team.gender as Gender).name)}</Text>
         {!state.isMemberLoading && !state.isAdminLoading ? (
           <Flex flexDir="column" gap="8">
             {userIsAdmin ? (
@@ -106,7 +109,6 @@ export function TeamPageTemplate({ team }: Props) {
             >
               Leave Team
             </Button>
-            )
           </Flex>
         ) : null}
       </Box>

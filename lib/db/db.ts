@@ -15,17 +15,6 @@ export async function listClubs() {
   return data;
 }
 
-export async function listTeams(clubId: number) {
-  // fetch teams from database
-  const { data, error } = await client
-    .from('teams')
-    .select()
-    .match(keysToSnake({ clubId }))
-    .order('name');
-  if (error) throw error;
-  return data;
-}
-
 interface UpdateProfileData {
   firstName?: string;
   lastName?: string;
@@ -35,11 +24,6 @@ interface UpdateProfileData {
 interface CreateClubData {
   name: string;
   established?: string;
-}
-
-interface CreateTeamData {
-  name: string;
-  gender?: string;
 }
 
 export async function getUserProfile(userId: string) {
@@ -132,18 +116,25 @@ export async function fetchGenders() {
 export async function fetchTeam(teamId: number): Promise<Team> {
   const { data, error } = await client
     .from('teams')
-    .select()
+    .select(
+      `
+    *,gender(name)
+    `,
+    )
     .match({ id: teamId });
   if (error) throw error;
   return keysToCamel(data[0]);
 }
+interface CreateTeamData {
+  clubId: number;
+  name: string;
+  gender: number;
+}
 
 export async function createTeam(teamData: CreateTeamData) {
-  const club = fetchClub;
   const { data, error } = await client
     .from('teams')
-    .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(teamData)))
-    .match({ id: club });
+    .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(teamData)));
   if (error) throw error;
   return keysToCamel(data);
 }
@@ -167,6 +158,17 @@ export async function leaveTeam(teamId: number) {
     .from('team_members')
     .delete()
     .match(keysToSnake({ teamId, userId: user.id }));
+  if (error) throw error;
+  return keysToCamel(data);
+}
+
+export async function listTeams(clubId: number) {
+  // fetch teams from database
+  const { data, error } = await client
+    .from('teams')
+    .select()
+    .match(keysToSnake({ clubId }))
+    .order('name');
   if (error) throw error;
   return keysToCamel(data);
 }
