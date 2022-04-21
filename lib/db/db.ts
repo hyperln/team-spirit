@@ -4,19 +4,13 @@ import {
   keysToSnake,
   removeNullUndefinedAndEmptyStrings,
 } from '@utils/object-utils';
-import { Club } from 'shared/types';
+import ClubId from 'pages/clubs/[clubId]';
+import { Club, Team } from 'shared/types';
 import { client } from './client';
 
 export async function listClubs() {
   //fetch clubs from database
   const { data, error } = await client.from('clubs').select().order('name');
-  if (error) throw error;
-  return data;
-}
-
-export async function listTeams({}) {
-  // fetch teams from database
-  const { data, error } = await client.from('teams').select();
   if (error) throw error;
   return data;
 }
@@ -101,4 +95,80 @@ export async function isUserMember(clubId: number): Promise<boolean> {
     .match(keysToSnake({ clubId, userId: user.id }));
   if (error) throw error;
   return data.length > 0;
+}
+
+export async function isUserAdmin(clubId: number): Promise<boolean> {
+  const user = currentUser();
+  const { data, error } = await client
+    .from('club_admins')
+    .select()
+    .match({ club_id: clubId, user_id: user.id });
+  if (error) throw error;
+  return data.length > 0;
+}
+
+export async function fetchGenders() {
+  const { data, error } = await client.from('genders').select();
+  if (error) throw error;
+  return data;
+}
+
+export async function fetchTeam(teamId: number): Promise<Team> {
+  const { data, error } = await client
+    .from('teams')
+    .select(
+      `
+    *,gender(name)
+    `,
+    )
+    .match({ id: teamId });
+  if (error) throw error;
+  return keysToCamel(data[0]);
+}
+interface CreateTeamData {
+  clubId: number;
+  name: string;
+  gender: number;
+}
+
+export async function createTeam(teamData: CreateTeamData) {
+  const { data, error } = await client
+    .from('teams')
+    .insert(keysToSnake(removeNullUndefinedAndEmptyStrings(teamData)));
+  if (error) throw error;
+  return keysToCamel(data);
+}
+
+export async function joinTeam(teamId: number) {
+  const user = currentUser();
+  const { data, error } = await client
+    .from('team_members')
+    .insert({
+      team_id: teamId,
+      user_id: user.id,
+    })
+    .match({ id: teamId });
+  if (error) throw error;
+  return keysToCamel(data);
+}
+
+export async function leaveTeam(teamId: number) {
+  const user = currentUser();
+  const { data, error } = await client
+    .from('team_members')
+    .delete()
+    .match(keysToSnake({ teamId, userId: user.id }));
+  if (error) throw error;
+  return keysToCamel(data);
+}
+
+export async function listTeams(clubId: number) {
+  // fetch teams from database
+  const { data, error } = await client
+    .from('teams')
+    .select()
+    .match(keysToSnake({ clubId }))
+    .order('name');
+  if (error) throw error;
+  return keysToCamel(data);
 }
