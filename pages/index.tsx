@@ -1,7 +1,6 @@
 import { ReactElement } from 'react';
 import Head from 'next/head';
 import { withRequireAuth } from '@hoc/with-auth';
-import { Link } from '@components/atoms/link';
 import { Box } from '@components/atoms/box';
 import { Flex } from '@components/atoms/flex';
 
