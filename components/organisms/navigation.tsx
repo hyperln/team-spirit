@@ -11,11 +11,10 @@ import {
 import { Button, IconButton } from '@components/atoms/button';
 import { Flex } from '@components/atoms/flex';
 import { Link } from '@components/atoms/link';
-import { Avatar } from '@components/molecules/avatar-image';
 import { useAuth } from '@hooks/use-auth';
 import { useDisclosure } from '@hooks/use-disclosure';
 import { useColorMode } from '@hooks/use-color-mode';
-import { useProfile } from '@hooks/use-profile';
+
 import {
   Drawer,
   DrawerBody,
@@ -30,7 +29,6 @@ const colorModeIcons = {
 };
 
 export function Navigation() {
-  const { profile } = useProfile();
   const { signOut } = useAuth();
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -96,24 +94,7 @@ export function Navigation() {
                   <StarIcon w={6} />
                   Home
                 </Link>
-                <Link
-                  onClick={handleLinkClick}
-                  href="/account"
-                  display="flex"
-                  gap="4"
-                  alignItems="center"
-                >
-                  {profile ? (
-                    <Avatar
-                      size="xs"
-                      src={profile.previewUrl}
-                      name={profile.firstName}
-                    />
-                  ) : (
-                    <AtSignIcon w={6} />
-                  )}
-                  Account
-                </Link>
+
                 <Link
                   onClick={handleLinkClick}
                   href="/account/payment-methods"
