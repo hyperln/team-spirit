@@ -3,7 +3,7 @@ import { Box } from '@components/atoms/box';
 import { Flex } from '@components/atoms/flex';
 import { Navigation } from '@components/organisms/navigation';
 import { IconButton } from '@components/atoms/button';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, AtSignIcon, LockIcon } from '@chakra-ui/icons';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,6 +11,15 @@ import {
 } from '@components/molecules/breadcrumb';
 import { kebabToSentenceCase } from '@utils/string-utils';
 import { useColorModeValue } from '@hooks/use-color-mode';
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from '@components/organisms/menu';
+import { useProfile } from '@hooks/use-profile';
+import { Avatar } from '@components/molecules/avatar-image';
+import { Link } from '@components/atoms/link';
 
 function buildBreadcrumbs(path) {
   const parts = path.split('/').filter(Boolean);
@@ -29,6 +38,7 @@ function buildBreadcrumbs(path) {
 }
 
 export function Layout({ children }) {
+  const { profile } = useProfile();
   const router = useRouter();
   const breadcrumbs = buildBreadcrumbs(router.asPath);
   const navBackground = useColorModeValue(
@@ -47,8 +57,33 @@ export function Layout({ children }) {
         justifyContent={{ base: 'right', lg: 'right' }}
         alignItems="center"
         w="full"
-        h="12"
+        h="14"
       >
+        <Menu closeOnSelect>
+          <MenuButton>
+            {profile ? (
+              <Avatar
+                size="md"
+                src={profile.previewUrl}
+                name={profile.firstName}
+              />
+            ) : (
+              <AtSignIcon w={6} />
+            )}
+          </MenuButton>
+          <MenuList bgColor={navBackground}>
+            <MenuItem
+              as={Link}
+              href="/account"
+              display="flex"
+              gap="4"
+              alignItems="center"
+            >
+              Profile
+            </MenuItem>
+          </MenuList>
+        </Menu>
+
         <Navigation />
       </Flex>
       {router.asPath !== '/' ? (
