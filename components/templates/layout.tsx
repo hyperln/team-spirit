@@ -68,7 +68,7 @@ export function Layout({ children }) {
                 name={profile.firstName}
               />
             ) : (
-              <AtSignIcon w={6} />
+              <AtSignIcon boxSize="6" w={6} />
             )}
           </MenuButton>
           <MenuList bgColor={navBackground}>
