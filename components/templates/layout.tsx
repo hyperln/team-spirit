@@ -18,9 +18,9 @@ function buildBreadcrumbs(path) {
   let pathname = '/';
 
   for (const part of parts) {
-    pathname += `${part}/`;
+    pathname += `${part.split('?')[0]}/`;
     breadcrumbs.push({
-      name: kebabToSentenceCase(part),
+      name: kebabToSentenceCase(part.split('?')[0]),
       path: pathname,
     });
   }
