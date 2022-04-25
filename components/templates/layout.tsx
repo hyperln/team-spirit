@@ -31,10 +31,7 @@ function buildBreadcrumbs(path) {
 export function Layout({ children }) {
   const router = useRouter();
   const breadcrumbs = buildBreadcrumbs(router.asPath);
-  const navBackground = useColorModeValue(
-    'rgb(224,173,31)',
-    'RGBA(0, 0, 0, 0.16)',
-  );
+  const navBackground = useColorModeValue('brand', 'blackAlpha.300');
 
   return (
     <Box>

@@ -123,16 +123,7 @@ export function ClubPageTemplate({ club }: Props) {
               <Button
                 isLoading={state.isMemberLoading || state.isAdminLoading}
                 onClick={handleJoinClub}
-                spinner={
-                  <Spinner
-                    color="brand.50"
-                    variant="outline"
-                    thickness="3.8px"
-                    emptyColor="gray.600"
-                    speed="0.75s"
-                    size="lg"
-                  />
-                }
+                spinner={<Spinner size="lg" />}
               >
                 Join club
               </Button>
@@ -142,7 +133,6 @@ export function ClubPageTemplate({ club }: Props) {
                 onClick={handleLeaveClub}
                 spinner={
                   <Spinner
-                    color="brand.50"
                     variant="outline"
                     thickness="3.8px"
                     emptyColor="gray.600"
