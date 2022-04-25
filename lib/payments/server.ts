@@ -124,7 +124,8 @@ export async function serverFetchInvoice(id: string) {
 
 export async function fetchCustomerByEmail(email: string) {
   try {
-    const customer = (await getStripe().customers.list({ email }))[0];
+    const customers = await getStripe().customers.list({ email });
+    const customer = customers.data[0];
     return customer;
   } catch (error) {
     console.error(error);
