@@ -29,10 +29,7 @@ export function RegisterTeamTemplate({ club }: Props) {
     setGender(e.target.value);
   };
 
-  const formBackground = useColorModeValue(
-    'rgb(255,255,255)',
-    'rgba(0,0,0,0.4)',
-  );
+  const formBackground = useColorModeValue('white', 'blackAlhpa.900');
 
   const handleSubmit = async (e) => {
     setIsLoading(true);
@@ -110,16 +107,7 @@ export function RegisterTeamTemplate({ club }: Props) {
             <Button
               type="submit"
               isLoading={isLoading}
-              spinner={
-                <Spinner
-                  color="brand.50"
-                  variant="outline"
-                  thickness="3.8px"
-                  emptyColor="gray.600"
-                  speed="0.75s"
-                  size="lg"
-                />
-              }
+              spinner={<Spinner size="lg" />}
             >
               Add Team
             </Button>
