@@ -96,16 +96,7 @@ export function TeamPageTemplate({ team }: Props) {
             <Button
               isLoading={state.isMemberLoading || state.isAdminLoading}
               onClick={handleLeaveTeam}
-              spinner={
-                <Spinner
-                  color="brand.50"
-                  variant="outline"
-                  thickness="3.8px"
-                  emptyColor="gray.600"
-                  speed="0.75s"
-                  size="lg"
-                />
-              }
+              spinner={<Spinner size="lg" />}
             >
               Leave Team
             </Button>
