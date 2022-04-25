@@ -17,16 +17,16 @@ import {
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useReducer,
 } from 'react';
 
 enum Steps {
-  address = 'address',
-  payment = 'payment',
+  'address',
+  'payment',
 }
 
 interface State {
-  // step: 'address' | 'payment';
   step: Steps;
   loadingState: 'idle' | 'loading' | 'success' | 'error';
   customerId: string;
@@ -124,7 +124,7 @@ function AddressForm() {
         }, {}),
       };
       const data = await api('/customers').post(createCustomerData);
-      console.log('data :>> ', data);
+      dispatch({ type: 'setCustomerId', payload: data.id });
       dispatch({ type: 'setLoadingState', payload: 'success' });
     } catch (error) {
       dispatch({ type: 'setLoadingState', payload: 'error' });
@@ -168,16 +168,31 @@ function AddPaymentDetailsForm() {
   const { state, dispatch } = useContext(FormContext);
 }
 
-const steps = Object.entries(Steps).map((step) => ({
-  label: capitalizeFirstLetter(step[1]),
-}));
+interface Step {
+  label: string;
+}
+
+const steps: Step[] = Object.values(Steps)
+  .map((step) =>
+    typeof step === 'string'
+      ? {
+          label: capitalizeFirstLetter(step),
+        }
+      : false,
+  )
+  .filter(Boolean) as unknown as Step[];
 
 export const AddPaymentMethodTemplate = withContext(
   function AddPaymentMethodTemplate() {
     const { state, dispatch } = useContext(FormContext);
     const handleStepClick = (step: number) => {
-      dispatch({ type: 'setStep', payload: Steps[`${step}`.toLowerCase()] });
+      dispatch({ type: 'setStep', payload: Steps[step] });
     };
+
+    const activeIndex = useMemo(() => {
+      return steps.findIndex((step) => step.label.toLowerCase() === state.step);
+    }, [state.step]);
+
     return (
       <Box>
         <Heading textAlign="center" size="md">
@@ -185,7 +200,11 @@ export const AddPaymentMethodTemplate = withContext(
         </Heading>
         <Box mx="8" my="4">
           <Skeleton isLoaded={state.loadingState !== 'loading'}>
-            <ClickableStepper onStepClick={handleStepClick} steps={steps} />
+            <ClickableStepper
+              activeIndex={activeIndex}
+              onStepClick={handleStepClick}
+              steps={steps}
+            />
             {state.step === 'address' ? <AddressForm /> : null}
           </Skeleton>
         </Box>
