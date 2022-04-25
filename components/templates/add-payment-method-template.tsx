@@ -5,9 +5,12 @@ import { Input } from '@components/atoms/input';
 import { HStack } from '@components/atoms/stack';
 import { Heading } from '@components/atoms/typography/heading';
 import { FormControl, FormLabel } from '@components/molecules/form';
+import { Skeleton } from '@components/molecules/skeleton';
+import { ClickableStepper } from '@components/organisms/clickable-stepper';
 import { withContext } from '@hoc/with-context';
 import { useProfile } from '@hooks/use-profile';
 import { api } from '@lib/api/client';
+import { capitalizeFirstLetter } from '@utils/string-utils';
 import {
   createContext,
   FormEvent,
@@ -17,9 +20,16 @@ import {
   useReducer,
 } from 'react';
 
+enum Steps {
+  address = 'address',
+  payment = 'payment',
+}
+
 interface State {
-  step: 'address' | 'payment';
+  // step: 'address' | 'payment';
+  step: Steps;
   loadingState: 'idle' | 'loading' | 'success' | 'error';
+  customerId: string;
 }
 interface Action {
   type: string;
@@ -29,11 +39,13 @@ interface Action {
 interface Actions {
   setStep: (state: State, action: Action) => State;
   setLoadingState: (state: State, action: Action) => State;
+  setCustomerId: (state: State, action: Action) => State;
 }
 
 const initialState: State = {
-  step: 'address',
-  loadingState: 'idle',
+  step: Steps.address,
+  loadingState: 'loading',
+  customerId: null,
 };
 
 const actions: Actions = {
@@ -45,6 +57,10 @@ const actions: Actions = {
     ...state,
     loadingState: action.payload,
   }),
+  setCustomerId: (state, action) => ({
+    ...state,
+    customerId: action.payload,
+  }),
 };
 
 function reducer(state: State, action: Action) {
@@ -55,6 +71,23 @@ const FormContext = createContext(null);
 
 function FormProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { profile } = useProfile();
+  const fetchCustomer = async () => {
+    dispatch({ type: 'setLoadingState', payload: 'loading' });
+    const data = await api(
+      `/customers?email=${encodeURIComponent(profile.email)}`,
+    ).get();
+    if (data) {
+      dispatch({ type: 'setCustomerId', payload: data.id });
+      dispatch({ type: 'setStep', payload: 'payment' });
+    }
+    dispatch({ type: 'setLoadingState', payload: 'success' });
+  };
+  useEffect(() => {
+    if (profile) {
+      fetchCustomer();
+    }
+  }, [profile]);
   return (
     <FormContext.Provider value={{ state, dispatch }}>
       {children}
@@ -64,7 +97,7 @@ function FormProvider({ children }: { children: ReactNode }) {
 
 function AddressForm() {
   const { state, dispatch } = useContext(FormContext);
-  const user = useProfile();
+  const { profile } = useProfile();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -81,11 +114,17 @@ function AddressForm() {
             : false,
         )
         .filter(Boolean);
-
-      console.log('values :>> ', values);
-      console.log('user :>> ', user);
-      // const data = await api('/customers').post(values);
-      // console.log('data :>> ', data);
+      const createCustomerData = {
+        email: profile.email,
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        address: values.reduce((acc, { name, value }: any) => {
+          acc[name] = value;
+          return acc;
+        }, {}),
+      };
+      const data = await api('/customers').post(createCustomerData);
+      console.log('data :>> ', data);
       dispatch({ type: 'setLoadingState', payload: 'success' });
     } catch (error) {
       dispatch({ type: 'setLoadingState', payload: 'error' });
@@ -104,8 +143,8 @@ function AddressForm() {
         <Input required id="country" type="text" />
         <HStack>
           <span>
-            <FormLabel htmlFor="postcode">Post Code</FormLabel>
-            <Input required id="postcode" type="text" />
+            <FormLabel htmlFor="postalCode">Post Code</FormLabel>
+            <Input required id="postalCode" type="text" />
           </span>
           <span>
             <FormLabel htmlFor="state">State</FormLabel>
@@ -125,16 +164,30 @@ function AddressForm() {
   );
 }
 
+function AddPaymentDetailsForm() {
+  const { state, dispatch } = useContext(FormContext);
+}
+
+const steps = Object.entries(Steps).map((step) => ({
+  label: capitalizeFirstLetter(step[1]),
+}));
+
 export const AddPaymentMethodTemplate = withContext(
   function AddPaymentMethodTemplate() {
-    const { state } = useContext(FormContext);
+    const { state, dispatch } = useContext(FormContext);
+    const handleStepClick = (step: number) => {
+      dispatch({ type: 'setStep', payload: Steps[`${step}`.toLowerCase()] });
+    };
     return (
       <Box>
         <Heading textAlign="center" size="md">
           Add payment method
         </Heading>
         <Box mx="8" my="4">
-          {state.step === 'address' ? <AddressForm /> : null}
+          <Skeleton isLoaded={state.loadingState !== 'loading'}>
+            <ClickableStepper onStepClick={handleStepClick} steps={steps} />
+            {state.step === 'address' ? <AddressForm /> : null}
+          </Skeleton>
         </Box>
       </Box>
     );
