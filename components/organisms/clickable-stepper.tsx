@@ -6,6 +6,7 @@ function Step({ label, index, isActive, onClick }) {
   return (
     <Flex alignItems="center" flexDirection="column" position="relative">
       <Button
+        onClick={() => onClick(index)}
         variant="unstyled"
         rounded="full"
         flexGrow={0}
@@ -33,7 +34,7 @@ function Divider() {
 interface Props {
   steps: { label: string }[];
   activeIndex?: number;
-  onStepClick: (index: number) => void;
+  onStepClick: (value: number) => void;
 }
 
 export function ClickableStepper({
