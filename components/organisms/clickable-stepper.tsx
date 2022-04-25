@@ -1,8 +1,9 @@
+import { CheckIcon } from '@chakra-ui/icons';
 import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
 import { Flex } from '@components/atoms/flex';
 
-function Step({ label, index, isActive, onClick }) {
+function Step({ label, index, isActive, onClick, isDone }) {
   return (
     <Flex alignItems="center" flexDirection="column" position="relative">
       <Button
@@ -18,7 +19,7 @@ function Step({ label, index, isActive, onClick }) {
         color="white"
         fontSize="lg"
       >
-        {index + 1}
+        {isDone ? <CheckIcon /> : index + 1}
       </Button>
       <Box top="12" position="absolute">
         {label}
@@ -47,6 +48,7 @@ export function ClickableStepper({
       {steps.map((step, index) => (
         <>
           <Step
+            isDone={index < activeIndex}
             onClick={onStepClick}
             isActive={index === activeIndex}
             index={index}
