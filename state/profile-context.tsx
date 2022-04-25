@@ -12,7 +12,7 @@ export function ProfileProvider({ children }) {
   const fetchProfile = useCallback(async () => {
     const profileData = await getUserProfile(user.id);
     const { signedURL } = await getAvatarImage(profileData.avatarUrl);
-    setProfile({ ...profileData, previewUrl: signedURL });
+    setProfile({ ...profileData, previewUrl: signedURL, email: user.email });
   }, [user]);
 
   useEffect(() => {
