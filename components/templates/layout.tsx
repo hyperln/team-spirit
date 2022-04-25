@@ -27,9 +27,9 @@ function buildBreadcrumbs(path) {
   let pathname = '/';
 
   for (const part of parts) {
-    pathname += `${part}/`;
+    pathname += `${part.split('?')[0]}/`;
     breadcrumbs.push({
-      name: kebabToSentenceCase(part),
+      name: kebabToSentenceCase(part.split('?')[0]),
       path: pathname,
     });
   }
@@ -41,10 +41,7 @@ export function Layout({ children }) {
   const { profile } = useProfile();
   const router = useRouter();
   const breadcrumbs = buildBreadcrumbs(router.asPath);
-  const navBackground = useColorModeValue(
-    'rgb(224,173,31)',
-    'RGBA(0, 0, 0, 0.16)',
-  );
+  const navBackground = useColorModeValue('brand', 'blackAlpha.300');
 
   return (
     <Box>

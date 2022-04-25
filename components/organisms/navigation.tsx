@@ -22,6 +22,7 @@ import {
   DrawerContent,
   DrawerOverlay,
 } from '@components/organisms/drawer';
+import { useRouter } from 'next/router';
 
 const colorModeIcons = {
   dark: SunIcon,
@@ -32,6 +33,9 @@ export function Navigation() {
   const { signOut } = useAuth();
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const router = useRouter();
+  const { clubId, teamId } = router.query;
 
   const [size, setSize] = useState('full');
 
@@ -125,6 +129,7 @@ export function Navigation() {
                   <AtSignIcon w={6} />
                   Register club
                 </Link>
+
                 <Button
                   fontWeight="normal"
                   variant="unstyled"

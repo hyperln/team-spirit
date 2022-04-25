@@ -1,5 +1,5 @@
 import { mode } from '@chakra-ui/theme-tools';
-import { ColorMode, extendTheme } from '@chakra-ui/react';
+import { ColorMode, extendTheme, theme as baseTheme } from '@chakra-ui/react';
 
 export const config = {
   initialColorMode: 'light' as ColorMode,
@@ -7,18 +7,7 @@ export const config = {
 };
 
 export const colors = {
-  brand: {
-    50: '#4aaad3',
-    100: '#277DA1',
-    200: '#247294',
-    300: '#206683',
-    400: '#1c5973',
-    500: '#184c63',
-    600: '#143f52',
-    700: '#103342',
-    800: '#0c2631',
-    900: '#081921',
-  },
+  brand: baseTheme.colors.orange[400],
   link: 'red',
   footer: {
     background: '#ecf0f5',
@@ -72,6 +61,11 @@ const components = {
   Hero: {
     baseStyle: {
       backgroundGradient: {},
+    },
+  },
+  Spinner: {
+    baseStyle: {
+      color: 'brand',
     },
   },
   Footer: {},

@@ -205,16 +205,7 @@ export function AccountPageTemplate() {
             <Button
               type="submit"
               isLoading={isLoading}
-              spinner={
-                <Spinner
-                  color="brand.50"
-                  variant="outline"
-                  thickness="3.8px"
-                  emptyColor="gray.600"
-                  speed="0.75s"
-                  size="lg"
-                />
-              }
+              spinner={<Spinner size="lg" />}
             >
               Save Profile
             </Button>
