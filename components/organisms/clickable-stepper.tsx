@@ -2,6 +2,7 @@ import { CheckIcon } from '@chakra-ui/icons';
 import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
 import { Flex } from '@components/atoms/flex';
+import { Fragment } from 'react';
 
 function Step({ label, index, isActive, onClick, isDone }) {
   return (
@@ -11,17 +12,17 @@ function Step({ label, index, isActive, onClick, isDone }) {
         variant="unstyled"
         rounded="full"
         flexGrow={0}
-        w="12"
-        h="12"
+        w="10"
+        h="10"
         justifyContent="center"
         alignItems="center"
         bgColor={isActive ? 'orange.300' : 'orange.400'}
         color="white"
-        fontSize="lg"
+        fontSize="xl"
       >
         {isDone ? <CheckIcon /> : index + 1}
       </Button>
-      <Box top="12" position="absolute">
+      <Box top="10" position="absolute">
         {label}
       </Box>
     </Flex>
@@ -44,9 +45,9 @@ export function ClickableStepper({
   activeIndex = 0,
 }: Props) {
   return (
-    <Flex alignItems="center" gap="2" justifyContent="space-between" w="full">
+    <Flex alignItems="center" gap="1" justifyContent="space-between" w="full">
       {steps.map((step, index) => (
-        <>
+        <Fragment key={step.label}>
           <Step
             isDone={index < activeIndex}
             onClick={onStepClick}
@@ -56,7 +57,7 @@ export function ClickableStepper({
             label={step.label}
           />
           {index < steps.length - 1 && <Divider />}
-        </>
+        </Fragment>
       ))}
     </Flex>
   );
