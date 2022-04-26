@@ -21,6 +21,7 @@ import { useProfile } from '@hooks/use-profile';
 import { Avatar } from '@components/molecules/avatar-image';
 import { Link } from '@components/atoms/link';
 import { useAuth } from '@hooks/use-auth';
+import { Spacer } from '@components/atoms/spacer';
 
 function buildBreadcrumbs(path) {
   const parts = path.split('/').filter(Boolean);
@@ -63,7 +64,7 @@ export function Layout({ children }) {
         h="14"
       >
         <Menu closeOnSelect>
-          <MenuButton>
+          <MenuButton ml="1">
             {profile ? (
               <Avatar
                 size="md"
@@ -75,13 +76,7 @@ export function Layout({ children }) {
             )}
           </MenuButton>
           <MenuList bgColor={navBackground}>
-            <MenuItem
-              as={Link}
-              href="/account"
-              display="flex"
-              gap="4"
-              alignItems="center"
-            >
+            <MenuItem as={Link} href="/account">
               Profile
             </MenuItem>
 
@@ -94,9 +89,10 @@ export function Layout({ children }) {
             )}
           </MenuList>
         </Menu>
-
+        <Spacer />
         <Navigation />
       </Flex>
+
       {router.asPath !== '/' ? (
         <Flex
           boxShadow="2xl"

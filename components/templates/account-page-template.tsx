@@ -203,6 +203,7 @@ export function AccountPageTemplate() {
           </FormControl>
           <Box textAlign="center">
             <Button
+              bg="brand"
               type="submit"
               isLoading={isLoading}
               spinner={<Spinner size="lg" />}

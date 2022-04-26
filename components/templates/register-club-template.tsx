@@ -52,7 +52,7 @@ export function RegisterClubTemplate() {
             </NumberInput>
             <Center>
               <Button my="3" type="submit">
-                Add Club
+                Register Club
               </Button>
             </Center>
           </form>

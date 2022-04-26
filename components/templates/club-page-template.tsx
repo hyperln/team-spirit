@@ -129,6 +129,10 @@ export function ClubPageTemplate({ club }: Props) {
               </Button>
             ) : (
               <Button
+                color="white"
+                borderRadius="70"
+                w="72"
+                bg="brand"
                 isLoading={state.isMemberLoading || state.isAdminLoading}
                 onClick={handleLeaveClub}
                 spinner={
