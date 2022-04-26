@@ -1,7 +1,8 @@
 import Head from 'next/head';
 import { AddPaymentMethodTemplate } from '@components/templates/add-payment-method-template';
+import { withRequireAuth } from '@hoc/with-auth';
 
-export default function AddPaymentMethodPage() {
+function AddPaymentMethodPage() {
   return (
     <>
       <Head>
@@ -11,3 +12,5 @@ export default function AddPaymentMethodPage() {
     </>
   );
 }
+
+export default withRequireAuth(AddPaymentMethodPage);
