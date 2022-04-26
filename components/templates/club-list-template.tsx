@@ -18,9 +18,24 @@ export function ClubListTemplate({ clubs }) {
         >
           Register new club
         </Button>
-        <List fontWeight="medium" fontSize="lg" mt="2" spacing={3}>
+        <List
+          color="white"
+          bg="brand"
+          fontWeight="medium"
+          fontSize="lg"
+          mt="2"
+          spacing={3}
+          w="80"
+          borderRadius="10%"
+          padding="5"
+          boxShadow="dark-lg"
+        >
           {clubs.map((club) => (
-            <ListItem key={club.id}>
+            <ListItem
+              borderBottom="1px"
+              borderBottomColor="orange.300"
+              key={club.id}
+            >
               <Link href={`/clubs/${club.id}`}>
                 {club.name}
                 {<ArrowForwardIcon />}
