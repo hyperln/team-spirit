@@ -8,6 +8,14 @@ function getStripe() {
   return stripe;
 }
 
+export async function fetchSetupIntentstByCustomer(customerId: string) {
+  const stripe = getStripe();
+  const intents = await stripe.paymentIntents.list({
+    customer: customerId,
+  });
+  return intents;
+}
+
 export async function setupIntent(customerId: string) {
   const stripe = getStripe();
   const intent = await stripe.setupIntents.create({

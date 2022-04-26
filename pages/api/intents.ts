@@ -1,15 +1,26 @@
 import { SupportedMethods } from '@lib/api/api-types';
 import { unsupportedMethodResponse } from '@lib/api/api-utils';
 import { getUserProfile } from '@lib/db';
-import { fetchCustomerByEmail, setupIntent } from '@lib/payments/server';
+import {
+  fetchCustomerByEmail,
+  fetchSetupIntentstByCustomer,
+  setupIntent,
+} from '@lib/payments/server';
 import { NextApiResponse, NextApiRequest } from 'next';
 
 async function POST(req: NextApiRequest, res: NextApiResponse) {
   const user = await getUserProfile(req.body.userId);
   const customer = await fetchCustomerByEmail(user.email);
-  const intent = await setupIntent(customer.id);
-  res.status(200);
-  res.json(intent);
+  const intents = await fetchSetupIntentstByCustomer(customer.id);
+  if (intents.data.length > 0) {
+    const intent = intents.data.find((i) => i.payment_method === null);
+    res.status(200);
+    res.json(intent);
+  } else {
+    const intent = await setupIntent(customer.id);
+    res.status(200);
+    res.json(intent);
+  }
 }
 
 const METHODS = {

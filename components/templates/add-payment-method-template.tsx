@@ -1,6 +1,7 @@
 import { ArrowRightIcon } from '@chakra-ui/icons';
 import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
+import { Flex } from '@components/atoms/flex';
 import { Input } from '@components/atoms/input';
 import { HStack } from '@components/atoms/stack';
 import { Heading } from '@components/atoms/typography/heading';
@@ -10,6 +11,8 @@ import { ClickableStepper } from '@components/organisms/clickable-stepper';
 import { withContext } from '@hoc/with-context';
 import { useProfile } from '@hooks/use-profile';
 import { api } from '@lib/api/client';
+import { PaymentElement } from '@lib/payments/components';
+import { PaymentsContext } from '@lib/payments/context';
 import { capitalizeFirstLetter } from '@utils/string-utils';
 import {
   createContext,
@@ -30,6 +33,7 @@ interface State {
   step: Steps;
   loadingState: 'idle' | 'loading' | 'success' | 'error';
   customerId: string;
+  setupIntent: any;
 }
 interface Action {
   type: string;
@@ -40,12 +44,14 @@ interface Actions {
   setStep: (state: State, action: Action) => State;
   setLoadingState: (state: State, action: Action) => State;
   setCustomerId: (state: State, action: Action) => State;
+  setSetupIntent: (state: State, action: Action) => State;
 }
 
 const initialState: State = {
   step: Steps.address,
   loadingState: 'loading',
   customerId: null,
+  setupIntent: null,
 };
 
 const actions: Actions = {
@@ -61,6 +67,10 @@ const actions: Actions = {
     ...state,
     customerId: action.payload,
   }),
+  setSetupIntent: (state, action) => ({
+    ...state,
+    setupIntent: action.payload,
+  }),
 };
 
 function reducer(state: State, action: Action) {
@@ -72,6 +82,7 @@ const FormContext = createContext(null);
 function FormProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { profile } = useProfile();
+
   const fetchCustomer = async () => {
     dispatch({ type: 'setLoadingState', payload: 'loading' });
     const data = await api(
@@ -83,11 +94,31 @@ function FormProvider({ children }: { children: ReactNode }) {
     }
     dispatch({ type: 'setLoadingState', payload: 'success' });
   };
+
+  const createSetupIntent = async () => {
+    dispatch({ type: 'setLoadingState', payload: 'loading' });
+    const data = await api('/intents').post({
+      userId: profile.id,
+      customer: state.customerId,
+    });
+    if (data) {
+      dispatch({ type: 'setLoadingState', payload: 'success' });
+      dispatch({ type: 'setSetupIntent', payload: data });
+    }
+  };
+
   useEffect(() => {
     if (profile) {
       fetchCustomer();
     }
   }, [profile]);
+
+  useEffect(() => {
+    if (state.customerId && !state.setupIntent) {
+      createSetupIntent();
+    }
+  }, [state.customerId, state.setupIntent]);
+
   return (
     <FormContext.Provider value={{ state, dispatch }}>
       {children}
@@ -153,12 +184,14 @@ function AddressForm() {
         </HStack>
       </FormControl>
       <Button
+        colorScheme="orange"
+        rounded="full"
         isLoading={state.loadingState === 'loading'}
         w="full"
         type="submit"
         rightIcon={<ArrowRightIcon />}
       >
-        Next
+        Save billing address
       </Button>
     </form>
   );
@@ -166,6 +199,35 @@ function AddressForm() {
 
 function AddPaymentDetailsForm() {
   const { state, dispatch } = useContext(FormContext);
+
+  const options = useMemo(() => {
+    return {
+      clientSecret: state.setupIntent?.client_secret,
+    };
+  }, [state.setupIntent?.client_secret]);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+  };
+
+  return !state.setupIntent?.client_secret ? null : (
+    <PaymentsContext options={options}>
+      <form onSubmit={handleSubmit}>
+        <Box my="10">
+          <PaymentElement />
+        </Box>
+        <Button
+          colorScheme="orange"
+          rounded="full"
+          isLoading={state.loadingState === 'loading'}
+          w="full"
+          type="submit"
+        >
+          Save payment details
+        </Button>
+      </form>
+    </PaymentsContext>
+  );
 }
 
 interface Step {
@@ -194,21 +256,27 @@ export const AddPaymentMethodTemplate = withContext(
     }, [state.step]);
 
     return (
-      <Box>
+      <Flex flexDirection="column">
         <Heading textAlign="center" size="md">
-          Add payment method
+          Add {state.step === 'address' ? 'billing address' : 'payment method'}
         </Heading>
         <Box mx="8" my="4">
           <Skeleton isLoaded={state.loadingState !== 'loading'}>
-            <ClickableStepper
-              activeIndex={activeIndex}
-              onStepClick={handleStepClick}
-              steps={steps}
-            />
-            {state.step === 'address' ? <AddressForm /> : null}
+            <Box mb="8" mx={{ base: '10', lg: '16' }}>
+              <ClickableStepper
+                activeIndex={activeIndex}
+                onStepClick={handleStepClick}
+                steps={steps}
+              />
+            </Box>
+            {state.step === 'address' ? (
+              <AddressForm />
+            ) : (
+              <AddPaymentDetailsForm />
+            )}
           </Skeleton>
         </Box>
-      </Box>
+      </Flex>
     );
   },
   FormProvider,
