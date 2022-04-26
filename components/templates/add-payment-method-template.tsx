@@ -210,7 +210,9 @@ function AddPaymentDetailsForm() {
     e.preventDefault();
   };
 
-  return !state.setupIntent?.client_secret ? null : (
+  return !state.setupIntent?.client_secret ? (
+    <Skeleton h="48" />
+  ) : (
     <PaymentsContext options={options}>
       <form onSubmit={handleSubmit}>
         <Box my="10">
