@@ -1,7 +1,5 @@
 /* eslint-disable react/display-name */
 /* eslint-disable react/destructuring-assignment */
-import { Center } from '@components/atoms/center';
-// import { PuffLoader } from '@components/atoms/spinners';
 import { useAuth } from '@hooks/use-auth';
 import { config } from 'config';
 import { useRouter } from 'next/router';
@@ -39,14 +37,7 @@ export const withRequireAuth =
       }
     }, [user]);
 
-    return user ? (
-      <Component {...props} />
-    ) : (
-      <Center>
-        {/* <PuffLoader /> */}
-        Loading...
-      </Center>
-    );
+    return user?.id ? <Component {...props} /> : null;
   };
 
 export const withCheckRequireAuth =
