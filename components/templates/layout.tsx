@@ -20,6 +20,7 @@ import {
 import { useProfile } from '@hooks/use-profile';
 import { Avatar } from '@components/molecules/avatar-image';
 import { Link } from '@components/atoms/link';
+import { useAuth } from '@hooks/use-auth';
 
 function buildBreadcrumbs(path) {
   const parts = path.split('/').filter(Boolean);
@@ -38,10 +39,15 @@ function buildBreadcrumbs(path) {
 }
 
 export function Layout({ children }) {
+  const { signOut } = useAuth();
   const { profile } = useProfile();
   const router = useRouter();
   const breadcrumbs = buildBreadcrumbs(router.asPath);
   const navBackground = useColorModeValue('brand', 'blackAlpha.300');
+
+  const handlClickLogout = () => {
+    signOut();
+  };
 
   return (
     <Box>
@@ -78,6 +84,14 @@ export function Layout({ children }) {
             >
               Profile
             </MenuItem>
+
+            {profile ? (
+              <MenuItem onClick={handlClickLogout}>Log Out</MenuItem>
+            ) : (
+              <MenuItem as={Link} href="/login">
+                Sign In
+              </MenuItem>
+            )}
           </MenuList>
         </Menu>
 
