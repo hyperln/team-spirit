@@ -113,6 +113,8 @@ export function ClubPageTemplate({ club }: Props) {
           <Flex mt="5" flexDir="column" gap="8">
             {userIsAdmin ? (
               <Button
+                color="white"
+                variant="ghost"
                 href={`/clubs/${clubId}/teams/team-registration`}
                 as={Link}
               >
@@ -121,6 +123,8 @@ export function ClubPageTemplate({ club }: Props) {
             ) : null}
             {!userIsMember ? (
               <Button
+                color="white"
+                variant="ghost"
                 isLoading={state.isMemberLoading || state.isAdminLoading}
                 onClick={handleJoinClub}
                 spinner={<Spinner size="lg" />}
@@ -129,9 +133,9 @@ export function ClubPageTemplate({ club }: Props) {
               </Button>
             ) : (
               <Button
+                variant="ghost"
                 color="white"
                 borderRadius="70"
-                w="72"
                 bg="brand"
                 isLoading={state.isMemberLoading || state.isAdminLoading}
                 onClick={handleLeaveClub}
@@ -153,6 +157,8 @@ export function ClubPageTemplate({ club }: Props) {
 
         <Box mt="5" display="block">
           <Button
+            color="white"
+            variant="ghost"
             leftIcon={<AddIcon />}
             as={Link}
             href={`/clubs/${clubId}/teams/team-registration`}

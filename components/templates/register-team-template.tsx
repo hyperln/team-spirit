@@ -75,10 +75,12 @@ export function RegisterTeamTemplate({ club }: Props) {
         background={formBackground}
         boxSize="border-box"
       >
-        <Text>Register team for {club.name}</Text>
+        <Text p="2" fontWeight="semibold">
+          Register team for {club.name}
+        </Text>
         <FormControl>
           <form onSubmit={handleSubmit}>
-            <Box mb="2" position="relative">
+            <Box mb="2">
               <FormLabel htmlFor="teamName">Team Name</FormLabel>
               <Input
                 onChange={(e) => setTeamName(e.target.value)}
@@ -105,6 +107,8 @@ export function RegisterTeamTemplate({ club }: Props) {
               </Select>
             </Box>
             <Button
+              color="white"
+              variant="ghost"
               type="submit"
               isLoading={isLoading}
               spinner={<Spinner size="lg" />}

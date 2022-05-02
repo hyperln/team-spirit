@@ -114,6 +114,8 @@ function AddressForm() {
         </HStack>
       </FormControl>
       <Button
+        color="white"
+        variant="ghost"
         isLoading={state.loadingState === 'loading'}
         w="full"
         type="submit"

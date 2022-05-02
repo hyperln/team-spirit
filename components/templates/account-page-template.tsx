@@ -213,6 +213,8 @@ export function AccountPageTemplate() {
           </FormControl>
           <Box textAlign="center">
             <Button
+              color="white"
+              variant="ghost"
               type="submit"
               isLoading={isLoading}
               spinner={<Spinner size="lg" />}

@@ -12,6 +12,8 @@ export function ClubListTemplate({ clubs }) {
       <Box display="block">
         <Heading>Clubs</Heading>
         <Button
+          color="white"
+          variant="ghost"
           leftIcon={<AddIcon />}
           as={Link}
           href="/clubs/club-registration"
@@ -26,7 +28,7 @@ export function ClubListTemplate({ clubs }) {
           mt="2"
           spacing={3}
           w="80"
-          borderRadius="10%"
+          borderRadius="5%"
           padding="5"
           boxShadow="dark-lg"
         >
