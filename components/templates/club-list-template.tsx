@@ -11,15 +11,17 @@ export function ClubListTemplate({ clubs }) {
     <Flex justifyContent="center" minH="calc(100vh - 80px)">
       <Box display="block">
         <Heading>Clubs</Heading>
-        <Button
-          color="white"
-          variant="ghost"
-          leftIcon={<AddIcon />}
-          as={Link}
-          href="/clubs/club-registration"
-        >
-          Register new club
-        </Button>
+        <Flex justifyContent="center">
+          <Button
+            color="white"
+            variant="ghost"
+            leftIcon={<AddIcon />}
+            as={Link}
+            href="/clubs/club-registration"
+          >
+            Register new club
+          </Button>
+        </Flex>
         <List
           color="white"
           bg="brand"
