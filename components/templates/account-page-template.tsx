@@ -203,6 +203,7 @@ export function AccountPageTemplate() {
                 Profile Picture
               </Text>
               <Input
+                pt="1"
                 type="file"
                 placeholder="Profile picture"
                 accept="image/*"

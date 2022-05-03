@@ -62,7 +62,7 @@ export function Navigation() {
         aria-label="Options"
         icon={<HamburgerIcon />}
         variant="outline"
-        color="white"
+        bg="white"
         onClick={() => handleClick(size)}
         key={size}
         m={1}
