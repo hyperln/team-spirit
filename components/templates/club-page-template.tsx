@@ -115,10 +115,11 @@ export function ClubPageTemplate({ club }: Props) {
               <Button
                 color="white"
                 variant="ghost"
+                leftIcon={<AddIcon />}
                 href={`/clubs/${clubId}/teams/team-registration`}
                 as={Link}
               >
-                Create team
+                Register New Team
               </Button>
             ) : null}
             {!userIsMember ? (
@@ -154,18 +155,6 @@ export function ClubPageTemplate({ club }: Props) {
             )}
           </Flex>
         ) : null}
-
-        <Box mt="5" display="block">
-          <Button
-            color="white"
-            variant="ghost"
-            leftIcon={<AddIcon />}
-            as={Link}
-            href={`/clubs/${clubId}/teams/team-registration`}
-          >
-            Register new team
-          </Button>
-        </Box>
       </Box>
     </Flex>
   );
