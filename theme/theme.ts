@@ -15,6 +15,9 @@ export const colors = {
     linkItem: '#72849c',
     copyright: '#7f8795',
   },
+  input: {
+    background: '#F6F6F6',
+  },
   header: {
     background: '#6930c3',
     title: '#fff',
@@ -26,6 +29,7 @@ export const colors = {
 export const styles = {
   global: (props) => ({
     body: {
+      fontFamily: 'Inter',
       color: mode('gray.800', 'white')(props),
       bg: mode('white', '#141214')(props),
     },
@@ -50,6 +54,11 @@ const components = {
       color: 'white',
       borderRadius: '70',
       bg: 'brand',
+    },
+  },
+  Input: {
+    baseStyle: {
+      bg: 'gray.100',
     },
   },
   Header: {

@@ -15,6 +15,11 @@ import { FadeInOut } from '@components/atoms/animations/fade';
 import { useAuth } from '@hooks/use-auth';
 
 import { useForm } from '@hooks/use-form';
+import { Flex } from '@components/atoms/flex';
+import { Spacer } from '@components/atoms/spacer';
+import { Link } from '@components/atoms/link';
+import { CheckBox } from '@components/atoms/checkbox';
+import React from 'react';
 
 enum Steps {
   login = 'login',
@@ -23,9 +28,9 @@ enum Steps {
 }
 
 const instructions = {
-  [Steps.login]: 'Enter email and password to login',
-  [Steps.register]: 'Enter email and password to register',
-  [Steps.registerRepeatPassword]: 'Enter password again',
+  [Steps.login]: 'Login',
+  [Steps.register]: 'Sign Up',
+  [Steps.registerRepeatPassword]: 'Sign Up',
 };
 
 enum Fields {
@@ -70,6 +75,9 @@ const fields = [
 ];
 
 export function AuthScreen() {
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
+
   const auth = useAuth();
   const [step, setStep] = useState(Steps.login);
   const {
@@ -166,8 +174,38 @@ export function AuthScreen() {
   return (
     <Center>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Text>{instructions[step]}</Text>
-        <Box w="xs" d="flex" flexDirection="column" gridGap="3">
+        <Flex mb="12" top="4" justifyContent="flex-start" position="relative">
+          <Text
+            flex="0 1 auto"
+            position="absolute"
+            alignSelf="center"
+            fontSize="3xl"
+            fontWeight="semibold"
+            textAlign="center"
+            left="50%"
+            transform="translateX(-50%)"
+          >
+            {instructions[step]}
+          </Text>
+          <Button
+            justifyContent="center"
+            size="sm"
+            flex="0 1 auto"
+            ml="auto"
+            alignSelf="flex-end"
+            bg="transparent"
+            color="brand"
+            variant="ghost"
+            onClick={() =>
+              setStep((prevStep) =>
+                prevStep === Steps.login ? Steps.register : Steps.login,
+              )
+            }
+          >
+            {step === Steps.login ? `Sign Up` : 'Login'}
+          </Button>
+        </Flex>
+        <Box mt="4" w="xs" d="flex" flexDirection="column" gridGap="3">
           <AnimatePresence>
             {fields.map((field) =>
               field.showFor.includes(step) ? (
@@ -178,6 +216,7 @@ export function AuthScreen() {
                     </FormLabel>
                     <InputGroup size="md">
                       <Input
+                        bg="gray.50"
                         onFocus={handleChangeStep(field.currentStep)}
                         {...formRefs[field.name]}
                         isInvalid={errors[field.name]}
@@ -189,16 +228,19 @@ export function AuthScreen() {
                         placeholder={field.placeholder}
                         type={field.inputType}
                         pr="12"
+                        // type={show ? 'text' : 'password'}
                       />
                       {field.showSubmitButtonFor.includes(step) ? (
                         <InputRightElement w="12">
-                          <IconButton
-                            type="submit"
-                            w="12"
-                            variant="ghost"
-                            aria-label="submit"
-                            icon={<Icon width="25px" src="/icons/next.svg" />}
-                          />
+                          <Button
+                            bg="transparent"
+                            color="brand"
+                            h="1.75rem"
+                            size="sm"
+                            onClick={handleClick}
+                          >
+                            {show ? 'Hide' : 'Show'}
+                          </Button>
                         </InputRightElement>
                       ) : null}
                     </InputGroup>
@@ -209,21 +251,39 @@ export function AuthScreen() {
                 </FadeInOut>
               ) : null,
             )}
-            <Button
-              color="white"
-              variant="ghost"
-              onClick={() =>
-                setStep((prevStep) =>
-                  prevStep === Steps.login ? Steps.register : Steps.login,
-                )
-              }
-            >
-              {step === Steps.register
-                ? 'Already have an account? Login instead'
-                : `Don't have an account? Sign up for free`}
-            </Button>
           </AnimatePresence>
         </Box>
+
+        {step === Steps.register ? (
+          <CheckBox fontWeight="Inter" color="gray.600" mt="2" w="xs">
+            'I would like to receive your newsletter and other promotional
+            information.'
+          </CheckBox>
+        ) : (
+          ''
+        )}
+
+        <Flex top="90" position="relative" flexDir="column">
+          <Button
+            type="submit"
+            w="full"
+            color="white"
+            variant="ghost"
+            aria-label="submit"
+          >
+            {step === Steps.register ? 'Sign Up' : `Login`}
+          </Button>
+          <Link
+            mt="5"
+            href=" "
+            color="brand"
+            alignContent="center"
+            alignSelf="center"
+            justifyItems="center"
+          >
+            Forgot your password?
+          </Link>
+        </Flex>
       </form>
     </Center>
   );
