@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Box } from '@components/atoms/box';
-import { Button, IconButton } from '@components/atoms/button';
+import { Button } from '@components/atoms/button';
 import {
   FormControl,
   FormErrorMessage,
   FormLabel,
 } from '@components/molecules/form';
-import { Icon } from '@components/atoms/icon';
 import { Input, InputGroup, InputRightElement } from '@components/atoms/input';
 import { Center } from '@components/atoms/center';
 import { Text } from '@components/atoms/typography/text';
@@ -16,7 +15,6 @@ import { useAuth } from '@hooks/use-auth';
 
 import { useForm } from '@hooks/use-form';
 import { Flex } from '@components/atoms/flex';
-import { Spacer } from '@components/atoms/spacer';
 import { Link } from '@components/atoms/link';
 import { CheckBox } from '@components/atoms/checkbox';
 import React from 'react';
@@ -24,7 +22,7 @@ import React from 'react';
 enum Steps {
   login = 'login',
   register = 'register',
-  registerRepeatPassword = 'registerRepeatPassword',
+  registerRepeatPassword = 'register',
 }
 
 const instructions = {
@@ -226,9 +224,15 @@ export function AuthScreen() {
                           refs[field.name].current = e;
                         }}
                         placeholder={field.placeholder}
-                        type={field.inputType}
+                        // type={field.inputType}
                         pr="12"
-                        // type={show ? 'text' : 'password'}
+                        type={
+                          field.placeholder !== 'Email'
+                            ? show
+                              ? 'text'
+                              : 'password'
+                            : field.inputType
+                        }
                       />
                       {field.showSubmitButtonFor.includes(step) ? (
                         <InputRightElement w="12">
