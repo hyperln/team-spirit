@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
 import {
@@ -10,7 +9,6 @@ import {
 import { Input, InputGroup, InputRightElement } from '@components/atoms/input';
 import { Center } from '@components/atoms/center';
 import { Text } from '@components/atoms/typography/text';
-import { FadeInOut } from '@components/atoms/animations/fade';
 import { useAuth } from '@hooks/use-auth';
 
 import { useForm } from '@hooks/use-form';
