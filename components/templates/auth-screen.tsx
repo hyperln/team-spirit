@@ -22,7 +22,7 @@ import React from 'react';
 enum Steps {
   login = 'login',
   register = 'register',
-  registerRepeatPassword = 'register',
+  registerRepeatPassword = 'registerRepeatPassword',
 }
 
 const instructions = {
@@ -204,68 +204,61 @@ export function AuthScreen() {
           </Button>
         </Flex>
         <Box mt="4" w="xs" d="flex" flexDirection="column" gridGap="3">
-          <AnimatePresence>
-            {fields.map((field) =>
-              field.showFor.includes(step) ? (
-                <FadeInOut key={field.name}>
-                  <FormControl isInvalid={errors[field.name]}>
-                    <FormLabel htmlFor={field.name} hidden>
-                      Email
-                    </FormLabel>
-                    <InputGroup size="md">
-                      <Input
-                        bg="gray.50"
-                        onFocus={handleChangeStep(field.currentStep)}
-                        {...formRefs[field.name]}
-                        isInvalid={errors[field.name]}
-                        id={field.name}
-                        ref={(e) => {
-                          formRefs[field.name].ref(e);
-                          refs[field.name].current = e;
-                        }}
-                        placeholder={field.placeholder}
-                        // type={field.inputType}
-                        pr="12"
-                        type={
-                          field.placeholder !== 'Email'
-                            ? show
-                              ? 'text'
-                              : 'password'
-                            : field.inputType
-                        }
-                      />
-                      {field.showSubmitButtonFor.includes(step) ? (
-                        <InputRightElement w="12">
-                          <Button
-                            bg="transparent"
-                            color="brand"
-                            h="1.75rem"
-                            size="sm"
-                            onClick={handleClick}
-                          >
-                            {show ? 'Hide' : 'Show'}
-                          </Button>
-                        </InputRightElement>
-                      ) : null}
-                    </InputGroup>
-                    <FormErrorMessage>
-                      {errors[field.name]?.message}
-                    </FormErrorMessage>
-                  </FormControl>
-                </FadeInOut>
-              ) : null,
-            )}
-          </AnimatePresence>
+          {fields.map((field) =>
+            field.showFor.includes(step) ? (
+              <FormControl isInvalid={errors[field.name]}>
+                <FormLabel htmlFor={field.name} hidden>
+                  Email
+                </FormLabel>
+                <InputGroup size="md">
+                  <Input
+                    bg="gray.50"
+                    onFocus={handleChangeStep(field.currentStep)}
+                    {...formRefs[field.name]}
+                    isInvalid={errors[field.name]}
+                    id={field.name}
+                    ref={(e) => {
+                      formRefs[field.name].ref(e);
+                      refs[field.name].current = e;
+                    }}
+                    placeholder={field.placeholder}
+                    // type={field.inputType}
+                    pr="12"
+                    type={
+                      field.placeholder !== 'Email'
+                        ? show
+                          ? 'text'
+                          : 'password'
+                        : field.inputType
+                    }
+                  />
+                  {field.showSubmitButtonFor.includes(step) ? (
+                    <InputRightElement w="12">
+                      <Button
+                        bg="transparent"
+                        color="brand"
+                        h="1.75rem"
+                        size="sm"
+                        onClick={handleClick}
+                      >
+                        {show ? 'Hide' : 'Show'}
+                      </Button>
+                    </InputRightElement>
+                  ) : null}
+                </InputGroup>
+                <FormErrorMessage>
+                  {errors[field.name]?.message}
+                </FormErrorMessage>
+              </FormControl>
+            ) : null,
+          )}
         </Box>
-
         {step === Steps.register ? (
           <CheckBox fontWeight="Inter" color="gray.600" mt="2" w="xs">
             'I would like to receive your newsletter and other promotional
             information.'
           </CheckBox>
-        ) : (
-          ''
-        )}
+        ) : null}
 
         <Flex top="90" position="relative" flexDir="column">
           <Button
