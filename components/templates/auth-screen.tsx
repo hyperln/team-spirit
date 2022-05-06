@@ -16,6 +16,7 @@ import { Flex } from '@components/atoms/flex';
 import { Link } from '@components/atoms/link';
 import { CheckBox } from '@components/atoms/checkbox';
 import React from 'react';
+import { Spinner } from '@components/atoms/spinner';
 
 enum Steps {
   login = 'login',
@@ -29,50 +30,51 @@ const instructions = {
   [Steps.registerRepeatPassword]: 'Sign Up',
 };
 
-enum Fields {
-  email = 'email',
-  password = 'password',
-  password2 = 'password2',
-}
+// enum Fields {
+//   email = 'email',
+//   password = 'password',
+//   password2 = 'password2',
+// }
 
-const fieldNames = Object.keys(Fields).map((key) => key);
+// const fieldNames = Object.keys(Fields).map((key) => key);
 
-type Refs = {
-  [Fields.email]?: { current: any; [key: string]: any };
-  [Fields.password]?: { current: any; [key: string]: any };
-  [Fields.password2]?: { current: any; [key: string]: any };
-};
+// type Refs = {
+//   'email?': { current: any; [key: string]: any };
+//   'password?': { current: any; [key: string]: any };
+//   'password2?': { current: any; [key: string]: any };
+// };
 
-const fields = [
-  {
-    name: Fields.email,
-    showFor: Object.keys(Steps).map((key) => key),
-    currentStep: [Steps.register],
-    showSubmitButtonFor: [],
-    placeholder: 'Email',
-    inputType: 'email',
-  },
-  {
-    name: Fields.password,
-    showFor: Object.keys(Steps).map((key) => key),
-    currentStep: [Steps.register, Steps.login],
-    showSubmitButtonFor: [Steps.login],
-    placeholder: 'Password',
-    inputType: 'password',
-  },
-  {
-    name: Fields.password2,
-    showFor: [Steps.register, Steps.registerRepeatPassword],
-    currentStep: [Steps.registerRepeatPassword],
-    showSubmitButtonFor: [Steps.registerRepeatPassword, Steps.register],
-    placeholder: 'Repeat Password',
-    inputType: 'password',
-  },
-];
+// const fields = [
+//   {
+//     name: Fields.email,
+//     showFor: Object.keys(Steps).map((key) => key),
+//     currentStep: [Steps.register],
+//     showSubmitButtonFor: [],
+//     placeholder: 'Email',
+//     inputType: 'email',
+//   },
+//   {
+//     name: Fields.password,
+//     showFor: Object.keys(Steps).map((key) => key),
+//     currentStep: [Steps.register, Steps.login],
+//     showSubmitButtonFor: [Steps.login],
+//     placeholder: 'Password',
+//     inputType: 'password',
+//   },
+//   {
+//     name: Fields.password2,
+//     showFor: [Steps.register, Steps.registerRepeatPassword],
+//     currentStep: [Steps.registerRepeatPassword],
+//     showSubmitButtonFor: [Steps.registerRepeatPassword, Steps.register],
+//     placeholder: 'Repeat Password',
+//     inputType: 'password',
+//   },
+// ];
 
 export function AuthScreen() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+  const [isLoading, setIsLoading] = useState(false);
 
   const auth = useAuth();
   const [step, setStep] = useState(Steps.login);
@@ -87,19 +89,19 @@ export function AuthScreen() {
   const password = useRef({});
   password.current = watch('password', '');
 
-  const refs: Refs = fieldNames.reduce((acc, curr) => {
-    const ref = useRef();
-    return {
-      ...acc,
-      [curr]: ref,
-    };
-  }, {});
+  // const refs: Refs = fieldNames.reduce((acc, curr) => {
+  //   const ref = useRef();
+  //   return {
+  //     ...acc,
+  //     [curr]: ref,
+  //   };
+  // }, {});
 
   const formRefs = {
-    [Fields.email]: register('email', {
+    email: register('email', {
       required: true,
     }),
-    [Fields.password]: register('password', {
+    password: register('password', {
       required: true,
       minLength:
         step !== Steps.login
@@ -117,7 +119,7 @@ export function AuthScreen() {
             }
           : null,
     }),
-    [Fields.password2]: register('password2', {
+    password2: register('password2', {
       required: step === Steps.registerRepeatPassword,
       validate: (value) =>
         [Steps.registerRepeatPassword, Steps.register].includes(step)
@@ -136,7 +138,7 @@ export function AuthScreen() {
       //   refs.password.current?.focus();
       //   break;
       case Steps.registerRepeatPassword:
-        refs.password2.current?.focus();
+        // refs["password2?"].current?.focus();
         break;
 
       default:
@@ -145,17 +147,20 @@ export function AuthScreen() {
   }, [step]);
 
   const onSubmit = async (e) => {
+    setIsLoading(true);
     switch (step) {
       case Steps.login:
         await auth.signIn({ email: e.email, password: e.password });
+        setIsLoading(false);
         break;
       case Steps.register:
         setStep(Steps.registerRepeatPassword);
+        setIsLoading(false);
         break;
       case Steps.registerRepeatPassword:
         await auth.signUp({ email: e.email, password: e.password });
+        setIsLoading(false);
         break;
-
       default:
         break;
     }
@@ -202,54 +207,89 @@ export function AuthScreen() {
           </Button>
         </Flex>
         <Box mt="4" w="xs" d="flex" flexDirection="column" gridGap="3">
-          {fields.map((field) =>
-            field.showFor.includes(step) ? (
-              <FormControl isInvalid={errors[field.name]}>
-                <FormLabel htmlFor={field.name} hidden>
-                  Email
-                </FormLabel>
-                <InputGroup size="md">
-                  <Input
-                    bg="gray.50"
-                    onFocus={handleChangeStep(field.currentStep)}
-                    {...formRefs[field.name]}
-                    isInvalid={errors[field.name]}
-                    id={field.name}
-                    ref={(e) => {
-                      formRefs[field.name].ref(e);
-                      refs[field.name].current = e;
-                    }}
-                    placeholder={field.placeholder}
-                    // type={field.inputType}
-                    pr="12"
-                    type={
-                      field.placeholder !== 'Email'
-                        ? show
-                          ? 'text'
-                          : 'password'
-                        : field.inputType
-                    }
-                  />
-                  {field.showSubmitButtonFor.includes(step) ? (
-                    <InputRightElement w="12">
-                      <Button
-                        bg="transparent"
-                        color="brand"
-                        h="1.75rem"
-                        size="sm"
-                        onClick={handleClick}
-                      >
-                        {show ? 'Hide' : 'Show'}
-                      </Button>
-                    </InputRightElement>
-                  ) : null}
-                </InputGroup>
-                <FormErrorMessage>
-                  {errors[field.name]?.message}
-                </FormErrorMessage>
-              </FormControl>
-            ) : null,
-          )}
+          {/* {fields.map((field) => */}
+          {/* field.showFor.includes(step) ? ( */}
+          <FormControl>
+            <FormLabel>Email</FormLabel>
+            <Input
+              name="email"
+              bg="gray.50"
+              type="email"
+              // onFocus={handleChangeStep(field.currentStep)}
+              {...formRefs['email']}
+              // isInvalid={errors[field.name]}
+              id="email"
+              ref={(e) => {
+                formRefs['email'].ref(e);
+                // refs['email'].current = e;
+              }}
+              placeholder="Email"
+              pr="12"
+            />
+            <InputGroup size="md">
+              <Input
+                name="password"
+                bg="gray.50"
+                // onFocus={handleChangeStep(field.currentStep)}
+                {...formRefs['password']}
+                // isInvalid={errors[field.name]}
+                id="password"
+                ref={(e) => {
+                  formRefs['password'].ref(e);
+                  // refs['email'].current = e;
+                }}
+                placeholder="Password"
+                pr="12"
+                type={show ? 'text' : 'password'}
+              />
+              <InputRightElement w="12">
+                <Button
+                  bg="transparent"
+                  color="brand"
+                  h="1.75rem"
+                  size="sm"
+                  onClick={handleClick}
+                >
+                  {show ? 'Hide' : 'Show'}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+            {step === Steps.register ? (
+              <InputGroup size="md">
+                <Input
+                  name="password2"
+                  bg="gray.50"
+                  // onFocus={handleChangeStep(field.currentStep)}
+                  {...formRefs['password2']}
+                  // isInvalid={errors[field.name]}
+                  id="password2"
+                  ref={(e) => {
+                    formRefs['password2'].ref(e);
+                    // refs['email'].current = e;
+                  }}
+                  placeholder="Repeat Password"
+                  pr="12"
+                  type={show ? 'text' : 'password'}
+                />
+                {/* {field.showSubmitButtonFor.includes(step) ? ( */}
+                <InputRightElement w="12">
+                  <Button
+                    bg="transparent"
+                    color="brand"
+                    h="1.75rem"
+                    size="sm"
+                    onClick={handleClick}
+                  >
+                    {show ? 'Hide' : 'Show'}
+                  </Button>
+                </InputRightElement>
+                {/* ) : null} */}
+              </InputGroup>
+            ) : null}
+            {/* <FormErrorMessage>{errors[field.name]?.message}</FormErrorMessage> */}
+          </FormControl>
+          {/* ) : null,
+          )} */}
         </Box>
         {step === Steps.register ? (
           <CheckBox fontWeight="Inter" color="gray.600" mt="2" w="xs">
@@ -265,6 +305,8 @@ export function AuthScreen() {
             color="white"
             variant="ghost"
             aria-label="submit"
+            isLoading={isLoading}
+            spinner={<Spinner size="lg" />}
           >
             {step === Steps.register ? 'Sign Up' : `Login`}
           </Button>
