@@ -20,6 +20,7 @@ interface UpdateProfileData {
   lastName?: string;
   avatarUrl?: string;
   gender?: string;
+  customerId?: string;
 }
 interface CreateClubData {
   name: string;
@@ -169,6 +170,12 @@ export async function listTeams(clubId: number) {
     .select()
     .match(keysToSnake({ clubId }))
     .order('name');
+  if (error) throw error;
+  return keysToCamel(data);
+}
+
+export async function fetchCountryList() {
+  const { data, error } = await client.from('countries').select();
   if (error) throw error;
   return keysToCamel(data);
 }

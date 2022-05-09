@@ -12,8 +12,9 @@ async function POST(req: NextApiRequest, res: NextApiResponse) {
 
 async function GET(req: NextApiRequest, res: NextApiResponse) {
   const customer = await fetchCustomerByEmail(req.query.email as string);
-  res.status(200);
-  res.json(customer);
+  return !customer
+    ? res.status(404).json({ message: 'Customer not found', status: 'fail' })
+    : res.status(200).json(customer);
 }
 
 const METHODS = {

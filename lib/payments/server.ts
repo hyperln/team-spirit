@@ -44,23 +44,27 @@ export async function listCustomersPaymentMethods(
   return paymentMethods.data as PaymentMethod[];
 }
 
-export async function createCustomer(
-  billingAddress: CreatePaymentIntentParams['billingAddress'],
-) {
+export async function createCustomer(createCustomerData: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  address: CreatePaymentIntentParams['billingAddress'];
+}) {
   const stripe = getStripe();
   try {
-    const customer = await stripe.customers.create({
-      email: billingAddress.email,
-      name: `${billingAddress.firstName} ${billingAddress.lastName}`,
+    const customerData = {
+      email: createCustomerData.email,
+      name: `${createCustomerData.firstName} ${createCustomerData.lastName}`,
       address: {
-        line1: billingAddress.address1,
-        line2: billingAddress.address2,
-        city: billingAddress.city,
-        country: billingAddress.country,
-        postal_code: billingAddress.postalCode,
-        state: billingAddress.stateOrProvince,
+        line1: createCustomerData.address.address1,
+        line2: createCustomerData.address.address2,
+        city: createCustomerData.address.city,
+        country: createCustomerData.address.country,
+        postal_code: createCustomerData.address.postalCode,
+        state: createCustomerData.address.stateOrProvince,
       },
-    });
+    };
+    const customer = await stripe.customers.create(customerData);
     return customer;
   } catch (error) {
     console.error(error);

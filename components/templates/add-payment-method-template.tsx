@@ -3,6 +3,7 @@ import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
 import { Flex } from '@components/atoms/flex';
 import { Input } from '@components/atoms/input';
+import { Select } from '@components/atoms/select';
 import { HStack } from '@components/atoms/stack';
 import { Heading } from '@components/atoms/typography/heading';
 import { FormControl, FormLabel } from '@components/molecules/form';
@@ -11,8 +12,10 @@ import { ClickableStepper } from '@components/organisms/clickable-stepper';
 import { withContext } from '@hoc/with-context';
 import { useProfile } from '@hooks/use-profile';
 import { api } from '@lib/api/client';
+import { fetchCountryList, updateUserProfile } from '@lib/db';
 import { PaymentElement } from '@lib/payments/components';
 import { PaymentsContext } from '@lib/payments/context';
+import { Address } from '@lib/payments/payment-types';
 import { capitalizeFirstLetter } from '@utils/string-utils';
 import {
   createContext,
@@ -34,6 +37,8 @@ interface State {
   loadingState: 'idle' | 'loading' | 'success' | 'error';
   customerId: string;
   setupIntent: any;
+  billingAddress: Address;
+  countries: any[];
 }
 interface Action {
   type: string;
@@ -45,6 +50,7 @@ interface Actions {
   setLoadingState: (state: State, action: Action) => State;
   setCustomerId: (state: State, action: Action) => State;
   setSetupIntent: (state: State, action: Action) => State;
+  setCountries: (state: State, action: Action) => State;
 }
 
 const initialState: State = {
@@ -52,6 +58,8 @@ const initialState: State = {
   loadingState: 'loading',
   customerId: null,
   setupIntent: null,
+  billingAddress: null,
+  countries: null,
 };
 
 const actions: Actions = {
@@ -71,6 +79,10 @@ const actions: Actions = {
     ...state,
     setupIntent: action.payload,
   }),
+  setCountries: (state, action) => ({
+    ...state,
+    countries: action.payload,
+  }),
 };
 
 function reducer(state: State, action: Action) {
@@ -84,14 +96,28 @@ function FormProvider({ children }: { children: ReactNode }) {
   const { profile } = useProfile();
 
   const fetchCustomer = async () => {
-    dispatch({ type: 'setLoadingState', payload: 'loading' });
-    const data = await api(
-      `/customers?email=${encodeURIComponent(profile.email)}`,
-    ).get();
-    if (data) {
-      dispatch({ type: 'setCustomerId', payload: data.id });
-      dispatch({ type: 'setStep', payload: 'payment' });
+    try {
+      const customerData = await api(
+        `/customers?email=${encodeURIComponent(profile.email)}`,
+      ).get();
+      if (customerData) {
+        dispatch({ type: 'setCustomerId', payload: customerData.id });
+        dispatch({ type: 'setStep', payload: 'payment' });
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        dispatch({ type: 'setStep', payload: 'address' });
+      }
     }
+  };
+
+  const init = async () => {
+    dispatch({ type: 'setLoadingState', payload: 'loading' });
+    const [countries] = await Promise.all([
+      fetchCountryList(),
+      fetchCustomer(),
+    ]);
+    dispatch({ type: 'setCountries', payload: countries });
     dispatch({ type: 'setLoadingState', payload: 'success' });
   };
 
@@ -109,7 +135,7 @@ function FormProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (profile) {
-      fetchCustomer();
+      init();
     }
   }, [profile]);
 
@@ -155,7 +181,9 @@ function AddressForm() {
         }, {}),
       };
       const data = await api('/customers').post(createCustomerData);
+      updateUserProfile(profile.id, { customerId: data.id });
       dispatch({ type: 'setCustomerId', payload: data.id });
+      dispatch({ type: 'setStep', payload: 'payment' });
       dispatch({ type: 'setLoadingState', payload: 'success' });
     } catch (error) {
       dispatch({ type: 'setLoadingState', payload: 'error' });
@@ -171,15 +199,22 @@ function AddressForm() {
         <FormLabel htmlFor="city">City</FormLabel>
         <Input required id="city" type="text" />
         <FormLabel htmlFor="country">Country</FormLabel>
-        <Input required id="country" type="text" />
+        <Select defaultValue="AU" required id="country">
+          {state.countries &&
+            state.countries.map((country: any) => (
+              <option key={country.iso2} value={country.iso2}>
+                {country.name}
+              </option>
+            ))}
+        </Select>
         <HStack>
           <span>
             <FormLabel htmlFor="postalCode">Post Code</FormLabel>
             <Input required id="postalCode" type="text" />
           </span>
           <span>
-            <FormLabel htmlFor="state">State</FormLabel>
-            <Input required id="state" type="text" />
+            <FormLabel htmlFor="stateOrProvince">State</FormLabel>
+            <Input required id="stateOrProvince" type="text" />
           </span>
         </HStack>
       </FormControl>
