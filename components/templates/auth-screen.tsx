@@ -97,36 +97,36 @@ export function AuthScreen() {
   //   };
   // }, {});
 
-  const formRefs = {
-    email: register('email', {
-      required: true,
-    }),
-    password: register('password', {
-      required: true,
-      minLength:
-        step !== Steps.login
-          ? {
-              value: 7,
-              message: 'Passwords must be at least 7 characters',
-            }
-          : null,
-      pattern:
-        step !== Steps.login
-          ? {
-              value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/,
-              message:
-                'Passwords must contain at least one letter and one number',
-            }
-          : null,
-    }),
-    password2: register('password2', {
-      required: step === Steps.registerRepeatPassword,
-      validate: (value) =>
-        [Steps.registerRepeatPassword, Steps.register].includes(step)
-          ? value === password.current || 'The passwords do not match'
-          : null,
-    }),
-  };
+  // const formRefs = {
+  //   email: register('email', {
+  //     required: true,
+  //   }),
+  //   password: register('password', {
+  //     required: true,
+  //     minLength:
+  //       step !== Steps.login
+  //         ? {
+  //             value: 7,
+  //             message: 'Passwords must be at least 7 characters',
+  //           }
+  //         : null,
+  //     pattern:
+  //       step !== Steps.login
+  //         ? {
+  //             value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/,
+  //             message:
+  //               'Passwords must contain at least one letter and one number',
+  //           }
+  //         : null,
+  //   }),
+  //   password2: register('password2', {
+  //     required: step === Steps.registerRepeatPassword,
+  //     validate: (value) =>
+  //       [Steps.registerRepeatPassword, Steps.register].includes(step)
+  //         ? value === password.current || 'The passwords do not match'
+  //         : null,
+  //   }),
+  // };
 
   useEffect(() => {
     switch (step) {
@@ -138,7 +138,7 @@ export function AuthScreen() {
       //   refs.password.current?.focus();
       //   break;
       case Steps.registerRepeatPassword:
-        // refs["password2?"].current?.focus();
+        // name["password2?"].current?.focus();
         break;
 
       default:
@@ -216,32 +216,55 @@ export function AuthScreen() {
               bg="gray.50"
               type="email"
               // onFocus={handleChangeStep(field.currentStep)}
-              {...formRefs['email']}
-              // isInvalid={errors[field.name]}
+              {...register('email', {
+                required: 'true',
+              })}
+              isInvalid={errors.name}
               id="email"
-              ref={(e) => {
-                formRefs['email'].ref(e);
-                // refs['email'].current = e;
-              }}
               placeholder="Email"
               pr="12"
+              // ref={(e) => {
+              //   register['email'].ref(e);
+              //   // refs['email'].current = e;
+              // }}
             />
-            <InputGroup size="md">
+            <FormErrorMessage>
+              {errors.email && errors.email.message}
+            </FormErrorMessage>
+            <InputGroup mt="4" size="md">
               <Input
                 name="password"
                 bg="gray.50"
                 // onFocus={handleChangeStep(field.currentStep)}
-                {...formRefs['password']}
-                // isInvalid={errors[field.name]}
-                id="password"
-                ref={(e) => {
-                  formRefs['password'].ref(e);
-                  // refs['email'].current = e;
-                }}
                 placeholder="Password"
                 pr="12"
                 type={show ? 'text' : 'password'}
+                {...register('password', {
+                  required: true,
+                  minLength:
+                    step !== Steps.login
+                      ? {
+                          value: 7,
+                          message: 'Passwords must be at least 7 characters',
+                        }
+                      : null,
+                  pattern:
+                    step !== Steps.login
+                      ? {
+                          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/,
+                          message:
+                            'Passwords must contain at least one letter and one number',
+                        }
+                      : null,
+                })}
+                isInvalid={errors.message}
+                id="password"
+                // ref={(e) => {
+                //   register['password'].ref(e);
+                //   // refs['email'].current = e;
+                // }}
               />
+              <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
               <InputRightElement w="12">
                 <Button
                   bg="transparent"
@@ -255,22 +278,32 @@ export function AuthScreen() {
               </InputRightElement>
             </InputGroup>
             {step === Steps.register ? (
-              <InputGroup size="md">
+              <InputGroup mt="4" size="md">
                 <Input
                   name="password2"
                   bg="gray.50"
-                  // onFocus={handleChangeStep(field.currentStep)}
-                  {...formRefs['password2']}
-                  // isInvalid={errors[field.name]}
+                  // onFocus={handleCha ngeStep(field.currentStep)}
+                  {...register('password2', {
+                    required: step === Steps.register,
+                    validate: (value) =>
+                      [Steps.registerRepeatPassword, Steps.register].includes(
+                        step,
+                      )
+                        ? value === password.current ||
+                          'The passwords do not match'
+                        : null,
+                  })}
+                  isInvalid={errors.message}
                   id="password2"
-                  ref={(e) => {
-                    formRefs['password2'].ref(e);
-                    // refs['email'].current = e;
-                  }}
+                  // ref={(e) => {
+                  //   register['password2'].ref(e);
+                  //   // refs['email'].current = e;
+                  // }}
                   placeholder="Repeat Password"
                   pr="12"
                   type={show ? 'text' : 'password'}
                 />
+                <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
                 {/* {field.showSubmitButtonFor.includes(step) ? ( */}
                 <InputRightElement w="12">
                   <Button
@@ -286,7 +319,7 @@ export function AuthScreen() {
                 {/* ) : null} */}
               </InputGroup>
             ) : null}
-            {/* <FormErrorMessage>{errors[field.name]?.message}</FormErrorMessage> */}
+            <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
           </FormControl>
           {/* ) : null,
           )} */}
