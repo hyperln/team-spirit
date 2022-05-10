@@ -60,9 +60,8 @@ export function Navigation() {
       <Button
         as={IconButton}
         aria-label="Options"
-        icon={<HamburgerIcon />}
-        variant="outline"
-        bg="white"
+        icon={<HamburgerIcon color="white" boxSize={8} />}
+        variant="ghost"
         onClick={() => handleClick(size)}
         key={size}
         m={1}
@@ -73,7 +72,7 @@ export function Navigation() {
       <Drawer onClose={onClose} isOpen={isOpen} size={size}>
         <DrawerOverlay />
         <DrawerContent
-          bgGradient="linear(orange.400, orange.100 )"
+          bgGradient="linear(brand, orange.300 )"
           fontWeight="semibold"
           justifyItems="center"
           alignItems="center"
@@ -90,7 +89,7 @@ export function Navigation() {
           />
           <DrawerBody>
             <nav>
-              <Flex alignItems="center" flexDir="column" mt="20" mx="10">
+              <Flex alignItems="flex-start" flexDir="column" mt="20" mx="10">
                 <Link
                   mb="3"
                   onClick={handleLinkClick}
@@ -145,13 +144,6 @@ export function Navigation() {
                 >
                   Switch to {colorMode === 'light' ? 'dark' : 'light'} mode
                 </Button>
-                {/* <Button
-                  variant="unstyled"
-                  onClick={handlClickLogout}
-                  leftIcon={<LockIcon w={6} />}
-                >
-                  Log out
-                </Button> */}
               </Flex>
             </nav>
           </DrawerBody>
