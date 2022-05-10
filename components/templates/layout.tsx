@@ -76,14 +76,32 @@ export function Layout({ children }) {
             )}
           </MenuButton>
           <MenuList bgColor={navBackground}>
-            <MenuItem as={Link} href="/account">
+            <MenuItem gap="2" as={Link} href="/account">
+              {profile ? (
+                <Avatar
+                  size="xs"
+                  src={profile.previewUrl}
+                  name={profile.firstName}
+                />
+              ) : (
+                <AtSignIcon boxSize="5" w={6} mr="1" />
+              )}
               Profile
             </MenuItem>
 
             {profile ? (
-              <MenuItem onClick={handlClickLogout}>Log Out</MenuItem>
+              <MenuItem
+                icon={<LockIcon w={6} mr="-1" />}
+                onClick={handlClickLogout}
+              >
+                Log Out
+              </MenuItem>
             ) : (
-              <MenuItem as={Link} href="/login">
+              <MenuItem
+                icon={<LockIcon w={6} mr="-1" />}
+                as={Link}
+                href="/login"
+              >
                 Sign In
               </MenuItem>
             )}
