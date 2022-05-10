@@ -29,7 +29,6 @@ export const colors = {
 export const styles = {
   global: (props) => ({
     body: {
-      fontFamily: 'Inter',
       color: mode('gray.800', 'white')(props),
       bg: mode('white', '#141214')(props),
     },
