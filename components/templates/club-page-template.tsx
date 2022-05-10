@@ -105,7 +105,7 @@ export function ClubPageTemplate({ club }: Props) {
   };
 
   return (
-    <Flex justifyContent="center" minH="calc(100vh - 80px)">
+    <Flex justifyContent="center">
       <Box display="block">
         <Heading>{club.name}</Heading>
         <Text fontWeight="semibold">{club.established}</Text>

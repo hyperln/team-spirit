@@ -17,6 +17,8 @@ export function TeamsListTemplate({ teams }) {
       <Box display="block">
         <Heading>Teams</Heading>
         <Button
+          color="white"
+          variant="ghost"
           leftIcon={<AddIcon />}
           as={Link}
           href={`/clubs/${clubId}/teams/team-registration`}
