@@ -51,8 +51,8 @@ export function RegisterClubTemplate() {
               </NumberInputStepper>
             </NumberInput>
             <Center>
-              <Button my="3" type="submit">
-                Add Club
+              <Button color="white" variant="ghost" my="3" type="submit">
+                Register Club
               </Button>
             </Center>
           </form>

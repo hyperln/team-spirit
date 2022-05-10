@@ -45,6 +45,13 @@ const components = {
       color: 'white',
     },
   },
+  Button: {
+    baseStyle: {
+      color: 'white',
+      borderRadius: '70',
+      bg: 'brand',
+    },
+  },
   Header: {
     baseStyle: {
       position: 'fixed',

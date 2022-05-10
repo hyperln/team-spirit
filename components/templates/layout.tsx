@@ -3,7 +3,7 @@ import { Box } from '@components/atoms/box';
 import { Flex } from '@components/atoms/flex';
 import { Navigation } from '@components/organisms/navigation';
 import { IconButton } from '@components/atoms/button';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, AtSignIcon, LockIcon } from '@chakra-ui/icons';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,6 +11,17 @@ import {
 } from '@components/molecules/breadcrumb';
 import { kebabToSentenceCase } from '@utils/string-utils';
 import { useColorModeValue } from '@hooks/use-color-mode';
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from '@components/organisms/menu';
+import { useProfile } from '@hooks/use-profile';
+import { Avatar } from '@components/molecules/avatar-image';
+import { Link } from '@components/atoms/link';
+import { useAuth } from '@hooks/use-auth';
+import { Spacer } from '@components/atoms/spacer';
 
 function buildBreadcrumbs(path) {
   const parts = path.split('/').filter(Boolean);
@@ -29,9 +40,15 @@ function buildBreadcrumbs(path) {
 }
 
 export function Layout({ children }) {
+  const { signOut } = useAuth();
+  const { profile } = useProfile();
   const router = useRouter();
   const breadcrumbs = buildBreadcrumbs(router.asPath);
   const navBackground = useColorModeValue('brand', 'blackAlpha.300');
+
+  const handlClickLogout = () => {
+    signOut();
+  };
 
   return (
     <Box>
@@ -41,13 +58,59 @@ export function Layout({ children }) {
         zIndex="dropdown"
         bottom={{ base: '0', lg: undefined }}
         top={{ lg: '0' }}
-        justifyContent={{ base: 'center', lg: 'right' }}
+        justifyContent={{ base: 'right', lg: 'right' }}
         alignItems="center"
         w="full"
-        h="12"
+        h="14"
       >
+        <Menu closeOnSelect>
+          <MenuButton ml="1">
+            {profile ? (
+              <Avatar
+                size="md"
+                src={profile.previewUrl}
+                name={profile.firstName}
+              />
+            ) : (
+              <AtSignIcon boxSize="6" w={6} />
+            )}
+          </MenuButton>
+          <MenuList bgColor={navBackground}>
+            <MenuItem gap="2" as={Link} href="/account">
+              {profile ? (
+                <Avatar
+                  size="xs"
+                  src={profile.previewUrl}
+                  name={profile.firstName}
+                />
+              ) : (
+                <AtSignIcon boxSize="5" w={6} mr="1" />
+              )}
+              Profile
+            </MenuItem>
+
+            {profile ? (
+              <MenuItem
+                icon={<LockIcon w={6} mr="-1" />}
+                onClick={handlClickLogout}
+              >
+                Log Out
+              </MenuItem>
+            ) : (
+              <MenuItem
+                icon={<LockIcon w={6} mr="-1" />}
+                as={Link}
+                href="/login"
+              >
+                Sign In
+              </MenuItem>
+            )}
+          </MenuList>
+        </Menu>
+        <Spacer />
         <Navigation />
       </Flex>
+
       {router.asPath !== '/' ? (
         <Flex
           boxShadow="2xl"

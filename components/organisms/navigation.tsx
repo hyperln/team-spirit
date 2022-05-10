@@ -11,11 +11,10 @@ import {
 import { Button, IconButton } from '@components/atoms/button';
 import { Flex } from '@components/atoms/flex';
 import { Link } from '@components/atoms/link';
-import { Avatar } from '@components/molecules/avatar-image';
 import { useAuth } from '@hooks/use-auth';
 import { useDisclosure } from '@hooks/use-disclosure';
 import { useColorMode } from '@hooks/use-color-mode';
-import { useProfile } from '@hooks/use-profile';
+
 import {
   Drawer,
   DrawerBody,
@@ -31,7 +30,6 @@ const colorModeIcons = {
 };
 
 export function Navigation() {
-  const { profile } = useProfile();
   const { signOut } = useAuth();
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -62,11 +60,11 @@ export function Navigation() {
       <Button
         as={IconButton}
         aria-label="Options"
-        icon={<HamburgerIcon />}
-        variant="outline"
+        icon={<HamburgerIcon color="white" boxSize={8} />}
+        variant="ghost"
         onClick={() => handleClick(size)}
         key={size}
-        m={4}
+        m={1}
       >
         {`Open ${size} Drawer`}
       </Button>
@@ -74,56 +72,41 @@ export function Navigation() {
       <Drawer onClose={onClose} isOpen={isOpen} size={size}>
         <DrawerOverlay />
         <DrawerContent
-          alignItems="flex-start"
+          bgGradient="linear(brand, orange.300 )"
+          fontWeight="semibold"
           justifyItems="center"
+          alignItems="center"
           fontSize="lg"
         >
-          <DrawerCloseButton />
+          <DrawerCloseButton
+            size="lg"
+            position="fixed"
+            bottom={{ base: '1', lg: undefined }}
+            top={{ lg: '0' }}
+            justifyContent="center"
+            alignItems="center"
+            right="5.5"
+          />
           <DrawerBody>
             <nav>
               <Flex alignItems="flex-start" flexDir="column" mt="20" mx="10">
                 <Link
+                  mb="3"
                   onClick={handleLinkClick}
                   display="flex"
-                  gap="4"
+                  gap="2"
                   alignItems="center"
                   href="/"
                 >
                   <StarIcon w={6} />
                   Home
                 </Link>
+
                 <Link
-                  onClick={handleLinkClick}
-                  href="/account"
-                  display="flex"
-                  gap="4"
-                  alignItems="center"
-                >
-                  {profile ? (
-                    <Avatar
-                      size="xs"
-                      src={profile.previewUrl}
-                      name={profile.firstName}
-                    />
-                  ) : (
-                    <AtSignIcon w={6} />
-                  )}
-                  Account
-                </Link>
-                <Link
-                  onClick={handleLinkClick}
-                  href="/account/payment-methods"
-                  display="flex"
-                  gap="4"
-                  alignItems="center"
-                >
-                  <AtSignIcon w={6} />
-                  Payment Methods
-                </Link>
-                <Link
+                  mb="3"
                   onClick={handleLinkClick}
                   display="flex"
-                  gap="4"
+                  gap="2"
                   alignItems="center"
                   href="/clubs"
                 >
@@ -131,31 +114,35 @@ export function Navigation() {
                   Clubs
                 </Link>
                 <Link
+                  mb="3"
                   onClick={handleLinkClick}
                   display="flex"
-                  gap="4"
+                  gap="2"
                   alignItems="center"
                   href="/clubs/club-registration"
                 >
                   <AtSignIcon w={6} />
                   Register club
                 </Link>
+                <Link
+                  mb="3"
+                  onClick={handleLinkClick}
+                  href="/account/payment-methods"
+                  display="flex"
+                  gap="2"
+                  alignItems="center"
+                >
+                  <AtSignIcon w={6} />
+                  Payment Methods
+                </Link>
 
                 <Button
-                  fontWeight="normal"
+                  fontSize="lg"
                   variant="unstyled"
                   onClick={toggleColorMode}
                   leftIcon={<ColorModeIcon w={6} />}
                 >
                   Switch to {colorMode === 'light' ? 'dark' : 'light'} mode
-                </Button>
-                <Button
-                  fontWeight="normal"
-                  variant="unstyled"
-                  onClick={handlClickLogout}
-                  leftIcon={<LockIcon w={6} />}
-                >
-                  Log out
                 </Button>
               </Flex>
             </nav>

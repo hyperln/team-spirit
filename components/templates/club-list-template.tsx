@@ -11,16 +11,35 @@ export function ClubListTemplate({ clubs }) {
     <Flex justifyContent="center" minH="calc(100vh - 80px)">
       <Box display="block">
         <Heading>Clubs</Heading>
-        <Button
-          leftIcon={<AddIcon />}
-          as={Link}
-          href="/clubs/club-registration"
+        <Flex justifyContent="center">
+          <Button
+            color="white"
+            variant="ghost"
+            leftIcon={<AddIcon />}
+            as={Link}
+            href="/clubs/club-registration"
+          >
+            Register new club
+          </Button>
+        </Flex>
+        <List
+          color="white"
+          bg="brand"
+          fontWeight="medium"
+          fontSize="lg"
+          mt="2"
+          spacing={3}
+          w="80"
+          borderRadius="5%"
+          padding="5"
+          boxShadow="dark-lg"
         >
-          Register new club
-        </Button>
-        <List fontWeight="medium" fontSize="lg" mt="2" spacing={3}>
           {clubs.map((club) => (
-            <ListItem key={club.id}>
+            <ListItem
+              borderBottom="1px"
+              borderBottomColor="orange.300"
+              key={club.id}
+            >
               <Link href={`/clubs/${club.id}`}>
                 {club.name}
                 {<ArrowForwardIcon />}

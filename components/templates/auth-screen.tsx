@@ -210,6 +210,7 @@ export function AuthScreen() {
               ) : null,
             )}
             <Button
+              color="white"
               variant="ghost"
               onClick={() =>
                 setStep((prevStep) =>

@@ -7,7 +7,12 @@ export function PaymentMethodsTemplate() {
   return (
     <Flex justifyContent="center" flexDir="column" alignItems="center" gap="6">
       <Heading size="md">Your payment methods</Heading>
-      <Button as={Link} href="/account/payment-methods/add">
+      <Button
+        color="white"
+        variant="ghost"
+        as={Link}
+        href="/account/payment-methods/add"
+      >
         Add payment method
       </Button>
     </Flex>

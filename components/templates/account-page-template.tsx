@@ -15,6 +15,7 @@ import { Heading } from '@components/atoms/typography/heading';
 import { FormControl, FormLabel } from '@components/molecules/form';
 import { Center } from '@components/atoms/center';
 import { useColorModeValue } from '@hooks/use-color-mode';
+import { Text } from '@components/atoms/typography/text';
 
 export function AccountPageTemplate() {
   const toast = useToast();
@@ -100,17 +101,30 @@ export function AccountPageTemplate() {
   };
 
   return (
-    <Flex justifyContent="center" h="full">
+    <Flex justifyContent="flex-start" h="52" mt="-20">
       <Box
+        bg="orange.400"
+        mt="16"
         justifyContent={{ base: 'center', lg: 'right' }}
         p="12"
-        boxSize="border-box"
+        width="full"
       >
-        <Heading as="h2" size="lg" mb="8" textAlign="center">
+        <Center>
+          <Avatar
+            borderColor="white"
+            showBorder
+            mt="5"
+            size="xl"
+            src={previewImageUrl}
+            name={firstName || user.email}
+          />
+        </Center>
+        <Heading as="h2" size="lg" textAlign="center">
           Welcome, {profile?.firstName || user.email}{' '}
         </Heading>
+
         <form onSubmit={handleSubmit}>
-          <FormControl mb="6" variant="floating">
+          <FormControl mt="10" mb="6" variant="floating">
             <Box mb="2" position="relative">
               <FormLabel
                 position="absolute"
@@ -172,7 +186,7 @@ export function AccountPageTemplate() {
                 name="lastName"
               />
             </Box>
-            <Box mb="12">
+            <Box mb="5">
               <Select
                 onChange={handleGenderSelect}
                 placeholder="Gender"
@@ -184,25 +198,24 @@ export function AccountPageTemplate() {
               </Select>
             </Box>
 
-            <Flex alignItems="center">
+            <Box>
+              <Text mb="1" fontWeight="semibold">
+                Profile Picture
+              </Text>
               <Input
+                pt="1"
                 type="file"
                 placeholder="Profile picture"
                 accept="image/*"
                 onChange={onSelectFile}
                 name="avatar"
               />
-
-              <Avatar
-                ml="4"
-                size="xl"
-                src={previewImageUrl}
-                name={firstName || user.email}
-              />
-            </Flex>
+            </Box>
           </FormControl>
           <Box textAlign="center">
             <Button
+              color="white"
+              variant="ghost"
               type="submit"
               isLoading={isLoading}
               spinner={<Spinner size="lg" />}
