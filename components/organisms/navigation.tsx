@@ -65,6 +65,8 @@ export function Navigation() {
         onClick={() => handleClick(size)}
         key={size}
         m={1}
+        right="5"
+        p="0"
       >
         {`Open ${size} Drawer`}
       </Button>
@@ -74,24 +76,29 @@ export function Navigation() {
         <DrawerContent
           bgGradient="linear(brand, orange.300 )"
           fontWeight="semibold"
-          justifyItems="center"
-          alignItems="center"
+          alignItems={{ md: 'center', base: 'left' }}
           fontSize="lg"
         >
           <DrawerCloseButton
+            p="0"
             size="lg"
             position="fixed"
             bottom={{ base: '1', lg: undefined }}
-            top={{ lg: '0' }}
-            justifyContent="center"
+            top={{ lg: '2' }}
             alignItems="center"
-            right="5.5"
+            right="6"
           />
           <DrawerBody>
             <nav>
-              <Flex alignItems="flex-start" flexDir="column" mt="20" mx="10">
+              <Flex
+                py={{ base: '16', md: '36' }}
+                alignItems="flex-start"
+                flexDir="column"
+                mt="20"
+                mx="10"
+              >
                 <Link
-                  mb="3"
+                  mb={{ base: '7', md: '10' }}
                   onClick={handleLinkClick}
                   display="flex"
                   gap="2"
@@ -103,7 +110,7 @@ export function Navigation() {
                 </Link>
 
                 <Link
-                  mb="3"
+                  mb={{ base: '7', md: '10' }}
                   onClick={handleLinkClick}
                   display="flex"
                   gap="2"
@@ -114,7 +121,7 @@ export function Navigation() {
                   Clubs
                 </Link>
                 <Link
-                  mb="3"
+                  mb={{ base: '7', md: '10' }}
                   onClick={handleLinkClick}
                   display="flex"
                   gap="2"
@@ -125,7 +132,7 @@ export function Navigation() {
                   Register club
                 </Link>
                 <Link
-                  mb="3"
+                  mb={{ base: '7', md: '10' }}
                   onClick={handleLinkClick}
                   href="/account/payment-methods"
                   display="flex"
@@ -135,14 +142,13 @@ export function Navigation() {
                   <AtSignIcon w={6} />
                   Payment Methods
                 </Link>
-
                 <Button
                   fontSize="lg"
                   variant="unstyled"
                   onClick={toggleColorMode}
                   leftIcon={<ColorModeIcon w={6} />}
                 >
-                  Switch to {colorMode === 'light' ? 'dark' : 'light'} mode
+                  {colorMode === 'light' ? 'Dark' : 'Light'} mode
                 </Button>
               </Flex>
             </nav>
