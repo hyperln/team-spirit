@@ -16,6 +16,7 @@ import { fetchCountryList, updateUserProfile } from '@lib/db';
 import { PaymentElement } from '@lib/payments/components';
 import { PaymentsContext } from '@lib/payments/context';
 import { Address } from '@lib/payments/payment-types';
+import { useElements, useStripe } from '@stripe/react-stripe-js';
 import { capitalizeFirstLetter } from '@utils/string-utils';
 import {
   createContext,
@@ -26,6 +27,7 @@ import {
   useMemo,
   useReducer,
 } from 'react';
+import { config } from 'config';
 
 enum Steps {
   'address',
@@ -232,7 +234,48 @@ function AddressForm() {
   );
 }
 
-function AddPaymentDetailsForm() {
+function PaymentForm() {
+  const { state, dispatch } = useContext(FormContext);
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!stripe || !elements) {
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return;
+    }
+
+    const { error } = await stripe.confirmSetup({
+      //`Elements` instance that was used to create the Payment Element
+      elements,
+      confirmParams: {
+        return_url: `${config.site.url}/account/payment-methods/success`,
+      },
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <Box my="10">
+        <PaymentElement />
+      </Box>
+      <Button
+        disabled={!stripe}
+        colorScheme="orange"
+        rounded="full"
+        isLoading={state.loadingState === 'loading'}
+        w="full"
+        type="submit"
+      >
+        Save payment details
+      </Button>
+    </form>
+  );
+}
+
+function AddPaymentDetailsContext() {
   const { state, dispatch } = useContext(FormContext);
 
   const options = useMemo(() => {
@@ -241,28 +284,11 @@ function AddPaymentDetailsForm() {
     };
   }, [state.setupIntent?.client_secret]);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-  };
-
   return !state.setupIntent?.client_secret ? (
     <Skeleton h="48" />
   ) : (
     <PaymentsContext options={options}>
-      <form onSubmit={handleSubmit}>
-        <Box my="10">
-          <PaymentElement />
-        </Box>
-        <Button
-          colorScheme="orange"
-          rounded="full"
-          isLoading={state.loadingState === 'loading'}
-          w="full"
-          type="submit"
-        >
-          Save payment details
-        </Button>
-      </form>
+      <PaymentForm />
     </PaymentsContext>
   );
 }
@@ -309,7 +335,7 @@ export const AddPaymentMethodTemplate = withContext(
             {state.step === 'address' ? (
               <AddressForm />
             ) : (
-              <AddPaymentDetailsForm />
+              <AddPaymentDetailsContext />
             )}
           </Skeleton>
         </Box>
