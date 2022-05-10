@@ -60,9 +60,8 @@ export function Navigation() {
       <Button
         as={IconButton}
         aria-label="Options"
-        icon={<HamburgerIcon />}
-        variant="outline"
-        bg="white"
+        icon={<HamburgerIcon color="white" boxSize={8} />}
+        variant="ghost"
         onClick={() => handleClick(size)}
         key={size}
         m={1}
