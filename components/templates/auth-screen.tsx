@@ -21,55 +21,12 @@ import { Spinner } from '@components/atoms/spinner';
 enum Steps {
   login = 'login',
   register = 'register',
-  registerRepeatPassword = 'registerRepeatPassword',
 }
 
 const instructions = {
   [Steps.login]: 'Login',
   [Steps.register]: 'Sign Up',
-  [Steps.registerRepeatPassword]: 'Sign Up',
 };
-
-// enum Fields {
-//   email = 'email',
-//   password = 'password',
-//   password2 = 'password2',
-// }
-
-// const fieldNames = Object.keys(Fields).map((key) => key);
-
-// type Refs = {
-//   'email?': { current: any; [key: string]: any };
-//   'password?': { current: any; [key: string]: any };
-//   'password2?': { current: any; [key: string]: any };
-// };
-
-// const fields = [
-//   {
-//     name: Fields.email,
-//     showFor: Object.keys(Steps).map((key) => key),
-//     currentStep: [Steps.register],
-//     showSubmitButtonFor: [],
-//     placeholder: 'Email',
-//     inputType: 'email',
-//   },
-//   {
-//     name: Fields.password,
-//     showFor: Object.keys(Steps).map((key) => key),
-//     currentStep: [Steps.register, Steps.login],
-//     showSubmitButtonFor: [Steps.login],
-//     placeholder: 'Password',
-//     inputType: 'password',
-//   },
-//   {
-//     name: Fields.password2,
-//     showFor: [Steps.register, Steps.registerRepeatPassword],
-//     currentStep: [Steps.registerRepeatPassword],
-//     showSubmitButtonFor: [Steps.registerRepeatPassword, Steps.register],
-//     placeholder: 'Repeat Password',
-//     inputType: 'password',
-//   },
-// ];
 
 export function AuthScreen() {
   const [show, setShow] = React.useState(false);
@@ -77,74 +34,16 @@ export function AuthScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
   const auth = useAuth();
-  const [step, setStep] = useState(Steps.login);
+  const [step, setStep] = useState(Steps.register);
   const {
     register,
     handleSubmit,
     watch,
-    setValue,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm();
 
   const password = useRef({});
   password.current = watch('password', '');
-
-  // const refs: Refs = fieldNames.reduce((acc, curr) => {
-  //   const ref = useRef();
-  //   return {
-  //     ...acc,
-  //     [curr]: ref,
-  //   };
-  // }, {});
-
-  // const formRefs = {
-  //   email: register('email', {
-  //     required: true,
-  //   }),
-  //   password: register('password', {
-  //     required: true,
-  //     minLength:
-  //       step !== Steps.login
-  //         ? {
-  //             value: 7,
-  //             message: 'Passwords must be at least 7 characters',
-  //           }
-  //         : null,
-  //     pattern:
-  //       step !== Steps.login
-  //         ? {
-  //             value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/,
-  //             message:
-  //               'Passwords must contain at least one letter and one number',
-  //           }
-  //         : null,
-  //   }),
-  //   password2: register('password2', {
-  //     required: step === Steps.registerRepeatPassword,
-  //     validate: (value) =>
-  //       [Steps.registerRepeatPassword, Steps.register].includes(step)
-  //         ? value === password.current || 'The passwords do not match'
-  //         : null,
-  //   }),
-  // };
-
-  useEffect(() => {
-    switch (step) {
-      // case Steps.checkEmail:
-      //   refs.email.current?.focus();
-      //   break;
-      // case Steps.login:
-      // case Steps.register:
-      //   refs.password.current?.focus();
-      //   break;
-      case Steps.registerRepeatPassword:
-        // name["password2?"].current?.focus();
-        break;
-
-      default:
-        break;
-    }
-  }, [step]);
 
   const onSubmit = async (e) => {
     setIsLoading(true);
@@ -154,21 +53,11 @@ export function AuthScreen() {
         setIsLoading(false);
         break;
       case Steps.register:
-        setStep(Steps.registerRepeatPassword);
-        setIsLoading(false);
-        break;
-      case Steps.registerRepeatPassword:
         await auth.signUp({ email: e.email, password: e.password });
         setIsLoading(false);
         break;
       default:
         break;
-    }
-  };
-
-  const handleChangeStep = (nextStep: Steps[]) => () => {
-    if (nextStep.includes(Steps.registerRepeatPassword)) {
-      setStep(Steps.registerRepeatPassword);
     }
   };
 
@@ -207,35 +96,25 @@ export function AuthScreen() {
           </Button>
         </Flex>
         <Box mt="4" w="xs" d="flex" flexDirection="column" gridGap="3">
-          {/* {fields.map((field) => */}
-          {/* field.showFor.includes(step) ? ( */}
           <FormControl>
-            <FormLabel>Email</FormLabel>
+            <FormLabel htmlFor="email">Email</FormLabel>
             <Input
               name="email"
               bg="gray.50"
               type="email"
-              // onFocus={handleChangeStep(field.currentStep)}
               {...register('email', {
-                required: 'true',
+                required: true,
               })}
-              isInvalid={errors.name}
+              isInvalid={errors.email}
               id="email"
               placeholder="Email"
               pr="12"
-              // ref={(e) => {
-              //   register['email'].ref(e);
-              //   // refs['email'].current = e;
-              // }}
             />
-            <FormErrorMessage>
-              {errors.email && errors.email.message}
-            </FormErrorMessage>
-            <InputGroup mt="4" size="md">
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <InputGroup size="md">
               <Input
                 name="password"
                 bg="gray.50"
-                // onFocus={handleChangeStep(field.currentStep)}
                 placeholder="Password"
                 pr="12"
                 type={show ? 'text' : 'password'}
@@ -247,7 +126,7 @@ export function AuthScreen() {
                           value: 7,
                           message: 'Passwords must be at least 7 characters',
                         }
-                      : null,
+                      : undefined,
                   pattern:
                     step !== Steps.login
                       ? {
@@ -255,16 +134,11 @@ export function AuthScreen() {
                           message:
                             'Passwords must contain at least one letter and one number',
                         }
-                      : null,
+                      : undefined,
                 })}
-                isInvalid={errors.message}
+                isInvalid={errors.password}
                 id="password"
-                // ref={(e) => {
-                //   register['password'].ref(e);
-                //   // refs['email'].current = e;
-                // }}
               />
-              <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
               <InputRightElement w="12">
                 <Button
                   bg="transparent"
@@ -278,58 +152,48 @@ export function AuthScreen() {
               </InputRightElement>
             </InputGroup>
             {step === Steps.register ? (
-              <InputGroup mt="4" size="md">
-                <Input
-                  name="password2"
-                  bg="gray.50"
-                  // onFocus={handleCha ngeStep(field.currentStep)}
-                  {...register('password2', {
-                    required: step === Steps.register,
-                    validate: (value) =>
-                      [Steps.registerRepeatPassword, Steps.register].includes(
-                        step,
-                      )
-                        ? value === password.current ||
+              <>
+                <FormLabel htmlFor="password2">Repeat password</FormLabel>
+                <InputGroup size="md">
+                  <Input
+                    name="password2"
+                    bg="gray.50"
+                    {...register('password2', {
+                      required: step === Steps.register,
+                      validate: (value) => {
+                        return (
+                          value === password.current ||
                           'The passwords do not match'
-                        : null,
-                  })}
-                  isInvalid={errors.message}
-                  id="password2"
-                  // ref={(e) => {
-                  //   register['password2'].ref(e);
-                  //   // refs['email'].current = e;
-                  // }}
-                  placeholder="Repeat Password"
-                  pr="12"
-                  type={show ? 'text' : 'password'}
-                />
-                <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
-                {/* {field.showSubmitButtonFor.includes(step) ? ( */}
-                <InputRightElement w="12">
-                  <Button
-                    bg="transparent"
-                    color="brand"
-                    h="1.75rem"
-                    size="sm"
-                    onClick={handleClick}
-                  >
-                    {show ? 'Hide' : 'Show'}
-                  </Button>
-                </InputRightElement>
-                {/* ) : null} */}
-              </InputGroup>
+                        );
+                      },
+                    })}
+                    isInvalid={errors.password2}
+                    id="password2"
+                    placeholder="Repeat Password"
+                    pr="12"
+                    type={show ? 'text' : 'password'}
+                  />
+                  <InputRightElement w="12">
+                    <Button
+                      bg="transparent"
+                      color="brand"
+                      h="1.75rem"
+                      size="sm"
+                      onClick={handleClick}
+                    >
+                      {show ? 'Hide' : 'Show'}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </>
             ) : null}
-            <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+            <Text position="absolute" color="red.500">
+              {errors.email?.message ||
+                errors.password?.message ||
+                errors.password2?.message}
+            </Text>
           </FormControl>
-          {/* ) : null,
-          )} */}
         </Box>
-        {step === Steps.register ? (
-          <CheckBox fontWeight="Inter" color="gray.600" mt="2" w="xs">
-            'I would like to receive your newsletter and other promotional
-            information.'
-          </CheckBox>
-        ) : null}
 
         <Flex top="90" position="relative" flexDir="column">
           <Button
@@ -345,7 +209,7 @@ export function AuthScreen() {
           </Button>
           <Link
             mt="5"
-            href=" "
+            href="#"
             color="brand"
             alignContent="center"
             alignSelf="center"
