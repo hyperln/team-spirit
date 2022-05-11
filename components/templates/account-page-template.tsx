@@ -14,7 +14,6 @@ import { Spinner } from '@components/atoms/spinner';
 import { Heading } from '@components/atoms/typography/heading';
 import { FormControl, FormLabel } from '@components/molecules/form';
 import { Center } from '@components/atoms/center';
-import { useColorModeValue } from '@hooks/use-color-mode';
 import { Text } from '@components/atoms/typography/text';
 
 export function AccountPageTemplate() {
