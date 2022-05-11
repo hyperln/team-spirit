@@ -4,8 +4,6 @@ import {
   keysToSnake,
   removeNullUndefinedAndEmptyStrings,
 } from '@utils/object-utils';
-import { update } from 'lodash';
-import ClubId from 'pages/clubs/[clubId]';
 import { Club, Team } from 'shared/types';
 import { client } from './client';
 
