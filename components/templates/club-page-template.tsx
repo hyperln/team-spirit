@@ -6,13 +6,24 @@ import { Flex } from '@components/atoms/flex';
 import { Heading } from '@components/atoms/typography/heading';
 import { Text } from '@components/atoms/typography/text';
 import { useToast } from '@hooks/use-toast';
-import { isUserAdmin, isUserMember, joinClub, leaveClub } from '@lib/db';
+import {
+  fetchClub,
+  isUserAdmin,
+  isUserMember,
+  joinClub,
+  leaveClub,
+  UpdateClubData,
+  UpdateClubProfile,
+} from '@lib/db';
 import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
 import { useRouter } from 'next/router';
 import { List, ListItem } from '@components/atoms/list';
 import { AddIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { uploadLogoImage } from '@lib/storage/storage';
+import { useAuth } from '@hooks/use-auth';
+import { Input } from '@components/atoms/input';
 
 interface Props {
   club: Club;
@@ -40,15 +51,19 @@ function reducer(state, action) {
 
 export function ClubPageTemplate({ club }: Props) {
   const router = useRouter();
+  const toast = useToast();
+
+  const { clubId } = router.query;
+
   const [userIsMember, setUserIsMember] = useState(false);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
+  const [previewImageUrl, setPreviewImageUrl] = useState('');
+  const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
     isAdmin: true,
     isMember: true,
   });
-  const toast = useToast();
-
-  const { clubId } = router.query;
 
   const checkIsUserMember = async () => {
     const isMember = await isUserMember(club.id);
@@ -66,7 +81,21 @@ export function ClubPageTemplate({ club }: Props) {
   useEffect(() => {
     checkIsUserMember();
     checkIsUserAdmin();
+    setPreviewImageUrl(previewImageUrl);
   }, []);
+
+  const onSelectFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setPreviewImageUrl(undefined);
+      return;
+    }
+
+    const selectedFile = e.target.files[0];
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreviewImageUrl(objectUrl);
+    setImage(selectedFile);
+  };
 
   const handleJoinClub = async () => {
     try {
@@ -104,6 +133,48 @@ export function ClubPageTemplate({ club }: Props) {
     }
   };
 
+  const handleLogoUpload = async (e) => {
+    setIsLoading(true);
+    checkIsUserAdmin();
+    e.preventDefault();
+
+    let logoUrl = '';
+
+    if (image) {
+      try {
+        const logoUrlData = await uploadLogoImage(club.id, image);
+        logoUrl = logoUrlData.Key.split('logos/')[1];
+      } catch (error) {
+        return toast({
+          status: 'error',
+          description: error.message,
+          title: 'error',
+        });
+      }
+    }
+    try {
+      await UpdateClubProfile(club.id, {
+        logoUrl: logoUrl,
+      });
+
+      fetchClub;
+
+      toast({
+        status: 'success',
+        description: 'Club logo has been saved!',
+        title: 'Success',
+      });
+    } catch (error) {
+      toast({
+        status: 'error',
+        description: error.message,
+        title: 'error',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Flex justifyContent="center">
       <Box display="block">
@@ -122,6 +193,30 @@ export function ClubPageTemplate({ club }: Props) {
                 Register New Team
               </Button>
             ) : null}
+            {userIsAdmin ? (
+              <Flex mt="5" flexDir="column" gap="8">
+                <form onSubmit={handleLogoUpload}>
+                  <Input
+                    pt="1"
+                    type="file"
+                    placeholder="Club Logo"
+                    accept="image/*"
+                    onChange={onSelectFile}
+                    name="logo"
+                  />
+                  <Button
+                    color="white"
+                    variant="ghost"
+                    type="submit"
+                    isLoading={isLoading}
+                    spinner={<Spinner size="lg" />}
+                  >
+                    Save Club Logo
+                  </Button>
+                </form>
+              </Flex>
+            ) : null}
+
             {!userIsMember ? (
               <Button
                 color="white"
