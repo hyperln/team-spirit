@@ -24,6 +24,7 @@ import { AddIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { uploadLogoImage } from '@lib/storage/storage';
 import { useAuth } from '@hooks/use-auth';
 import { Input } from '@components/atoms/input';
+import { Avatar } from '@components/molecules/avatar-image';
 
 interface Props {
   club: Club;
@@ -135,7 +136,6 @@ export function ClubPageTemplate({ club }: Props) {
 
   const handleLogoUpload = async (e) => {
     setIsLoading(true);
-    checkIsUserAdmin();
     e.preventDefault();
 
     let logoUrl = '';
@@ -154,10 +154,8 @@ export function ClubPageTemplate({ club }: Props) {
     }
     try {
       await UpdateClubProfile(club.id, {
-        logoUrl: logoUrl,
+        logoUrl,
       });
-
-      fetchClub;
 
       toast({
         status: 'success',
@@ -178,10 +176,40 @@ export function ClubPageTemplate({ club }: Props) {
   return (
     <Flex justifyContent="center">
       <Box display="block">
-        <Heading>{club.name}</Heading>
-        <Text fontWeight="semibold">{club.established}</Text>
+        <Center>
+          <Heading>{club.name}</Heading>
+          <Text fontWeight="semibold">{club.established}</Text>
+          <Avatar
+            borderColor="white"
+            showBorder
+            mt="5"
+            size="xl"
+            src={previewImageUrl}
+          />
+        </Center>
         {!state.isMemberLoading && !state.isAdminLoading ? (
           <Flex mt="5" flexDir="column" gap="8">
+            {userIsAdmin ? (
+              <form onSubmit={handleLogoUpload}>
+                <Input
+                  pt="1"
+                  type="file"
+                  placeholder="Club Logo"
+                  accept="image/*"
+                  onChange={onSelectFile}
+                  name="logo"
+                />
+                <Button
+                  color="white"
+                  variant="ghost"
+                  type="submit"
+                  isLoading={isLoading}
+                  spinner={<Spinner size="lg" />}
+                >
+                  Save Club Logo
+                </Button>
+              </form>
+            ) : null}
             {userIsAdmin ? (
               <Button
                 color="white"
@@ -192,29 +220,6 @@ export function ClubPageTemplate({ club }: Props) {
               >
                 Register New Team
               </Button>
-            ) : null}
-            {userIsAdmin ? (
-              <Flex mt="5" flexDir="column" gap="8">
-                <form onSubmit={handleLogoUpload}>
-                  <Input
-                    pt="1"
-                    type="file"
-                    placeholder="Club Logo"
-                    accept="image/*"
-                    onChange={onSelectFile}
-                    name="logo"
-                  />
-                  <Button
-                    color="white"
-                    variant="ghost"
-                    type="submit"
-                    isLoading={isLoading}
-                    spinner={<Spinner size="lg" />}
-                  >
-                    Save Club Logo
-                  </Button>
-                </form>
-              </Flex>
             ) : null}
 
             {!userIsMember ? (
