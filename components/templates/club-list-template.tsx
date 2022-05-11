@@ -15,7 +15,7 @@ export function ClubListTemplate({ clubs }) {
       </Center>
       {clubs.map((club) => (
         <HStack>
-          <Box w="16" h="16">
+          <Box mt="2" w="16" h="16">
             <Center>
               <AtSignIcon boxSize="10" />
             </Center>
