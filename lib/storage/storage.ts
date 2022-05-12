@@ -22,7 +22,7 @@ export async function getAvatarImage(imageId: string) {
 export async function uploadLogoImage(clubId: number, image: LogoFile) {
   const { data, error } = await client.storage
     .from('logos')
-    .upload(`$Date.now()}_${clubId}`, image, { upsert: true });
+    .upload(`${Date.now()}_${clubId}`, image, { upsert: true });
   if (error) throw error;
   return data;
 }
