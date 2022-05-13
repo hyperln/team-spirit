@@ -66,7 +66,6 @@ export function ClubPageTemplate({ club }: Props) {
 
   const checkIsUserAdmin = async () => {
     const isAdmin = await isUserAdmin(club.id);
-    console.log('isAdmin :>> ', isAdmin);
     setUserIsAdmin(isAdmin);
     dispatch({ type: 'checkIsUserAdmin', payload: isAdmin });
   };

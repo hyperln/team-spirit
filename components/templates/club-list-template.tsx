@@ -20,7 +20,6 @@ function ClubListing({ club }) {
 
   useEffect(() => {
     if (club.logoImageId) {
-      console.log('club.logoImageId :>> ', club.logoImageId);
       fetchLogoUrl();
     }
   }, [club.logoImageId]);

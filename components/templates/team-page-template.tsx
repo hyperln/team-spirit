@@ -81,8 +81,6 @@ export function TeamPageTemplate({ team }: Props) {
     }
   };
 
-  console.log(team);
-
   return (
     <Flex justifyContent="center">
       <Box display="block">
