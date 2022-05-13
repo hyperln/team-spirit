@@ -11,7 +11,7 @@ export async function listClubs() {
   //fetch clubs from database
   const { data, error } = await client.from('clubs').select().order('name');
   if (error) throw error;
-  return data;
+  return keysToCamel(data);
 }
 
 interface UpdateProfileData {
@@ -25,7 +25,7 @@ interface CreateClubData {
   established?: string;
 }
 interface UpdateClubData {
-  logoUrl?: string;
+  logoImageId?: string;
 }
 
 export async function UpdateClubProfile(
