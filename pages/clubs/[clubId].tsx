@@ -4,6 +4,7 @@ import { withRequireAuth } from '@hoc/with-auth';
 import { fetchClub, listTeams } from '@lib/db';
 import { Club, Team } from 'shared/types';
 import { TeamsListTemplate } from '@components/templates/teams-list-template';
+import { getLogoImage } from '@lib/storage/storage';
 
 interface Props {
   club: Club;
@@ -29,9 +30,11 @@ export async function getServerSideProps(context) {
     listTeams(clubId),
   ]);
 
+  const { signedURL } = await getLogoImage(club.logoImageId);
+
   return {
     props: {
-      club,
+      club: { ...club, logoUrl: signedURL },
       teams,
     },
   };

@@ -7,22 +7,17 @@ import { Heading } from '@components/atoms/typography/heading';
 import { Text } from '@components/atoms/typography/text';
 import { useToast } from '@hooks/use-toast';
 import {
-  fetchClub,
   isUserAdmin,
   isUserMember,
   joinClub,
   leaveClub,
-  UpdateClubData,
   UpdateClubProfile,
 } from '@lib/db';
 import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
-import { useRouter } from 'next/router';
-import { List, ListItem } from '@components/atoms/list';
-import { AddIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { AddIcon } from '@chakra-ui/icons';
 import { uploadLogoImage } from '@lib/storage/storage';
-import { useAuth } from '@hooks/use-auth';
 import { Input } from '@components/atoms/input';
 import { Avatar } from '@components/molecules/avatar-image';
 
@@ -51,14 +46,11 @@ function reducer(state, action) {
 }
 
 export function ClubPageTemplate({ club }: Props) {
-  const router = useRouter();
   const toast = useToast();
-
-  const { clubId } = router.query;
 
   const [userIsMember, setUserIsMember] = useState(false);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
-  const [previewImageUrl, setPreviewImageUrl] = useState('');
+  const [previewImageUrl, setPreviewImageUrl] = useState(club.logoUrl || '');
   const [image, setImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
@@ -82,7 +74,6 @@ export function ClubPageTemplate({ club }: Props) {
   useEffect(() => {
     checkIsUserMember();
     checkIsUserAdmin();
-    setPreviewImageUrl(previewImageUrl);
   }, []);
 
   const onSelectFile = (e) => {
@@ -138,12 +129,12 @@ export function ClubPageTemplate({ club }: Props) {
     setIsLoading(true);
     e.preventDefault();
 
-    let logoUrl = '';
+    let logoImageId = '';
 
     if (image) {
       try {
         const logoUrlData = await uploadLogoImage(club.id, image);
-        logoUrl = logoUrlData.Key.split('logos/')[1];
+        logoImageId = logoUrlData.Key.split('logos/')[1];
       } catch (error) {
         return toast({
           status: 'error',
@@ -154,7 +145,7 @@ export function ClubPageTemplate({ club }: Props) {
     }
     try {
       await UpdateClubProfile(club.id, {
-        logoUrl,
+        logoImageId,
       });
 
       toast({
@@ -215,7 +206,7 @@ export function ClubPageTemplate({ club }: Props) {
                 color="white"
                 variant="ghost"
                 leftIcon={<AddIcon />}
-                href={`/clubs/${clubId}/teams/team-registration`}
+                href={`/clubs/${club.id}/teams/team-registration`}
                 as={Link}
               >
                 Register New Team
