@@ -29,18 +29,25 @@ function ClubListing({ club }) {
       <Box mt="2" w="16" h="16">
         <Center>
           {logoUrl ? (
-            <Avatar borderColor="white" showBorder size="md" src={logoUrl} />
+            <Avatar
+              borderRadius="15%"
+              borderColor="white"
+              showBorder
+              size="md"
+              src={logoUrl}
+            />
           ) : (
             <Icon src="/icons/logo-fallback.svg" />
           )}
         </Center>
       </Box>
-      <Box w="80" h="16">
-        <ListItem borderBottom="1px" h="16" key={club.id}>
+      <Box w="80">
+        <ListItem width="72" borderBottom="1px" h="16" key={club.id}>
           <Link href={`/clubs/${club.id}`}>
-            <Text fontWeight="semibold">{club.name}</Text>
-
-            <Text>{club.established}</Text>
+            <Text letterSpacing="wide" fontSize="lg" fontWeight="bold">
+              {club.name}
+            </Text>
+            <Text fontWeight="semibold">{club.established}</Text>
           </Link>
         </ListItem>
       </Box>
