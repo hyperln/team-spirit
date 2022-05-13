@@ -2,13 +2,8 @@ import { useRouter } from 'next/router';
 import { Box } from '@components/atoms/box';
 import { Flex } from '@components/atoms/flex';
 import { Navigation } from '@components/organisms/navigation';
-import { IconButton } from '@components/atoms/button';
-import { ArrowBackIcon, AtSignIcon, LockIcon } from '@chakra-ui/icons';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-} from '@components/molecules/breadcrumb';
+import { Button } from '@components/atoms/button';
+import { AtSignIcon, LockIcon } from '@chakra-ui/icons';
 import { kebabToSentenceCase } from '@utils/string-utils';
 import { useColorModeValue } from '@hooks/use-color-mode';
 import {
@@ -114,32 +109,24 @@ export function Layout({ children }) {
 
       {router.asPath !== '/' ? (
         <Flex
+          position="absolute"
           boxShadow="2xl"
           rounded="md"
-          bg={navBackground}
           alignItems="center"
-          m="2"
-          mt={{ base: undefined, lg: '20' }}
+          mx="2"
+          my={{ base: 5, lg: '20' }}
         >
-          <IconButton
+          <Button
+            outline="0"
+            _focus={{ boxShadow: '0 0 0 0px' }}
             display={{ lg: 'none' }}
+            textColor="brand"
             variant="unstyled"
             aria-label="Back"
             onClick={() => router.back()}
-            icon={<ArrowBackIcon />}
-          />
-          <Breadcrumb fontSize="sm">
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            {breadcrumbs.map((breadcrumb) => (
-              <BreadcrumbItem key={breadcrumb.path}>
-                <BreadcrumbLink href={breadcrumb.path}>
-                  {breadcrumb.name}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            ))}
-          </Breadcrumb>
+          >
+            Back
+          </Button>
         </Flex>
       ) : null}
       <Box
