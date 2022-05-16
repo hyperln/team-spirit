@@ -16,10 +16,10 @@ import {
 import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
-import { AddIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons';
+import { AddIcon, EditIcon } from '@chakra-ui/icons';
 import { uploadLogoImage } from '@lib/storage/storage';
-import { Input, InputGroup } from '@components/atoms/input';
-import { Avatar } from '@components/molecules/avatar-image';
+import { Input } from '@components/atoms/input';
+import { Avatar, AvatarBadge } from '@components/molecules/avatar-image';
 import { useDisclosure } from '@hooks/use-disclosure';
 import {
   Modal,
@@ -29,9 +29,9 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@components/organisms/modal';
-import { FormControl } from '@components/molecules/form';
+import { FormControl, FormLabel } from '@components/molecules/form';
 import { Icon } from '@components/atoms/icon';
-import { Container, InputAddon } from '@chakra-ui/react';
+import { Container, VStack } from '@chakra-ui/react';
 
 interface Props {
   club: Club;
@@ -180,58 +180,74 @@ export function ClubPageTemplate({ club }: Props) {
   return (
     <Flex justifyContent="center">
       <Box display="block">
-        <Center>
-          <Heading>{club.name}</Heading>
-          <Text fontWeight="semibold">{club.established}</Text>
-          <Container position="relative">
-            <Container display="block">
-              <Avatar
-                onClick={onOpen}
-                borderColor="white"
-                showBorder
-                size="xl"
-                left="2"
-                src={previewImageUrl}
-              />
-            </Container>
-            <EditIcon
+        <Heading color="white ">{club.name}</Heading>
+
+        <Container position="relative">
+          <Container p="4" display="block">
+            <Avatar
+              my="-2"
               onClick={onOpen}
-              boxSize="6"
-              bottom="2.5"
-              left="28"
-              position="absolute"
-              backgroundColor="brand"
-              color="white"
               borderColor="white"
-              border="1px"
-              borderRadius="10"
-              p="0.5"
+              showBorder
+              size="xl"
+              left="2"
+              src={previewImageUrl}
             />
           </Container>
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Upload Logo</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <FormControl>
-                  {userIsAdmin ? (
-                    <form onSubmit={handleLogoUpload}>
-                      <PlusSquareIcon
-                        // as={Input}
-                        onChange={onSelectFile}
-                        type="file"
-                        boxSize="xs"
-                      />
+          <EditIcon
+            onClick={onOpen}
+            boxSize="6"
+            bottom="2.5"
+            left="28"
+            position="absolute"
+            backgroundColor="brand"
+            color="white"
+            borderColor="white"
+            border="1px"
+            borderRadius="10"
+            p="0.5"
+          />
+        </Container>
 
-                      {/* <Input
-                        pt="1"
-                        type="file"
-                        placeholder="Club Logo"
-                        accept="image/*"
-                        onChange={onSelectFile}
-                        name="logo"
-                      /> */}
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalBody>
+              <ModalHeader textAlign="center ">Upload Logo</ModalHeader>
+              <ModalCloseButton />
+              <FormControl>
+                {userIsAdmin ? (
+                  <form onSubmit={handleLogoUpload}>
+                    <Input
+                      id="icon-button-file"
+                      style={{ display: 'none' }}
+                      type="file"
+                      placeholder="Club Logo"
+                      accept="image/*"
+                      onChange={onSelectFile}
+                      name="logo"
+                    />
+                    <FormLabel
+                      border="2px"
+                      borderStyle="dotted"
+                      htmlFor="icon-button-file"
+                    >
+                      <Icon
+                        width="150"
+                        height="150"
+                        src="/icons/upload-image.svg"
+                      />
+                    </FormLabel>
+                    <Center>
+                      <Avatar
+                        borderColor="white"
+                        showBorder
+                        mt="5"
+                        size="xl"
+                        src={previewImageUrl}
+                      />
+                    </Center>
+                    <Flex pt="2" direction="column">
                       <Button
                         onClick={onClose}
                         color="white"
@@ -240,15 +256,15 @@ export function ClubPageTemplate({ club }: Props) {
                         isLoading={isLoading}
                         spinner={<Spinner size="lg" />}
                       >
-                        Save Club Logo
+                        Save
                       </Button>
-                    </form>
-                  ) : null}
-                </FormControl>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-        </Center>
+                    </Flex>
+                  </form>
+                ) : null}
+              </FormControl>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
         {!state.isMemberLoading && !state.isAdminLoading ? (
           <Flex mt="5" flexDir="column" gap="8">
             {userIsAdmin ? (
