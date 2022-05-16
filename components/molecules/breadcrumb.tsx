@@ -15,17 +15,10 @@ export const BreadcrumbSeparator = ChakraBreadcrumbSeparator;
 type Props = ComponentProps<typeof ChakraBreadcrumbLink> &
   ComponentProps<typeof NextLink>;
 
-export function BreadcrumbLink({
-  href,
-  isExternal,
-  children,
-  ...props
-}: Props) {
+export function BreadcrumbLink({ href, children, ...props }: Props) {
   return (
     <NextLink href={href} passHref>
-      <ChakraBreadcrumbLink {...props} isExternal={isExternal}>
-        {children}
-      </ChakraBreadcrumbLink>
+      <ChakraBreadcrumbLink {...props}>{children}</ChakraBreadcrumbLink>
     </NextLink>
   );
 }

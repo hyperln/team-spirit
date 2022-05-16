@@ -15,6 +15,9 @@ export const colors = {
     linkItem: '#72849c',
     copyright: '#7f8795',
   },
+  input: {
+    background: '#F6F6F6',
+  },
   header: {
     background: '#6930c3',
     title: '#fff',
@@ -50,6 +53,11 @@ const components = {
       color: 'white',
       borderRadius: '70',
       bg: 'brand',
+    },
+  },
+  Input: {
+    baseStyle: {
+      bg: 'gray.100',
     },
   },
   Header: {

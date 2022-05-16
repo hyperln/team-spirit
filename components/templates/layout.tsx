@@ -67,6 +67,7 @@ export function Layout({ children }) {
           <MenuButton ml="1">
             {profile ? (
               <Avatar
+                left="5"
                 size="md"
                 src={profile.previewUrl}
                 name={profile.firstName}
