@@ -17,7 +17,7 @@ type Props = ComponentProps<typeof ChakraBreadcrumbLink> &
 export function BreadcrumbLink({ href, children, ...props }: Props) {
   return (
     <NextLink href={href} passHref>
-      <ChakraBreadcrumbLink {...props}>Back</ChakraBreadcrumbLink>
+      <ChakraBreadcrumbLink {...props}>{children}</ChakraBreadcrumbLink>
     </NextLink>
   );
 }
