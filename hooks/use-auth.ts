@@ -5,6 +5,7 @@ import {
   signUp,
   signIn,
   signOut,
+  resetPassword,
 } from '@lib/auth';
 
 export function useAuth() {
@@ -65,11 +66,32 @@ export function useAuth() {
     });
   };
 
+  const handleResetPassword = async ({ email }: { email: string }) => {
+    const { data, error } = await resetPassword().resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/account/password-recovery`,
+    });
+
+    if (error) {
+      return toast({
+        status: 'error',
+        description: error.message,
+        title: error.status,
+      });
+    }
+    return toast({
+      status: 'success',
+      description: 'Password recovery email sent!',
+      title: 'Success',
+      isClosable: true,
+    });
+  };
+
   return {
     user: getCurrentUser(),
     signUp: handleSignUp,
     signIn: handleSignIn,
     signOut: handleSignOut,
     onAuthStateChange: onAuthStateChange,
+    resetPassword: handleResetPassword,
   };
 }

@@ -11,3 +11,4 @@ export const session = () => client.auth.session();
 export const onAuthStateChange = (
   callback: (event: AuthChangeEvent, session: Session) => void,
 ) => client.auth.onAuthStateChange(callback);
+export const resetPassword = () => client.auth.api;

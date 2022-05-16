@@ -17,15 +17,20 @@ import { Link } from '@components/atoms/link';
 import { CheckBox } from '@components/atoms/checkbox';
 import React from 'react';
 import { Spinner } from '@components/atoms/spinner';
+import { client } from '@lib/db/client';
+import { emit } from 'process';
+import { resetPassword } from '../../lib/auth/auth';
 
 enum Steps {
   login = 'login',
   register = 'register',
+  resetPassword = 'reset password',
 }
 
 const instructions = {
   [Steps.login]: 'Login',
   [Steps.register]: 'Sign Up',
+  [Steps.resetPassword]: 'Reset Password',
 };
 
 export function AuthScreen() {
@@ -56,6 +61,10 @@ export function AuthScreen() {
         await auth.signUp({ email: e.email, password: e.password });
         setIsLoading(false);
         break;
+      case Steps.resetPassword:
+        await auth.resetPassword({ email: e.email });
+        setIsLoading(false);
+        break;
       default:
         break;
     }
@@ -64,7 +73,7 @@ export function AuthScreen() {
   return (
     <Center>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Flex mb="12" top="4" justifyContent="flex-start" position="relative">
+        <Flex mb="12" top="5" justifyContent="flex-start" position="relative">
           <Text
             flex="0 1 auto"
             position="absolute"
@@ -80,7 +89,7 @@ export function AuthScreen() {
           <Button
             justifyContent="center"
             size="sm"
-            flex="0 1 auto"
+            flex="0 1"
             ml="auto"
             alignSelf="flex-end"
             bg="transparent"
@@ -110,47 +119,51 @@ export function AuthScreen() {
               placeholder="Email"
               pr="12"
             />
-            <FormLabel htmlFor="password">Password</FormLabel>
-            <InputGroup size="md">
-              <Input
-                name="password"
-                bg="gray.50"
-                placeholder="Password"
-                pr="12"
-                type={show ? 'text' : 'password'}
-                {...register('password', {
-                  required: true,
-                  minLength:
-                    step !== Steps.login
-                      ? {
-                          value: 7,
-                          message: 'Passwords must be at least 7 characters',
-                        }
-                      : undefined,
-                  pattern:
-                    step !== Steps.login
-                      ? {
-                          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/,
-                          message:
-                            'Passwords must contain at least one letter and one number',
-                        }
-                      : undefined,
-                })}
-                isInvalid={errors.password}
-                id="password"
-              />
-              <InputRightElement w="12">
-                <Button
-                  bg="transparent"
-                  color="brand"
-                  h="1.75rem"
-                  size="sm"
-                  onClick={handleClick}
-                >
-                  {show ? 'Hide' : 'Show'}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
+            {step === Steps.login || step === Steps.register ? (
+              <FormLabel htmlFor="password">Password</FormLabel>
+            ) : null}
+            {step === Steps.login || step === Steps.register ? (
+              <InputGroup size="md">
+                <Input
+                  name="password"
+                  bg="gray.50"
+                  placeholder="Password"
+                  pr="12"
+                  type={show ? 'text' : 'password'}
+                  {...register('password', {
+                    required: step === Steps.login || step === Steps.register,
+                    minLength:
+                      step !== Steps.login
+                        ? {
+                            value: 7,
+                            message: 'Passwords must be at least 7 characters',
+                          }
+                        : undefined,
+                    pattern:
+                      step !== Steps.login
+                        ? {
+                            value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/,
+                            message:
+                              'Passwords must contain at least one letter and one number',
+                          }
+                        : undefined,
+                  })}
+                  isInvalid={errors.password}
+                  id="password"
+                />
+                <InputRightElement w="12">
+                  <Button
+                    bg="transparent"
+                    color="brand"
+                    h="1.75rem"
+                    size="sm"
+                    onClick={handleClick}
+                  >
+                    {show ? 'Hide' : 'Show'}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            ) : null}
             {step === Steps.register ? (
               <>
                 <FormLabel htmlFor="password2">Repeat password</FormLabel>
@@ -194,8 +207,12 @@ export function AuthScreen() {
             </Text>
           </FormControl>
         </Box>
-
-        <Flex top="90" position="relative" flexDir="column">
+        <Flex
+          bottom="-100"
+          position="relative"
+          justifyContent=""
+          flexDir="column"
+        >
           <Button
             type="submit"
             w="full"
@@ -204,19 +221,27 @@ export function AuthScreen() {
             aria-label="submit"
             isLoading={isLoading}
             spinner={<Spinner size="lg" />}
+            bottom="1"
           >
-            {step === Steps.register ? 'Sign Up' : `Login`}
+            {step === Steps.register
+              ? `Sign Up`
+              : step === Steps.login
+              ? `Login`
+              : `Reset Password`}
           </Button>
-          <Link
-            mt="5"
-            href="#"
-            color="brand"
-            alignContent="center"
-            alignSelf="center"
-            justifyItems="center"
-          >
-            Forgot your password?
-          </Link>
+          {step === Steps.login || step === Steps.register ? (
+            <Link
+              mt="5"
+              href="#"
+              color="brand"
+              alignContent="center"
+              alignSelf="center"
+              justifyItems="center"
+              onClick={() => setStep(Steps.resetPassword)}
+            >
+              Forgot your password?
+            </Link>
+          ) : null}
         </Flex>
       </form>
     </Center>
