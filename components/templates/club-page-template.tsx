@@ -4,7 +4,6 @@ import { Button } from '@components/atoms/button';
 import { Center } from '@components/atoms/center';
 import { Flex } from '@components/atoms/flex';
 import { Heading } from '@components/atoms/typography/heading';
-import { Text } from '@components/atoms/typography/text';
 import { useToast } from '@hooks/use-toast';
 import {
   isUserAdmin,
@@ -19,7 +18,7 @@ import { Link } from '@components/atoms/link';
 import { AddIcon, EditIcon } from '@chakra-ui/icons';
 import { uploadLogoImage } from '@lib/storage/storage';
 import { Input } from '@components/atoms/input';
-import { Avatar, AvatarBadge } from '@components/molecules/avatar-image';
+import { Avatar } from '@components/molecules/avatar-image';
 import { useDisclosure } from '@hooks/use-disclosure';
 import {
   Modal,
@@ -31,7 +30,7 @@ import {
 } from '@components/organisms/modal';
 import { FormControl, FormLabel } from '@components/molecules/form';
 import { Icon } from '@components/atoms/icon';
-import { Container, VStack } from '@chakra-ui/react';
+import { Container } from '@chakra-ui/react';
 
 interface Props {
   club: Club;
@@ -62,6 +61,7 @@ export function ClubPageTemplate({ club }: Props) {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [size, setSize] = useState('xs');
   const [userIsMember, setUserIsMember] = useState(false);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
   const [previewImageUrl, setPreviewImageUrl] = useState(club.logoUrl || '');
@@ -178,9 +178,9 @@ export function ClubPageTemplate({ club }: Props) {
   };
 
   return (
-    <Flex justifyContent="center">
-      <Box display="block">
-        <Heading color="white ">{club.name}</Heading>
+    <Flex bg="orange.400" justifyContent="center">
+      <Box>
+        <Heading color="white">{club.name}</Heading>
 
         <Container position="relative">
           <Container p="4" display="block">
@@ -209,11 +209,11 @@ export function ClubPageTemplate({ club }: Props) {
           />
         </Container>
 
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} size={size}>
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent borderRadius="xl">
             <ModalBody>
-              <ModalHeader textAlign="center ">Upload Logo</ModalHeader>
+              <ModalHeader textAlign="center">Upload Logo</ModalHeader>
               <ModalCloseButton />
               <FormControl>
                 {userIsAdmin ? (
