@@ -1,6 +1,6 @@
 import { useEffect, useState, useReducer } from 'react';
 import { Box } from '@components/atoms/box';
-import { Button } from '@components/atoms/button';
+import { Button, IconButton } from '@components/atoms/button';
 import { Center } from '@components/atoms/center';
 import { Flex } from '@components/atoms/flex';
 import { Heading } from '@components/atoms/typography/heading';
@@ -15,7 +15,7 @@ import {
 import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
-import { AddIcon, EditIcon } from '@chakra-ui/icons';
+import { AddIcon, CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
 import { uploadLogoImage } from '@lib/storage/storage';
 import { Input } from '@components/atoms/input';
 import { Avatar } from '@components/molecules/avatar-image';
@@ -30,7 +30,12 @@ import {
 } from '@components/organisms/modal';
 import { FormControl, FormLabel } from '@components/molecules/form';
 import { Icon } from '@components/atoms/icon';
-import { Container } from '@chakra-ui/react';
+import { ButtonGroup, Container } from '@chakra-ui/react';
+import {
+  Editable,
+  EditableInput,
+  EditablePreview,
+} from '@components/atoms/typography/editable';
 
 interface Props {
   club: Club;
@@ -62,6 +67,7 @@ export function ClubPageTemplate({ club }: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [size, setSize] = useState('xs');
+  const [clubName, setClubName] = useState('');
   const [userIsMember, setUserIsMember] = useState(false);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
   const [previewImageUrl, setPreviewImageUrl] = useState(club.logoUrl || '');
@@ -85,6 +91,7 @@ export function ClubPageTemplate({ club }: Props) {
   };
 
   useEffect(() => {
+    setClubName(clubName);
     checkIsUserMember();
     checkIsUserAdmin();
   }, []);
@@ -158,6 +165,7 @@ export function ClubPageTemplate({ club }: Props) {
     }
     try {
       await UpdateClubProfile(club.id, {
+        name,
         logoImageId,
       });
 
@@ -177,11 +185,41 @@ export function ClubPageTemplate({ club }: Props) {
     }
   };
 
+  const handleEditableChange = async (e) => {
+    e.preventDefault();
+    try {
+      await UpdateClubProfile(club.id, {
+        name,
+      });
+
+      toast({
+        status: 'success',
+        description: 'Profile has been updated!',
+        title: 'Success',
+      });
+    } catch (error) {
+      toast({
+        status: 'error',
+        description: error.message,
+        title: 'error',
+      });
+    }
+  };
+
   return (
     <Flex bg="orange.400" justifyContent="center">
       <Box>
-        <Heading color="white">{club.name}</Heading>
-
+        <form onSubmit={handleEditableChange}>
+          <Editable
+            textAlign="center"
+            fontSize="2xl"
+            defaultValue={club.name}
+            color="white"
+          >
+            <EditablePreview />
+            <EditableInput onChange={(e) => setClubName(e.target.value)} />
+          </Editable>
+        </form>
         <Container position="relative">
           <Container p="4" display="block">
             <Avatar
