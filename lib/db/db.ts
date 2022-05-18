@@ -29,10 +29,7 @@ interface UpdateClubData {
   logoImageId?: string;
 }
 
-export async function UpdateClubProfile(
-  clubId: number,
-  clubData: UpdateClubData,
-) {
+export async function UpdateClub(clubId: number, clubData: UpdateClubData) {
   const { data, error } = await client
     .from('clubs')
     .update(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)))

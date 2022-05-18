@@ -10,7 +10,7 @@ import {
   isUserMember,
   joinClub,
   leaveClub,
-  UpdateClubProfile,
+  UpdateClub,
 } from '@lib/db';
 import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
@@ -164,7 +164,7 @@ export function ClubPageTemplate({ club }: Props) {
       }
     }
     try {
-      await UpdateClubProfile(club.id, {
+      await UpdateClub(club.id, {
         name,
         logoImageId,
       });
@@ -188,13 +188,13 @@ export function ClubPageTemplate({ club }: Props) {
   const handleEditableChange = async (e) => {
     e.preventDefault();
     try {
-      await UpdateClubProfile(club.id, {
+      await UpdateClub(club.id, {
         name,
       });
 
       toast({
         status: 'success',
-        description: 'Profile has been updated!',
+        description: 'Club has been updated!',
         title: 'Success',
       });
     } catch (error) {
