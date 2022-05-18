@@ -25,6 +25,7 @@ interface CreateClubData {
   established?: string;
 }
 interface UpdateClubData {
+  name?: string;
   logoImageId?: string;
 }
 
