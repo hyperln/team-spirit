@@ -12,3 +12,6 @@ export const onAuthStateChange = (
   callback: (event: AuthChangeEvent, session: Session) => void,
 ) => client.auth.onAuthStateChange(callback);
 export const resetPassword = () => client.auth.api;
+export const handler = (req, res) => {
+  client.auth.api.setAuthCookie(req, res);
+};
