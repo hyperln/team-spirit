@@ -69,10 +69,10 @@ function EditControls() {
     getSubmitButtonProps,
   } = useEditableControls();
   return (
-    <Flex justifyContent="center">
+    <Flex justifyContent="center" m="1">
       {!isEditing ? (
         <IconButton
-          size="sm"
+          size="xs"
           aria-label="Edit club name"
           icon={<Icon src="/icons/edit.svg" height={16} width={16} />}
           {...getEditButtonProps()}
@@ -80,13 +80,14 @@ function EditControls() {
       ) : (
         <Flex justifyContent="center">
           <IconButton
-            size="sm"
+            mr="1"
+            size="xs"
             aria-label="Save"
             icon={<CheckIcon />}
             {...getSubmitButtonProps()}
           />
           <IconButton
-            size="sm"
+            size="xs"
             aria-label="Cancel"
             icon={<CloseIcon />}
             {...getCancelButtonProps()}
@@ -239,20 +240,18 @@ export function ClubPageTemplate({ club }: Props) {
     <>
       <Flex bg="orange.400" justifyContent="center">
         <Flex flexDir="column" alignItems="center">
-          <Flex justifyContent="center" w="full">
+          <Flex justifyContent="center">
             <Editable
+              alignItems="center"
               onSubmit={handleEditableChange}
               textAlign="center"
               fontSize="2xl"
               defaultValue={club.name}
-              color="white"
               display="flex"
-              flexDir="column"
             >
-              <EditablePreview w="full" />
+              <EditablePreview />
               <EditableInput
-                w="full"
-                display="inline"
+                backgroundColor="gray.100"
                 onChange={(e) => setClubName(e.target.value)}
               />
               <EditControls />
@@ -275,8 +274,8 @@ export function ClubPageTemplate({ club }: Props) {
                   aria-label="Edit club logo"
                   icon={<Icon width="16" height="16" src="/icons/edit.svg" />}
                   onClick={onOpen}
-                  size="sm"
-                  bottom="2.5"
+                  size="xs"
+                  bottom="3.5"
                   left="24"
                   position="absolute"
                   backgroundColor="brand"
