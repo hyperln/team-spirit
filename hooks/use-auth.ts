@@ -67,9 +67,7 @@ export function useAuth() {
   };
 
   const handleResetPassword = async ({ email }: { email: string }) => {
-    const { data, error } = await resetPassword().resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/account/password-recovery`,
-    });
+    const { data, error } = await resetPassword(email);
 
     if (error) {
       return toast({
