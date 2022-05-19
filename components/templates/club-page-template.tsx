@@ -165,7 +165,7 @@ export function ClubPageTemplate({ club }: Props) {
     }
     try {
       await UpdateClub(club.id, {
-        name,
+        name: clubName,
         logoImageId,
       });
 
@@ -189,12 +189,12 @@ export function ClubPageTemplate({ club }: Props) {
     e.preventDefault();
     try {
       await UpdateClub(club.id, {
-        name,
+        name: clubName,
       });
 
       toast({
         status: 'success',
-        description: 'Club has been updated!',
+        description: 'Club name has been updated!',
         title: 'Success',
       });
     } catch (error) {
@@ -213,11 +213,21 @@ export function ClubPageTemplate({ club }: Props) {
           <Editable
             textAlign="center"
             fontSize="2xl"
+            // name="clubName"
+            // value={clubName}
             defaultValue={club.name}
             color="white"
           >
             <EditablePreview />
-            <EditableInput onChange={(e) => setClubName(e.target.value)} />
+            {/* <Input
+              as={EditableInput}
+              // type="submit"
+            /> */}
+            <EditableInput
+              type="submit"
+              // onEdit={handleEditableChange}
+              onChange={(e) => setClubName(e.target.value)}
+            />
           </Editable>
         </form>
         <Container position="relative">
