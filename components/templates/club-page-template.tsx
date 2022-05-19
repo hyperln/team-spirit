@@ -186,16 +186,9 @@ export function ClubPageTemplate({ club }: Props) {
   };
 
   const handleEditableChange = async (e) => {
-    e.preventDefault();
     try {
       await UpdateClub(club.id, {
         name: clubName,
-      });
-
-      toast({
-        status: 'success',
-        description: 'Club name has been updated!',
-        title: 'Success',
       });
     } catch (error) {
       toast({
@@ -209,27 +202,17 @@ export function ClubPageTemplate({ club }: Props) {
   return (
     <Flex bg="orange.400" justifyContent="center">
       <Box>
-        <form onSubmit={handleEditableChange}>
-          <Editable
-            textAlign="center"
-            fontSize="2xl"
-            // name="clubName"
-            // value={clubName}
-            defaultValue={club.name}
-            color="white"
-          >
-            <EditablePreview />
-            {/* <Input
-              as={EditableInput}
-              // type="submit"
-            /> */}
-            <EditableInput
-              type="submit"
-              // onEdit={handleEditableChange}
-              onChange={(e) => setClubName(e.target.value)}
-            />
-          </Editable>
-        </form>
+        <Editable
+          onSubmit={handleEditableChange}
+          textAlign="center"
+          fontSize="2xl"
+          defaultValue={club.name}
+          color="white"
+        >
+          <EditablePreview />
+          <EditableInput onChange={(e) => setClubName(e.target.value)} />
+        </Editable>
+
         <Container position="relative">
           <Container p="4" display="block">
             <Avatar
