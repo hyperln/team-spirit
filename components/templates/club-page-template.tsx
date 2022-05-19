@@ -262,6 +262,9 @@ export function ClubPageTemplate({ club }: Props) {
                       border="2px"
                       borderStyle="dotted"
                       htmlFor="icon-button-file"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
                     >
                       <Icon
                         width="150"
