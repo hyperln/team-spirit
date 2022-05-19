@@ -30,12 +30,12 @@ import {
 } from '@components/organisms/modal';
 import { FormControl, FormLabel } from '@components/molecules/form';
 import { Icon } from '@components/atoms/icon';
-import { ButtonGroup, Container } from '@chakra-ui/react';
 import {
   Editable,
   EditableInput,
   EditablePreview,
 } from '@components/atoms/typography/editable';
+import { useEditableControls } from '@hooks/use-editable-controls';
 
 interface Props {
   club: Club;
@@ -59,6 +59,39 @@ const actions = {
 
 function reducer(state, action) {
   return actions[action.type] || state;
+}
+
+function EditControls() {
+  const {
+    isEditing,
+    getEditButtonProps,
+    getCancelButtonProps,
+    getSubmitButtonProps,
+  } = useEditableControls();
+  return (
+    <Box>
+      {!isEditing ? (
+        <IconButton
+          aria-label="Edit club name"
+          icon={<Icon src="/icons/edit.svg" height={16} width={16} />}
+          {...getEditButtonProps()}
+        />
+      ) : (
+        <Flex justifyContent="center">
+          <IconButton
+            aria-label="Cancel"
+            icon={<CloseIcon />}
+            {...getCancelButtonProps()}
+          />
+          <IconButton
+            aria-label="Save"
+            icon={<CheckIcon />}
+            {...getSubmitButtonProps()}
+          />
+        </Flex>
+      )}
+    </Box>
+  );
 }
 
 export function ClubPageTemplate({ club }: Props) {
@@ -200,153 +233,168 @@ export function ClubPageTemplate({ club }: Props) {
   };
 
   return (
-    <Flex bg="orange.400" justifyContent="center">
-      <Box>
-        <Editable
-          onSubmit={handleEditableChange}
-          textAlign="center"
-          fontSize="2xl"
-          defaultValue={club.name}
-          color="white"
-        >
-          <EditablePreview />
-          <EditableInput onChange={(e) => setClubName(e.target.value)} />
-        </Editable>
-
-        <Container position="relative">
-          <Container p="4" display="block">
-            <Avatar
-              my="-2"
-              onClick={onOpen}
-              borderColor="white"
-              showBorder
-              size="xl"
-              left="2"
-              src={previewImageUrl}
-            />
-          </Container>
-          <EditIcon
-            onClick={onOpen}
-            boxSize="6"
-            bottom="2.5"
-            left="28"
-            position="absolute"
-            backgroundColor="brand"
-            color="white"
-            borderColor="white"
-            border="1px"
-            borderRadius="10"
-            p="0.5"
-          />
-        </Container>
-
-        <Modal isOpen={isOpen} onClose={onClose} size={size}>
-          <ModalOverlay />
-          <ModalContent borderRadius="xl">
-            <ModalBody>
-              <ModalHeader textAlign="center">Upload Logo</ModalHeader>
-              <ModalCloseButton />
-              <FormControl>
-                {userIsAdmin ? (
-                  <form onSubmit={handleLogoUpload}>
-                    <Input
-                      id="icon-button-file"
-                      style={{ display: 'none' }}
-                      type="file"
-                      placeholder="Club Logo"
-                      accept="image/*"
-                      onChange={onSelectFile}
-                      name="logo"
-                    />
-                    <FormLabel
-                      border="2px"
-                      borderStyle="dotted"
-                      htmlFor="icon-button-file"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      <Icon
-                        width="150"
-                        height="150"
-                        src="/icons/upload-image.svg"
-                      />
-                    </FormLabel>
-                    <Center>
-                      <Avatar
-                        borderColor="white"
-                        showBorder
-                        mt="5"
-                        size="xl"
-                        src={previewImageUrl}
-                      />
-                    </Center>
-                    <Flex pt="2" direction="column">
-                      <Button
-                        onClick={onClose}
-                        color="white"
-                        variant="ghost"
-                        type="submit"
-                        isLoading={isLoading}
-                        spinner={<Spinner size="lg" />}
-                      >
-                        Save
-                      </Button>
-                    </Flex>
-                  </form>
-                ) : null}
-              </FormControl>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-        {!state.isMemberLoading && !state.isAdminLoading ? (
-          <Flex mt="5" flexDir="column" gap="8">
-            {userIsAdmin ? (
-              <Button
-                color="white"
-                variant="ghost"
-                leftIcon={<AddIcon />}
-                href={`/clubs/${club.id}/teams/team-registration`}
-                as={Link}
-              >
-                Register New Team
-              </Button>
-            ) : null}
-
-            {!userIsMember ? (
-              <Button
-                color="white"
-                variant="ghost"
-                isLoading={state.isMemberLoading || state.isAdminLoading}
-                onClick={handleJoinClub}
-                spinner={<Spinner size="lg" />}
-              >
-                Join club
-              </Button>
-            ) : (
-              <Button
-                variant="ghost"
-                color="white"
-                borderRadius="70"
-                bg="brand"
-                isLoading={state.isMemberLoading || state.isAdminLoading}
-                onClick={handleLeaveClub}
-                spinner={
-                  <Spinner
-                    variant="outline"
-                    thickness="3.8px"
-                    emptyColor="gray.600"
-                    speed="0.75s"
-                    size="lg"
-                  />
-                }
-              >
-                Leave club
-              </Button>
-            )}
+    <>
+      <Flex bg="orange.400" justifyContent="center">
+        <Flex flexDir="column" alignItems="center">
+          <Flex justifyContent="center" w="full">
+            <Editable
+              onSubmit={handleEditableChange}
+              textAlign="center"
+              fontSize="2xl"
+              defaultValue={club.name}
+              color="white"
+              w="full"
+              display="flex"
+              flexDir="column"
+            >
+              <EditablePreview w="full" />
+              <EditableInput
+                w="full"
+                display="inline"
+                onChange={(e) => setClubName(e.target.value)}
+              />
+              <EditControls />
+            </Editable>
           </Flex>
-        ) : null}
-      </Box>
-    </Flex>
+
+          <Flex w="full" justifyContent="center">
+            <Box position="relative">
+              <Box p="4" display="block">
+                <Avatar
+                  my="-2"
+                  onClick={onOpen}
+                  borderColor="white"
+                  showBorder
+                  size="xl"
+                  left="2"
+                  src={previewImageUrl}
+                />
+              </Box>
+              <IconButton
+                aria-label="Edit club logo"
+                icon={<Icon width="10" height="10" src="/icons/edit.svg" />}
+                onClick={onOpen}
+                boxSize="6"
+                bottom="2.5"
+                left="28"
+                position="absolute"
+                backgroundColor="brand"
+                color="white"
+                borderColor="white"
+                border="1px"
+                borderRadius="10"
+                p="0.5"
+              />
+            </Box>
+          </Flex>
+          {!state.isMemberLoading && !state.isAdminLoading ? (
+            <Flex mt="5" flexDir="column" gap="8">
+              {userIsAdmin ? (
+                <Button
+                  color="white"
+                  variant="ghost"
+                  leftIcon={<AddIcon />}
+                  href={`/clubs/${club.id}/teams/team-registration`}
+                  as={Link}
+                >
+                  Register New Team
+                </Button>
+              ) : null}
+
+              {!userIsMember ? (
+                <Button
+                  color="white"
+                  variant="ghost"
+                  isLoading={state.isMemberLoading || state.isAdminLoading}
+                  onClick={handleJoinClub}
+                  spinner={<Spinner size="lg" />}
+                >
+                  Join club
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  color="white"
+                  borderRadius="70"
+                  bg="brand"
+                  isLoading={state.isMemberLoading || state.isAdminLoading}
+                  onClick={handleLeaveClub}
+                  spinner={
+                    <Spinner
+                      variant="outline"
+                      thickness="3.8px"
+                      emptyColor="gray.600"
+                      speed="0.75s"
+                      size="lg"
+                    />
+                  }
+                >
+                  Leave club
+                </Button>
+              )}
+            </Flex>
+          ) : null}
+        </Flex>
+      </Flex>
+      <Modal isOpen={isOpen} onClose={onClose} size={size}>
+        <ModalOverlay />
+        <ModalContent borderRadius="xl">
+          <ModalBody>
+            <ModalHeader textAlign="center">Upload Logo</ModalHeader>
+            <ModalCloseButton />
+            <FormControl>
+              {userIsAdmin ? (
+                <form onSubmit={handleLogoUpload}>
+                  <Input
+                    id="icon-button-file"
+                    style={{ display: 'none' }}
+                    type="file"
+                    placeholder="Club Logo"
+                    accept="image/*"
+                    onChange={onSelectFile}
+                    name="logo"
+                  />
+                  <FormLabel
+                    border="2px"
+                    borderStyle="dotted"
+                    htmlFor="icon-button-file"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Icon
+                      width="150"
+                      height="150"
+                      src="/icons/upload-image.svg"
+                    />
+                  </FormLabel>
+                  <Center>
+                    <Avatar
+                      borderColor="white"
+                      showBorder
+                      mt="5"
+                      size="xl"
+                      src={previewImageUrl}
+                    />
+                  </Center>
+                  <Flex pt="2" direction="column">
+                    <Button
+                      onClick={onClose}
+                      color="white"
+                      variant="ghost"
+                      type="submit"
+                      isLoading={isLoading}
+                      spinner={<Spinner size="lg" />}
+                    >
+                      Save
+                    </Button>
+                  </Flex>
+                </form>
+              ) : null}
+            </FormControl>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
