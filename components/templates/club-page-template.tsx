@@ -69,9 +69,10 @@ function EditControls() {
     getSubmitButtonProps,
   } = useEditableControls();
   return (
-    <Box>
+    <Flex justifyContent="center">
       {!isEditing ? (
         <IconButton
+          size="sm"
           aria-label="Edit club name"
           icon={<Icon src="/icons/edit.svg" height={16} width={16} />}
           {...getEditButtonProps()}
@@ -79,18 +80,20 @@ function EditControls() {
       ) : (
         <Flex justifyContent="center">
           <IconButton
-            aria-label="Cancel"
-            icon={<CloseIcon />}
-            {...getCancelButtonProps()}
-          />
-          <IconButton
+            size="sm"
             aria-label="Save"
             icon={<CheckIcon />}
             {...getSubmitButtonProps()}
           />
+          <IconButton
+            size="sm"
+            aria-label="Cancel"
+            icon={<CloseIcon />}
+            {...getCancelButtonProps()}
+          />
         </Flex>
       )}
-    </Box>
+    </Flex>
   );
 }
 
@@ -243,7 +246,6 @@ export function ClubPageTemplate({ club }: Props) {
               fontSize="2xl"
               defaultValue={club.name}
               color="white"
-              w="full"
               display="flex"
               flexDir="column"
             >
@@ -269,22 +271,19 @@ export function ClubPageTemplate({ club }: Props) {
                   left="2"
                   src={previewImageUrl}
                 />
+                <IconButton
+                  aria-label="Edit club logo"
+                  icon={<Icon width="16" height="16" src="/icons/edit.svg" />}
+                  onClick={onOpen}
+                  size="sm"
+                  bottom="2.5"
+                  left="24"
+                  position="absolute"
+                  backgroundColor="brand"
+                  borderColor="white"
+                  border="1px"
+                />
               </Box>
-              <IconButton
-                aria-label="Edit club logo"
-                icon={<Icon width="10" height="10" src="/icons/edit.svg" />}
-                onClick={onOpen}
-                boxSize="6"
-                bottom="2.5"
-                left="28"
-                position="absolute"
-                backgroundColor="brand"
-                color="white"
-                borderColor="white"
-                border="1px"
-                borderRadius="10"
-                p="0.5"
-              />
             </Box>
           </Flex>
           {!state.isMemberLoading && !state.isAdminLoading ? (
