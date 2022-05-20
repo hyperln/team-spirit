@@ -138,9 +138,21 @@ export async function fetchTeam(teamId: number): Promise<Team> {
   return keysToCamel(data[0]);
 }
 interface CreateTeamData {
-  clubId: number;
+  teamId: number;
   name: string;
   gender: number;
+}
+interface UpdateTeam {
+  name?: string;
+}
+
+export async function UpdateTeam(teamId: number, teamData: UpdateTeam) {
+  const { data, error } = await client
+    .from('teams')
+    .update(keysToSnake(removeNullUndefinedAndEmptyStrings(teamData)))
+    .match({ id: teamId });
+  if (error) throw error;
+  return keysToCamel(data);
 }
 
 export async function createTeam(teamData: CreateTeamData) {

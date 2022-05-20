@@ -14,7 +14,6 @@ import { useAuth } from '@hooks/use-auth';
 import { useForm } from '@hooks/use-form';
 import { Flex } from '@components/atoms/flex';
 import { Link } from '@components/atoms/link';
-import { CheckBox } from '@components/atoms/checkbox';
 import React from 'react';
 import { Spinner } from '@components/atoms/spinner';
 
