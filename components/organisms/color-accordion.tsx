@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box } from '@components/atoms/box';
 import {
   Accordion,
@@ -8,28 +8,28 @@ import {
   AccordionPanel,
 } from '@components/molecules/accordion';
 import { Flex } from '@components/atoms/flex';
-import { IconButton } from '@components/atoms/button';
 import { HStack } from '@components/atoms/stack';
-import { SketchPicker } from 'react-color';
-import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalOverlay,
-} from './modal';
-import { useDisclosure } from '@hooks/use-disclosure';
 import { UpdateClub } from '@lib/db';
 import { useToast } from '@hooks/use-toast';
 import { Input } from '@components/atoms/input';
+import { Button } from '@components/atoms/button';
+import { Spinner } from '@components/atoms/spinner';
 
 export function ColorAccordion({ club }) {
   const toast = useToast();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [primaryColor, setPrimaryColor] = useState('');
   const [secondaryColor, setSecondaryColor] = useState('');
 
+  useEffect(() => {
+    setPrimaryColor(primaryColor);
+    setSecondaryColor(secondaryColor);
+  }, []);
+
   const handleColorSelect = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
     try {
       await UpdateClub(club.id, {
         primaryColor: primaryColor,
@@ -56,25 +56,36 @@ export function ColorAccordion({ club }) {
               <AccordionIcon />
             </AccordionButton>
             <HStack>
-              <AccordionPanel pb={4}>
+              <AccordionPanel
+                textAlign="center"
+                onSubmit={handleColorSelect}
+                pb={4}
+              >
                 Primary Color
-                <form onSubmit={handleColorSelect}>
-                  <Input
-                    type="color"
-                    color={primaryColor}
-                    onChange={(e) => setPrimaryColor(e.target.value)}
-                  />
-                </form>
+                <Input
+                  type="color"
+                  defaultValue={primaryColor}
+                  onChange={(e) => setPrimaryColor(e.target.value)}
+                />
               </AccordionPanel>
-              <AccordionPanel pb={4}>
+              <Button
+                isLoading={isLoading}
+                type="submit"
+                spinner={<Spinner size="lg" />}
+              >
+                Save
+              </Button>
+              <AccordionPanel
+                textAlign="center"
+                onSubmit={handleColorSelect}
+                pb={4}
+              >
                 Secondary Color
-                <form onSubmit={handleColorSelect}>
-                  <Input
-                    type="color"
-                    color={secondaryColor}
-                    onChange={(e) => setSecondaryColor(e.target.value)}
-                  />
-                </form>
+                <Input
+                  type="color"
+                  defaultValue={secondaryColor}
+                  onChange={(e) => setSecondaryColor(e.target.value)}
+                />
               </AccordionPanel>
             </HStack>
           </AccordionItem>
