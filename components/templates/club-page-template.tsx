@@ -36,6 +36,7 @@ import {
   EditablePreview,
 } from '@components/atoms/typography/editable';
 import { useEditableControls } from '@hooks/use-editable-controls';
+import { ColorAccordion } from '@components/organisms/color-accordion';
 
 interface Props {
   club: Club;
@@ -285,6 +286,7 @@ export function ClubPageTemplate({ club }: Props) {
               </Box>
             </Box>
           </Flex>
+          <ColorAccordion />
           {!state.isMemberLoading && !state.isAdminLoading ? (
             <Flex mt="5" flexDir="column" gap="8">
               {userIsAdmin ? (
