@@ -4,6 +4,7 @@ export interface Club {
   id: number;
   logoImageId?: string;
   logoUrl?: string;
+  clubColor?: string;
 }
 
 export interface Gender {

@@ -27,6 +27,8 @@ interface CreateClubData {
 interface UpdateClubData {
   name?: string;
   logoImageId?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
 }
 
 export async function UpdateClub(clubId: number, clubData: UpdateClubData) {
