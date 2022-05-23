@@ -138,7 +138,8 @@ export async function fetchTeam(teamId: number): Promise<Team> {
   return keysToCamel(data[0]);
 }
 interface CreateTeamData {
-  teamId: number;
+  clubId: number;
+  // teamId: number;
   name: string;
   gender: number;
 }

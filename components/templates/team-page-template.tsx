@@ -2,8 +2,6 @@ import { useEffect, useState, useReducer } from 'react';
 import { Box } from '@components/atoms/box';
 import { Button, IconButton } from '@components/atoms/button';
 import { Flex } from '@components/atoms/flex';
-import { Heading } from '@components/atoms/typography/heading';
-import { Text } from '@components/atoms/typography/text';
 import { useToast } from '@hooks/use-toast';
 import { isUserAdmin, isUserMember, leaveTeam, UpdateTeam } from '@lib/db';
 import { Club, Gender, Team } from 'shared/types';
@@ -81,7 +79,7 @@ function EditControls() {
   );
 }
 
-export function TeamPageTemplate({ team }: Props) {
+export function TeamPageTemplate({ team, club }: Props) {
   const [userIsMember, setUserIsMember] = useState(false);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
   const [teamName, setTeamName] = useState('');
