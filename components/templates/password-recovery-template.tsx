@@ -2,22 +2,33 @@ import { Button } from '@components/atoms/button';
 import { Center } from '@components/atoms/center';
 import { Input } from '@components/atoms/input';
 import { Spinner } from '@components/atoms/spinner';
+import { useToast } from '@hooks/use-toast';
 import { updatePassword } from '@lib/auth';
 import { useState } from 'react';
 
 export function PasswordRecoveryTemplate({ accessToken }) {
   const [newPassword, setNewPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
+
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
       setIsLoading(true);
       console.log('newPassword :>> ', newPassword);
-      const data = await updatePassword(accessToken, newPassword);
-      console.log('data :>> ', data);
+
+      await updatePassword(accessToken, newPassword);
+      toast({
+        status: 'success',
+        description: 'Password successfully changed!',
+        title: 'Success',
+      });
     } catch (error) {
-      console.log('error :>> ', error);
-      // toast error message
+      toast({
+        status: 'error',
+        description: error.message,
+        title: 'error',
+      });
     }
     setIsLoading(false);
   };
