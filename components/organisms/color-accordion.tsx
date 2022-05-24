@@ -25,13 +25,10 @@ export function ColorAccordion({ club }: Props) {
   const toast = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [primaryColor, setPrimaryColor] = useState('');
-  const [secondaryColor, setSecondaryColor] = useState('');
-
-  useEffect(() => {
-    setPrimaryColor(primaryColor);
-    setSecondaryColor(secondaryColor);
-  }, []);
+  const [primaryColor, setPrimaryColor] = useState(club.primaryColor || '');
+  const [secondaryColor, setSecondaryColor] = useState(
+    club.secondaryColor || '',
+  );
 
   const handleColorSelect = async (e) => {
     setIsLoading(true);
