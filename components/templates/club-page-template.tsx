@@ -203,7 +203,6 @@ export function ClubPageTemplate({ club }: Props) {
     }
     try {
       await UpdateClub(club.id, {
-        name: clubName,
         logoImageId,
       });
 
