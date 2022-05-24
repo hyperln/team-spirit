@@ -1,53 +1,69 @@
 import { Box } from '@components/atoms/box';
-import { Flex } from '@components/atoms/flex';
 import { Link } from '@components/atoms/link';
 import { ListItem, List } from '@components/atoms/list';
 import { Heading } from '@components/atoms/typography/heading';
-import { ArrowForwardIcon, AddIcon } from '@chakra-ui/icons';
-import { Button } from '@components/atoms/button';
+import { HStack } from '@components/atoms/stack';
+import { Center } from '@components/atoms/center';
+import { Text } from '@components/atoms/typography/text';
+import { useEffect, useState } from 'react';
+import { getLogoImage } from '@lib/storage/storage';
+import { Avatar } from '@components/molecules/avatar-image';
+import { Icon } from '@components/atoms/icon';
+
+function ClubListing({ club }) {
+  const [logoUrl, setLogoUrl] = useState('');
+
+  const fetchLogoUrl = async () => {
+    const { signedURL } = await getLogoImage(club.logoImageId);
+    setLogoUrl(signedURL);
+  };
+
+  useEffect(() => {
+    if (club.logoImageId) {
+      fetchLogoUrl();
+    }
+  }, [club.logoImageId]);
+
+  return (
+    <HStack>
+      <Box mt="2" w="16" h="16">
+        <Center>
+          {logoUrl ? (
+            <Avatar
+              borderRadius="15%"
+              borderColor="white"
+              showBorder
+              size="md"
+              src={logoUrl}
+            />
+          ) : (
+            <Icon src="/icons/logo-fallback.svg" />
+          )}
+        </Center>
+      </Box>
+      <Box w="80">
+        <ListItem width="72" borderBottom="1px" h="16" key={club.id}>
+          <Link href={`/clubs/${club.id}`}>
+            <Text letterSpacing="wide" fontSize="lg" fontWeight="bold">
+              {club.name}
+            </Text>
+            <Text fontWeight="semibold">{club.established}</Text>
+          </Link>
+        </ListItem>
+      </Box>
+    </HStack>
+  );
+}
 
 export function ClubListTemplate({ clubs }) {
   return (
-    <Flex justifyContent="center" minH="calc(100vh - 80px)">
-      <Box display="block">
-        <Heading>Clubs</Heading>
-        <Flex justifyContent="center">
-          <Button
-            color="white"
-            variant="ghost"
-            leftIcon={<AddIcon />}
-            as={Link}
-            href="/clubs/club-registration"
-          >
-            Register new club
-          </Button>
-        </Flex>
-        <List
-          color="white"
-          bg="brand"
-          fontWeight="medium"
-          fontSize="lg"
-          mt="2"
-          spacing={3}
-          w="80"
-          borderRadius="5%"
-          padding="5"
-          boxShadow="dark-lg"
-        >
-          {clubs.map((club) => (
-            <ListItem
-              borderBottom="1px"
-              borderBottomColor="orange.300"
-              key={club.id}
-            >
-              <Link href={`/clubs/${club.id}`}>
-                {club.name}
-                {<ArrowForwardIcon />}
-              </Link>
-            </ListItem>
-          ))}
-        </List>
-      </Box>
-    </Flex>
+    <List>
+      <Center>
+        <Heading p="2">Clubs</Heading>
+      </Center>
+      {clubs.map((club) => (
+        <ClubListing club={club} />
+      ))}
+    </List>
   );
 }

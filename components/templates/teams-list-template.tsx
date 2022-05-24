@@ -10,13 +10,14 @@ import { useRouter } from 'next/router';
 
 export function TeamsListTemplate({ teams }) {
   const router = useRouter();
-  console.log(teams);
   const { clubId } = router.query;
   return (
     <Flex justifyContent="center">
       <Box display="block">
         <Heading>Teams</Heading>
         <Button
+          color="white"
+          variant="ghost"
           leftIcon={<AddIcon />}
           as={Link}
           href={`/clubs/${clubId}/teams/team-registration`}
