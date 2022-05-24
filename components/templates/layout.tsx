@@ -17,6 +17,7 @@ import { Link } from '@components/atoms/link';
 import { useAuth } from '@hooks/use-auth';
 import { Spacer } from '@components/atoms/spacer';
 import { Button } from '@components/atoms/button';
+import { PageHeader } from '@components/organisms/pageheader';
 
 function buildBreadcrumbs(path) {
   const parts = path.split('/').filter(Boolean);
@@ -116,7 +117,8 @@ export function Layout({ children }) {
           mx="3"
           my={{ base: 5, lg: '20' }}
         >
-          <Button
+          <PageHeader props={'Title'} />
+          {/* <Button
             outline="0"
             _focus={{ boxShadow: '0 0 0 0px' }}
             display={{ lg: 'none' }}
@@ -126,7 +128,7 @@ export function Layout({ children }) {
             onClick={() => router.back()}
           >
             Back
-          </Button>
+          </Button> */}
         </Flex>
       ) : null}
       <Box
