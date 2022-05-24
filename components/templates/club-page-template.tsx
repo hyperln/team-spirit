@@ -286,7 +286,7 @@ export function ClubPageTemplate({ club }: Props) {
               </Box>
             </Box>
           </Flex>
-          <ColorAccordion />
+          <ColorAccordion club={club} />
           {!state.isMemberLoading && !state.isAdminLoading ? (
             <Flex mt="5" flexDir="column" gap="8">
               {userIsAdmin ? (
