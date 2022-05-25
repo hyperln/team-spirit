@@ -117,7 +117,7 @@ export function Layout({ children }) {
           mx="3"
           my={{ base: 5, lg: '20' }}
         >
-          <PageHeader props={'Title'} />
+          {/* <PageHeader props={'Title'} /> */}
           {/* <Button
             outline="0"
             _focus={{ boxShadow: '0 0 0 0px' }}

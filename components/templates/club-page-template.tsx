@@ -13,6 +13,7 @@ import { Link } from '@components/atoms/link';
 import { useRouter } from 'next/router';
 import { List, ListItem } from '@components/atoms/list';
 import { AddIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import { PageHeader } from '@components/organisms/pageheader';
 
 interface Props {
   club: Club;
@@ -107,55 +108,55 @@ export function ClubPageTemplate({ club }: Props) {
   return (
     <Flex justifyContent="center" minH="calc(100vh - 80px)">
       <Box display="block">
-        <Heading>{club.name}</Heading>
+        <PageHeader title={club.name} />
         <Text fontWeight="semibold">{club.established}</Text>
-        {!state.isMemberLoading && !state.isAdminLoading ? (
-          <Flex mt="5" flexDir="column" gap="8">
-            {userIsAdmin ? (
-              <Button
-                color="white"
-                variant="ghost"
-                leftIcon={<AddIcon />}
-                href={`/clubs/${clubId}/teams/team-registration`}
-                as={Link}
-              >
-                Register New Team
-              </Button>
-            ) : null}
-            {!userIsMember ? (
-              <Button
-                color="white"
-                variant="ghost"
-                isLoading={state.isMemberLoading || state.isAdminLoading}
-                onClick={handleJoinClub}
-                spinner={<Spinner size="lg" />}
-              >
-                Join club
-              </Button>
-            ) : (
-              <Button
-                variant="ghost"
-                color="white"
-                borderRadius="70"
-                bg="brand"
-                isLoading={state.isMemberLoading || state.isAdminLoading}
-                onClick={handleLeaveClub}
-                spinner={
-                  <Spinner
-                    variant="outline"
-                    thickness="3.8px"
-                    emptyColor="gray.600"
-                    speed="0.75s"
-                    size="lg"
-                  />
-                }
-              >
-                Leave club
-              </Button>
-            )}
-          </Flex>
-        ) : null}
       </Box>
+      {!state.isMemberLoading && !state.isAdminLoading ? (
+        <Flex mt="5" flexDir="column" gap="8">
+          {userIsAdmin ? (
+            <Button
+              color="white"
+              variant="ghost"
+              leftIcon={<AddIcon />}
+              href={`/clubs/${clubId}/teams/team-registration`}
+              as={Link}
+            >
+              Register New Team
+            </Button>
+          ) : null}
+          {!userIsMember ? (
+            <Button
+              color="white"
+              variant="ghost"
+              isLoading={state.isMemberLoading || state.isAdminLoading}
+              onClick={handleJoinClub}
+              spinner={<Spinner size="lg" />}
+            >
+              Join club
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              color="white"
+              borderRadius="70"
+              bg="brand"
+              isLoading={state.isMemberLoading || state.isAdminLoading}
+              onClick={handleLeaveClub}
+              spinner={
+                <Spinner
+                  variant="outline"
+                  thickness="3.8px"
+                  emptyColor="gray.600"
+                  speed="0.75s"
+                  size="lg"
+                />
+              }
+            >
+              Leave club
+            </Button>
+          )}
+        </Flex>
+      ) : null}
     </Flex>
   );
 }
