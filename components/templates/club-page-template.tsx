@@ -285,7 +285,6 @@ export function ClubPageTemplate({ club }: Props) {
               </Box>
             </Box>
           </Flex>
-          <ColorAccordion club={club} />
           {!state.isMemberLoading && !state.isAdminLoading ? (
             <Flex mt="5" flexDir="column" gap="8">
               {userIsAdmin ? (
@@ -335,6 +334,8 @@ export function ClubPageTemplate({ club }: Props) {
           ) : null}
         </Flex>
       </Flex>
+      <ColorAccordion club={club} />
+
       <Modal isOpen={isOpen} onClose={onClose} size={size}>
         <ModalOverlay />
         <ModalContent borderRadius="xl">
