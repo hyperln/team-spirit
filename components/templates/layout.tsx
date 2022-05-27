@@ -62,6 +62,8 @@ export function Layout({ children }) {
           <MenuButton ml="1">
             {profile ? (
               <Avatar
+                borderWidth="medium"
+                borderColor="white"
                 left="5"
                 size="md"
                 src={profile.previewUrl}

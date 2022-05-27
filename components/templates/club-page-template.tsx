@@ -287,7 +287,6 @@ export function ClubPageTemplate({ club }: Props) {
             <Flex mt="5" flexDir="column" gap="8">
               {userIsAdmin ? (
                 <Button
-                  color="white"
                   variant="ghost"
                   leftIcon={<AddIcon />}
                   href={`/clubs/${club.id}/teams/team-registration`}
@@ -299,7 +298,6 @@ export function ClubPageTemplate({ club }: Props) {
 
               {!userIsMember ? (
                 <Button
-                  color="white"
                   variant="ghost"
                   isLoading={state.isMemberLoading || state.isAdminLoading}
                   onClick={handleJoinClub}
@@ -310,7 +308,6 @@ export function ClubPageTemplate({ club }: Props) {
               ) : (
                 <Button
                   variant="ghost"
-                  color="white"
                   borderRadius="70"
                   bg="brand"
                   isLoading={state.isMemberLoading || state.isAdminLoading}
