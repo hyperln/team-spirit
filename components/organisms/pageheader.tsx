@@ -3,7 +3,7 @@ import { Button } from '@components/atoms/button';
 import { Heading } from '../atoms/typography/heading';
 import { Box } from '@components/atoms/box';
 import { ReactElement } from 'react';
-import { Grid } from '@chakra-ui/react'; // TODO: wrap in a component
+import { Grid, SimpleGrid } from '@chakra-ui/react'; // TODO: wrap in a component
 import { Flex } from '@components/atoms/flex';
 
 interface Props {
@@ -24,8 +24,8 @@ export function PageHeader({
   const router = useRouter();
 
   return (
-    <Box bgColor={backgroundColor}>
-      <Grid templateColumns={secondaryAction ? '3' : '2'}>
+    <Box w="full" bgColor={backgroundColor}>
+      <SimpleGrid w="full" columns={secondaryAction ? 3 : 2}>
         <Button
           outline="0"
           _focus={{ boxShadow: '0 0 0 0px' }}
@@ -38,10 +38,10 @@ export function PageHeader({
           Back
         </Button>
         {typeof title === 'string' ? <Heading>{title}</Heading> : { title }}
-        {secondaryAction ? { secondaryAction } : null}
-      </Grid>
+        {secondaryAction ? secondaryAction : null}
+      </SimpleGrid>
       <Flex justifyContent="center">
-        {image ? { image } : null}
+        {image ? image : null}
         {subHeading ? <Heading as="h4">{subHeading}</Heading> : null}
       </Flex>
     </Box>
