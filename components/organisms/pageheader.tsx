@@ -7,7 +7,7 @@ import { Grid } from '@chakra-ui/react'; // TODO: wrap in a component
 import { Flex } from '@components/atoms/flex';
 
 interface Props {
-  title: string | ReactElement | ReactElement[];
+  title?: string | ReactElement | ReactElement[];
   secondaryAction?: ReactElement | ReactElement[];
   image?: ReactElement | ReactElement[];
   subHeading?: string | ReactElement | ReactElement[];

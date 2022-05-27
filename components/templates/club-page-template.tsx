@@ -125,35 +125,43 @@ export function ClubPageTemplate({ club }: Props) {
             </Button>
           ) : null}
           {!userIsMember ? (
-            <Button
-              color="white"
-              variant="ghost"
-              isLoading={state.isMemberLoading || state.isAdminLoading}
-              onClick={handleJoinClub}
-              spinner={<Spinner size="lg" />}
-            >
-              Join club
-            </Button>
-          ) : (
-            <Button
-              variant="ghost"
-              color="white"
-              borderRadius="70"
-              bg="brand"
-              isLoading={state.isMemberLoading || state.isAdminLoading}
-              onClick={handleLeaveClub}
-              spinner={
-                <Spinner
-                  variant="outline"
-                  thickness="3.8px"
-                  emptyColor="gray.600"
-                  speed="0.75s"
-                  size="lg"
-                />
+            <PageHeader
+              secondaryAction={
+                <Button
+                  color="white"
+                  variant="ghost"
+                  isLoading={state.isMemberLoading || state.isAdminLoading}
+                  onClick={handleJoinClub}
+                  spinner={<Spinner size="lg" />}
+                >
+                  Join club
+                </Button>
               }
-            >
-              Leave club
-            </Button>
+            />
+          ) : (
+            <PageHeader
+              secondaryAction={
+                <Button
+                  variant="ghost"
+                  color="white"
+                  borderRadius="70"
+                  bg="brand"
+                  isLoading={state.isMemberLoading || state.isAdminLoading}
+                  onClick={handleLeaveClub}
+                  spinner={
+                    <Spinner
+                      variant="outline"
+                      thickness="3.8px"
+                      emptyColor="gray.600"
+                      speed="0.75s"
+                      size="lg"
+                    />
+                  }
+                >
+                  Leave club
+                </Button>
+              }
+            />
           )}
         </Flex>
       ) : null}
