@@ -9,7 +9,6 @@ import {
 
 export const Breadcrumb = ChakraBreadcrumb;
 export const BreadcrumbItem = ChakraBreadcrumbItem;
-// export const BreadcrumbLink = ChakraBreadcrumbLink;
 export const BreadcrumbSeparator = ChakraBreadcrumbSeparator;
 
 type Props = ComponentProps<typeof ChakraBreadcrumbLink> &
