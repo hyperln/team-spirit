@@ -108,7 +108,42 @@ export function ClubPageTemplate({ club }: Props) {
   return (
     <Flex justifyContent="center" minH="calc(100vh - 80px)">
       <Box display="block">
-        <PageHeader title={club.name} />
+        <PageHeader
+          title={club.name}
+          secondaryAction={
+            !userIsMember ? (
+              <Button
+                color="white"
+                variant="ghost"
+                isLoading={state.isMemberLoading || state.isAdminLoading}
+                onClick={handleJoinClub}
+                spinner={<Spinner size="lg" />}
+              >
+                Join club
+              </Button>
+            ) : (
+              <Button
+                variant="ghost"
+                color="white"
+                borderRadius="70"
+                bg="brand"
+                isLoading={state.isMemberLoading || state.isAdminLoading}
+                onClick={handleLeaveClub}
+                spinner={
+                  <Spinner
+                    variant="outline"
+                    thickness="3.8px"
+                    emptyColor="gray.600"
+                    speed="0.75s"
+                    size="lg"
+                  />
+                }
+              >
+                Leave club
+              </Button>
+            )
+          }
+        />
         <Text fontWeight="semibold">{club.established}</Text>
       </Box>
       {!state.isMemberLoading && !state.isAdminLoading ? (
@@ -124,45 +159,6 @@ export function ClubPageTemplate({ club }: Props) {
               Register New Team
             </Button>
           ) : null}
-          {!userIsMember ? (
-            <PageHeader
-              secondaryAction={
-                <Button
-                  color="white"
-                  variant="ghost"
-                  isLoading={state.isMemberLoading || state.isAdminLoading}
-                  onClick={handleJoinClub}
-                  spinner={<Spinner size="lg" />}
-                >
-                  Join club
-                </Button>
-              }
-            />
-          ) : (
-            <PageHeader
-              secondaryAction={
-                <Button
-                  variant="ghost"
-                  color="white"
-                  borderRadius="70"
-                  bg="brand"
-                  isLoading={state.isMemberLoading || state.isAdminLoading}
-                  onClick={handleLeaveClub}
-                  spinner={
-                    <Spinner
-                      variant="outline"
-                      thickness="3.8px"
-                      emptyColor="gray.600"
-                      speed="0.75s"
-                      size="lg"
-                    />
-                  }
-                >
-                  Leave club
-                </Button>
-              }
-            />
-          )}
         </Flex>
       ) : null}
     </Flex>
