@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Flex } from '@components/atoms/flex';
 import { Box } from '@components/atoms/box';
 import { Input } from '@components/atoms/input';
@@ -12,8 +13,7 @@ import {
 } from '@components/molecules/number-input';
 import { createClub } from '@lib/db';
 import { Center } from '@components/atoms/center';
-import { useToast } from 'team-spirit/hooks/use-toast';
-import { useState } from 'react';
+import { useToast } from '@hooks/use-toast';
 import { Spinner } from '@components/atoms/spinner';
 
 export function RegisterClubTemplate() {

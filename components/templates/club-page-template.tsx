@@ -104,7 +104,6 @@ export function ClubPageTemplate({ club }: Props) {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [size, setSize] = useState('xs');
   const [clubName, setClubName] = useState('');
   const [userIsMember, setUserIsMember] = useState(false);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
@@ -129,7 +128,6 @@ export function ClubPageTemplate({ club }: Props) {
   };
 
   useEffect(() => {
-    setClubName(clubName);
     checkIsUserMember();
     checkIsUserAdmin();
   }, []);
@@ -336,7 +334,7 @@ export function ClubPageTemplate({ club }: Props) {
       </Flex>
       <ColorAccordion club={club} />
 
-      <Modal isOpen={isOpen} onClose={onClose} size={size}>
+      <Modal isOpen={isOpen} onClose={onClose} size="xs">
         <ModalOverlay />
         <ModalContent borderRadius="xl">
           <ModalBody>
