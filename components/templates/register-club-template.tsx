@@ -12,7 +12,7 @@ import {
 } from '@components/molecules/number-input';
 import { createClub } from '@lib/db';
 import { Center } from '@components/atoms/center';
-import { useToast } from 'team-spirit/hooks/use-toast';
+import { useToast } from '@hooks/use-toast';
 import { useState } from 'react';
 import { Spinner } from '@components/atoms/spinner';
 
