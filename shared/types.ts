@@ -2,6 +2,8 @@ export interface Club {
   established: number;
   name: string;
   id: number;
+  logoImageId?: string;
+  logoUrl?: string;
 }
 
 export interface Gender {

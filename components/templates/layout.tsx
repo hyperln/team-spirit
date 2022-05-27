@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import { Box } from '@components/atoms/box';
 import { Flex } from '@components/atoms/flex';
 import { Navigation } from '@components/organisms/navigation';
-import { Button } from '@components/atoms/button';
 import { AtSignIcon, LockIcon } from '@chakra-ui/icons';
 import { kebabToSentenceCase } from '@utils/string-utils';
 import { useColorModeValue } from '@hooks/use-color-mode';
@@ -17,6 +16,7 @@ import { Avatar } from '@components/molecules/avatar-image';
 import { Link } from '@components/atoms/link';
 import { useAuth } from '@hooks/use-auth';
 import { Spacer } from '@components/atoms/spacer';
+import { Button } from '@components/atoms/button';
 
 function buildBreadcrumbs(path) {
   const parts = path.split('/').filter(Boolean);
@@ -113,7 +113,7 @@ export function Layout({ children }) {
           boxShadow="2xl"
           rounded="md"
           alignItems="center"
-          mx="2"
+          mx="3"
           my={{ base: 5, lg: '20' }}
         >
           <Button
