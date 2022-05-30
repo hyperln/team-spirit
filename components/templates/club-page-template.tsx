@@ -3,7 +3,6 @@ import { Box } from '@components/atoms/box';
 import { Button, IconButton } from '@components/atoms/button';
 import { Center } from '@components/atoms/center';
 import { Flex } from '@components/atoms/flex';
-import { Heading } from '@components/atoms/typography/heading';
 import { useToast } from '@hooks/use-toast';
 import {
   isUserAdmin,
@@ -15,7 +14,7 @@ import {
 import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
-import { AddIcon, CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
+import { AddIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { uploadLogoImage } from '@lib/storage/storage';
 import { Input } from '@components/atoms/input';
 import { Avatar } from '@components/molecules/avatar-image';
@@ -283,6 +282,7 @@ export function ClubPageTemplate({ club }: Props) {
               </Box>
             </Box>
           </Flex>
+          {userIsAdmin ? <Link href="/clubs/club-settings">Edit</Link> : null}
           {!state.isMemberLoading && !state.isAdminLoading ? (
             <Flex mt="5" flexDir="column" gap="8">
               {userIsAdmin ? (
@@ -332,7 +332,7 @@ export function ClubPageTemplate({ club }: Props) {
           ) : null}
         </Flex>
       </Flex>
-      <ColorAccordion club={club} />
+      {/* <ColorAccordion club={club} />
 
       <Modal isOpen={isOpen} onClose={onClose} size="xs">
         <ModalOverlay />
@@ -392,7 +392,7 @@ export function ClubPageTemplate({ club }: Props) {
             </FormControl>
           </ModalBody>
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
