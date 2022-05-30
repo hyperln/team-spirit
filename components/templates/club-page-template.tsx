@@ -113,20 +113,34 @@ export function ClubPageTemplate({ club }: Props) {
           secondaryAction={
             !userIsMember ? (
               <Button
-                color="white"
+                color="black"
+                right="-10"
                 variant="ghost"
+                bg="transparent"
                 isLoading={state.isMemberLoading || state.isAdminLoading}
                 onClick={handleJoinClub}
-                spinner={<Spinner size="lg" />}
+                spinner={
+                  <Spinner
+                    variant="outline"
+                    thickness="3.8px"
+                    emptyColor="gray.600"
+                    speed="0.75s"
+                    size="lg"
+                  />
+                }
               >
-                Join club
+                Join
               </Button>
             ) : (
               <Button
+                mx="auto"
+                pr="1"
+                justifySelf="flex-end"
+                right="-10"
                 variant="ghost"
                 color="white"
                 borderRadius="70"
-                bg="brand"
+                bg="transparent"
                 isLoading={state.isMemberLoading || state.isAdminLoading}
                 onClick={handleLeaveClub}
                 spinner={
@@ -139,7 +153,7 @@ export function ClubPageTemplate({ club }: Props) {
                   />
                 }
               >
-                Leave club
+                Leave
               </Button>
             )
           }

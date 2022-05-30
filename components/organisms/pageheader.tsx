@@ -24,9 +24,20 @@ export function PageHeader({
   const router = useRouter();
 
   return (
-    <Box w="full" bgColor={backgroundColor}>
-      <SimpleGrid w="full" columns={secondaryAction ? 3 : 2}>
+    <Box mt="2" w="full" bgColor={backgroundColor}>
+      <SimpleGrid
+        grid-template-rows=" [row1-start] 25% [row1-end] 50% [third-line] 25%"
+        justifyItems="space-between"
+        w="full"
+        columns={secondaryAction ? 3 : 2}
+      >
         <Button
+          mx="auto"
+          left="-10"
+          // px="auto"
+          // justifyContent="flex-start"
+
+          alignItems="left"
           outline="0"
           _focus={{ boxShadow: '0 0 0 0px' }}
           display={{ lg: 'none' }}
