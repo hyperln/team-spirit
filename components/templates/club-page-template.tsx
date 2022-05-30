@@ -37,6 +37,7 @@ import {
 } from '@components/atoms/typography/editable';
 import { useEditableControls } from '@hooks/use-editable-controls';
 import { ColorAccordion } from '@components/organisms/color-accordion';
+import { Text } from '@components/atoms/typography/text';
 
 interface Props {
   club: Club;
@@ -239,47 +240,64 @@ export function ClubPageTemplate({ club }: Props) {
       <Flex bg="orange.400" justifyContent="center">
         <Flex flexDir="column" alignItems="center">
           <Flex justifyContent="center">
-            <Editable
-              alignItems="center"
-              onSubmit={handleEditableChange}
-              textAlign="center"
-              fontSize="2xl"
-              defaultValue={club.name}
-              display="flex"
-            >
-              <EditablePreview />
-              <EditableInput
-                backgroundColor="gray.100"
-                onChange={(e) => setClubName(e.target.value)}
-              />
-              <EditControls />
-            </Editable>
+            {userIsAdmin ? (
+              <Editable
+                alignItems="center"
+                onSubmit={handleEditableChange}
+                textAlign="center"
+                fontSize="2xl"
+                defaultValue={club.name}
+                display="flex"
+              >
+                <EditablePreview />
+                <EditableInput
+                  backgroundColor="gray.100"
+                  onChange={(e) => setClubName(e.target.value)}
+                />
+                <EditControls />
+              </Editable>
+            ) : (
+              <Text fontSize="2xl">{club.name}</Text>
+            )}
           </Flex>
 
           <Flex w="full" justifyContent="center">
             <Box position="relative">
               <Box p="4" display="block">
-                <Avatar
-                  my="-2"
-                  onClick={onOpen}
-                  borderColor="white"
-                  showBorder
-                  size="xl"
-                  left="2"
-                  src={previewImageUrl}
-                />
-                <IconButton
-                  aria-label="Edit club logo"
-                  icon={<Icon width="16" height="16" src="/icons/edit.svg" />}
-                  onClick={onOpen}
-                  size="xs"
-                  bottom="3.5"
-                  left="24"
-                  position="absolute"
-                  backgroundColor="brand"
-                  borderColor="white"
-                  border="1px"
-                />
+                {userIsAdmin ? (
+                  <Avatar
+                    my="-2"
+                    onClick={onOpen}
+                    borderColor="white"
+                    showBorder
+                    size="xl"
+                    left="2"
+                    src={previewImageUrl}
+                  />
+                ) : (
+                  <Avatar
+                    my="-2"
+                    borderColor="white"
+                    showBorder
+                    size="xl"
+                    left="2"
+                    src={previewImageUrl}
+                  />
+                )}
+                {userIsAdmin ? (
+                  <IconButton
+                    aria-label="Edit club logo"
+                    icon={<Icon width="16" height="16" src="/icons/edit.svg" />}
+                    onClick={onOpen}
+                    size="xs"
+                    bottom="3.5"
+                    left="24"
+                    position="absolute"
+                    backgroundColor="brand"
+                    borderColor="white"
+                    border="1px"
+                  />
+                ) : null}
               </Box>
             </Box>
           </Flex>
@@ -332,7 +350,7 @@ export function ClubPageTemplate({ club }: Props) {
           ) : null}
         </Flex>
       </Flex>
-      <ColorAccordion club={club} />
+      {userIsAdmin ? <ColorAccordion club={club} /> : null}
 
       <Modal isOpen={isOpen} onClose={onClose} size="xs">
         <ModalOverlay />
