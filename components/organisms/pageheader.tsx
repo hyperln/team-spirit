@@ -5,6 +5,8 @@ import { Box } from '@components/atoms/box';
 import { ReactElement } from 'react';
 import { Grid, SimpleGrid } from '@chakra-ui/react'; // TODO: wrap in a component
 import { Flex } from '@components/atoms/flex';
+import { getContrastingTextColor } from '@utils/color-utils';
+import { GridItem } from '@components/atoms/grid';
 
 interface Props {
   title?: string | ReactElement | ReactElement[];
@@ -19,38 +21,42 @@ export function PageHeader({
   secondaryAction,
   image,
   subHeading,
-  backgroundColor,
+  backgroundColor = 'brand',
 }: Props) {
   const router = useRouter();
 
   return (
-    <Box mt="2" w="full" bgColor={backgroundColor}>
-      <SimpleGrid
-        grid-template-rows=" [row1-start] 25% [row1-end] 50% [third-line] 25%"
-        justifyItems="space-between"
-        w="full"
-        columns={secondaryAction ? 3 : 2}
-      >
-        <Button
-          mx="auto"
-          left="-10"
-          // px="auto"
-          // justifyContent="flex-start"
-
-          alignItems="left"
-          outline="0"
-          _focus={{ boxShadow: '0 0 0 0px' }}
-          display={{ lg: 'none' }}
-          textColor="brand"
-          variant="unstyled"
-          aria-label="Back"
-          onClick={() => router.back()}
-        >
-          Back
-        </Button>
-        {typeof title === 'string' ? <Heading>{title}</Heading> : { title }}
-        {secondaryAction ? secondaryAction : null}
-      </SimpleGrid>
+    <Box
+      color={getContrastingTextColor(backgroundColor)}
+      mt="2"
+      w="full"
+      bgColor={backgroundColor}
+    >
+      <Grid w="full" templateColumns="repeat(5, 1fr)">
+        <GridItem colSpan={1}>
+          <Button
+            alignItems="left"
+            outline="0"
+            _focus={{ boxShadow: '0 0 0 0px' }}
+            display={{ lg: 'none' }}
+            textColor={getContrastingTextColor(backgroundColor)}
+            variant="unstyled"
+            onClick={() => router.back()}
+          >
+            Back
+          </Button>
+        </GridItem>
+        <GridItem colSpan={3}>
+          {typeof title === 'string' ? (
+            <Heading textAlign="center">{title}</Heading>
+          ) : (
+            title
+          )}
+        </GridItem>
+        <GridItem display="flex" justifyContent="flex-end" colSpan={1}>
+          {secondaryAction ? secondaryAction : null}
+        </GridItem>
+      </Grid>
       <Flex justifyContent="center">
         {image ? image : null}
         {subHeading ? <Heading as="h4">{subHeading}</Heading> : null}
