@@ -1,9 +1,8 @@
-import { useEffect, useState, useReducer } from 'react';
 import { Box } from '@components/atoms/box';
 import { Button } from '@components/atoms/button';
 import { Flex } from '@components/atoms/flex';
 import { useToast } from '@hooks/use-toast';
-import { isUserAdmin, isUserMember, joinClub, leaveClub } from '@lib/db';
+import { joinClub, leaveClub } from '@lib/db';
 import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
@@ -11,38 +10,24 @@ import { PageHeader } from '@components/organisms/pageheader';
 import { AddIcon } from '@chakra-ui/icons';
 import { Avatar } from '@components/molecules/avatar-image';
 import { Text } from '@components/atoms/typography/text';
+import { MemberState, userMemberState } from '@hooks/use-member-state';
 
 interface Props {
   club: Club;
 }
 
-interface LoadingState {
-  isMemberLoading: boolean;
-  isAdminLoading: boolean;
-}
-
-const actions = {
-  checkIsMember: (state: LoadingState, action: any) => ({
-    ...state,
-    isMemberLoading: action.payload,
-  }),
-  checkIsAdmin: (state: LoadingState, action: any) => ({
-    ...state,
-    isAdminLoading: action.payload,
-  }),
-};
-
-function reducer(state, action) {
-  return actions[action.type] || state;
+interface SecondaryActionProps {
+  memberState: MemberState;
+  handleJoinClub: () => void;
+  handleLeaveClub: () => void;
 }
 
 function SecondaryAction({
-  userIsMember,
-  userIsAdmin,
   handleJoinClub,
   handleLeaveClub,
-}) {
-  return !userIsMember ? (
+  memberState,
+}: SecondaryActionProps) {
+  return memberState === 'notMember' ? (
     <Button
       color="black"
       variant="unstyled"
@@ -60,7 +45,7 @@ function SecondaryAction({
     >
       Join
     </Button>
-  ) : userIsAdmin ? (
+  ) : memberState === 'admin' ? (
     <Button
       justifySelf="flex-end"
       variant="unstyled"
@@ -96,35 +81,12 @@ function SecondaryAction({
 
 export function ClubPageTemplate({ club }: Props) {
   const toast = useToast();
-
-  const [userIsMember, setUserIsMember] = useState(false);
-  const [userIsAdmin, setUserIsAdmin] = useState(false);
-  const [state, dispatch] = useReducer(reducer, {
-    isAdmin: true,
-    isMember: true,
-  });
-
-  const checkIsUserMember = async () => {
-    const isMember = await isUserMember(club.id);
-    setUserIsMember(isMember);
-    dispatch({ type: 'checkIsMember', payload: isMember });
-  };
-
-  const checkIsUserAdmin = async () => {
-    const isAdmin = await isUserAdmin(club.id);
-    setUserIsAdmin(isAdmin);
-    dispatch({ type: 'checkIsUserAdmin', payload: isAdmin });
-  };
-
-  useEffect(() => {
-    checkIsUserMember();
-    checkIsUserAdmin();
-  }, []);
+  const { userState, isLoading, checkMemberState } = userMemberState(club.id);
 
   const handleJoinClub = async () => {
     try {
       await joinClub(club.id);
-      checkIsUserMember();
+      checkMemberState();
       toast({
         status: 'success',
         description: 'You have joined the club!',
@@ -142,7 +104,7 @@ export function ClubPageTemplate({ club }: Props) {
   const handleLeaveClub = async () => {
     try {
       await leaveClub(club.id);
-      checkIsUserMember();
+      checkMemberState();
       toast({
         status: 'success',
         description: 'You have left the club!',
@@ -182,16 +144,15 @@ export function ClubPageTemplate({ club }: Props) {
             <SecondaryAction
               handleLeaveClub={handleLeaveClub}
               handleJoinClub={handleJoinClub}
-              userIsAdmin={userIsAdmin}
-              userIsMember={userIsMember}
+              memberState={userState}
             />
           }
         />
         <Text fontWeight="semibold">{club.established}</Text>
       </Box>
-      {!state.isMemberLoading && !state.isAdminLoading ? (
+      {!isLoading ? (
         <Flex mt="5" flexDir="column" gap="8">
-          {userIsAdmin ? (
+          {userState === 'admin' ? (
             <Button
               color="white"
               variant="ghost"
