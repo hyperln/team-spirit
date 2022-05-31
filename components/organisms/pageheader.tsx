@@ -28,7 +28,6 @@ export function PageHeader({
   return (
     <Box
       color={getContrastingTextColor(backgroundColor)}
-      mt="2"
       w="full"
       bgColor={backgroundColor}
     >
@@ -53,7 +52,12 @@ export function PageHeader({
             title
           )}
         </GridItem>
-        <GridItem display="flex" justifyContent="flex-end" colSpan={1}>
+        <GridItem
+          color={getContrastingTextColor(backgroundColor)}
+          display="flex"
+          justifyContent="flex-end"
+          colSpan={1}
+        >
           {secondaryAction ? secondaryAction : null}
         </GridItem>
       </Grid>
