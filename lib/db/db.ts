@@ -121,6 +121,26 @@ export async function isUserAdmin(clubId: number): Promise<boolean> {
   return data.length > 0;
 }
 
+export async function isUserTeamMember(teamId: number): Promise<boolean> {
+  const user = currentUser();
+  const { data, error } = await client
+    .from('team_members')
+    .select()
+    .match(keysToSnake({ teamId, userId: user.id }));
+  if (error) throw error;
+  return data.length > 0;
+}
+
+export async function isUserTeamAdmin(teamId: number): Promise<boolean> {
+  const user = currentUser();
+  const { data, error } = await client
+    .from('team_admins')
+    .select()
+    .match(keysToSnake({ teamId, userId: user.id }));
+  if (error) throw error;
+  return data.length > 0;
+}
+
 export async function fetchGenders() {
   const { data, error } = await client.from('genders').select();
   if (error) throw error;
