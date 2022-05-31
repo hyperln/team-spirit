@@ -29,6 +29,7 @@ import {
 } from '@components/atoms/typography/editable';
 import { useEditableControls } from '@hooks/use-editable-controls';
 import { ColorAccordion } from '@components/organisms/color-accordion';
+import { Text } from '@components/atoms/typography/text';
 
 interface Props {
   club: Club;
@@ -148,26 +149,29 @@ export function ClubSettingsTemplate({ club }: Props) {
   };
 
   return (
-    <>
-      <Flex>
-        <Box>
-          <Editable
-            alignItems="center"
-            onSubmit={handleEditableChange}
-            textAlign="center"
-            fontSize="2xl"
-            defaultValue={club.name}
-            display="flex"
-          >
-            <EditablePreview />
-            <EditableInput
-              backgroundColor="gray.100"
-              onChange={(e) => setClubName(e.target.value)}
-            />
-            <EditControls />
-          </Editable>
-        </Box>
-        <Box>
+    <Flex direction="column" justifyContent="center" alignItems="center">
+      <Flex ml="5" mt="5">
+        <Editable
+          maxWidth="72"
+          placeholder="Enter Club name"
+          alignItems="center"
+          onSubmit={handleEditableChange}
+          textAlign="center"
+          fontSize="2xl"
+          defaultValue={club.name}
+          display="flex"
+        >
+          <EditablePreview />
+          <EditableInput
+            backgroundColor="gray.100"
+            onChange={(e) => setClubName(e.target.value)}
+          />
+          <EditControls />
+        </Editable>
+      </Flex>
+
+      <Box right="2" position="relative">
+        <Box p="4" display="block">
           <Avatar
             my="-2"
             onClick={onOpen}
@@ -190,6 +194,9 @@ export function ClubSettingsTemplate({ club }: Props) {
             border="1px"
           />
         </Box>
+      </Box>
+      <Flex direction="column">
+        <Text fontSize="2xl">Settings</Text>
         <ColorAccordion club={club} />
         <Modal isOpen={isOpen} onClose={onClose} size="xs">
           <ModalOverlay />
@@ -226,7 +233,6 @@ export function ClubSettingsTemplate({ club }: Props) {
                     <Avatar
                       borderColor="white"
                       showBorder
-                      mt="5"
                       size="xl"
                       src={previewImageUrl}
                     />
@@ -249,6 +255,6 @@ export function ClubSettingsTemplate({ club }: Props) {
           </ModalContent>
         </Modal>
       </Flex>
-    </>
+    </Flex>
   );
 }
