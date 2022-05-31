@@ -1,9 +1,8 @@
 import { ClubSettingsTemplate } from '@components/templates/club-settings-template';
 import { withRequireAuth } from '@hoc/with-auth';
-import { fetchClub, UpdateClub } from '@lib/db';
+import { fetchClub } from '@lib/db';
 import { getLogoImage } from '@lib/storage/storage';
 import Head from 'next/head';
-import { getServerSideProps } from 'pages/clubs';
 import { Club } from 'shared/types';
 
 interface Props {
@@ -23,7 +22,9 @@ function ClubSettings({ club }: Props) {
 
 export async function getServerSideProps(context) {
   const { clubId } = context.query;
+  console.log('clubId :>> ', clubId);
   const club = await fetchClub(clubId);
+  console.log('club :>> ', club);
   const { signedURL } = await getLogoImage(club.logoImageId);
   return {
     props: {
