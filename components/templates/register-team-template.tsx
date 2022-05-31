@@ -58,15 +58,6 @@ export function RegisterTeamTemplate({ club }: Props) {
     }
   };
 
-  // const addTeam = async (e) => {
-  //   e.preventDefault();
-  //   await createTeam({
-  //     name: e.target.teamName.value,
-  //     gender: e.target.genders.value,
-  //   });
-  // };
-
-  // save team use gender.id
   return (
     <Flex justifyContent="center" minH="calc(100vh - 80px)">
       <Box

@@ -4,7 +4,6 @@ import {
   keysToSnake,
   removeNullUndefinedAndEmptyStrings,
 } from '@utils/object-utils';
-import ClubId from 'pages/clubs/[clubId]';
 import { Club, Team } from 'shared/types';
 import { client } from './client';
 
@@ -12,7 +11,7 @@ export async function listClubs() {
   //fetch clubs from database
   const { data, error } = await client.from('clubs').select().order('name');
   if (error) throw error;
-  return data;
+  return keysToCamel(data);
 }
 
 interface UpdateProfileData {
@@ -24,6 +23,21 @@ interface UpdateProfileData {
 interface CreateClubData {
   name: string;
   established?: string;
+}
+interface UpdateClubData {
+  name?: string;
+  logoImageId?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+}
+
+export async function UpdateClub(clubId: number, clubData: UpdateClubData) {
+  const { data, error } = await client
+    .from('clubs')
+    .update(keysToSnake(removeNullUndefinedAndEmptyStrings(clubData)))
+    .match({ id: clubId });
+  if (error) throw error;
+  return keysToCamel(data);
 }
 
 export async function getUserProfile(userId: string) {

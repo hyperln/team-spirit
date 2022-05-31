@@ -1,19 +1,44 @@
 import { useEffect, useState, useReducer } from 'react';
 import { Box } from '@components/atoms/box';
-import { Button } from '@components/atoms/button';
+import { Button, IconButton } from '@components/atoms/button';
 import { Center } from '@components/atoms/center';
 import { Flex } from '@components/atoms/flex';
 import { Heading } from '@components/atoms/typography/heading';
-import { Text } from '@components/atoms/typography/text';
 import { useToast } from '@hooks/use-toast';
-import { isUserAdmin, isUserMember, joinClub, leaveClub } from '@lib/db';
+import {
+  isUserAdmin,
+  isUserMember,
+  joinClub,
+  leaveClub,
+  UpdateClub,
+} from '@lib/db';
 import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
-import { useRouter } from 'next/router';
-import { List, ListItem } from '@components/atoms/list';
-import { AddIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { PageHeader } from '@components/organisms/pageheader';
+import { AddIcon, CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
+import { uploadLogoImage } from '@lib/storage/storage';
+import { Input } from '@components/atoms/input';
+import { Avatar } from '@components/molecules/avatar-image';
+import { useDisclosure } from '@hooks/use-disclosure';
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+} from '@components/organisms/modal';
+import { FormControl, FormLabel } from '@components/molecules/form';
+import { Icon } from '@components/atoms/icon';
+import {
+  Editable,
+  EditableInput,
+  EditablePreview,
+} from '@components/atoms/typography/editable';
+import { useEditableControls } from '@hooks/use-editable-controls';
+import { ColorAccordion } from '@components/organisms/color-accordion';
+import { Text } from '@components/atoms/typography/text';
 
 interface Props {
   club: Club;
@@ -39,17 +64,58 @@ function reducer(state, action) {
   return actions[action.type] || state;
 }
 
+function EditControls() {
+  const {
+    isEditing,
+    getEditButtonProps,
+    getCancelButtonProps,
+    getSubmitButtonProps,
+  } = useEditableControls();
+  return (
+    <Flex justifyContent="center" m="1">
+      {!isEditing ? (
+        <IconButton
+          size="xs"
+          aria-label="Edit club name"
+          icon={<Icon src="/icons/edit.svg" height={16} width={16} />}
+          {...getEditButtonProps()}
+        />
+      ) : (
+        <Flex justifyContent="center">
+          <IconButton
+            mr="1"
+            size="xs"
+            aria-label="Save"
+            icon={<CheckIcon />}
+            {...getSubmitButtonProps()}
+          />
+          <IconButton
+            size="xs"
+            aria-label="Cancel"
+            icon={<CloseIcon />}
+            {...getCancelButtonProps()}
+          />
+        </Flex>
+      )}
+    </Flex>
+  );
+}
+
 export function ClubPageTemplate({ club }: Props) {
-  const router = useRouter();
+  const toast = useToast();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [clubName, setClubName] = useState('');
   const [userIsMember, setUserIsMember] = useState(false);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
+  const [previewImageUrl, setPreviewImageUrl] = useState(club.logoUrl || '');
+  const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [state, dispatch] = useReducer(reducer, {
     isAdmin: true,
     isMember: true,
   });
-  const toast = useToast();
-
-  const { clubId } = router.query;
 
   const checkIsUserMember = async () => {
     const isMember = await isUserMember(club.id);
@@ -59,7 +125,6 @@ export function ClubPageTemplate({ club }: Props) {
 
   const checkIsUserAdmin = async () => {
     const isAdmin = await isUserAdmin(club.id);
-    console.log('isAdmin :>> ', isAdmin);
     setUserIsAdmin(isAdmin);
     dispatch({ type: 'checkIsUserAdmin', payload: isAdmin });
   };
@@ -68,6 +133,19 @@ export function ClubPageTemplate({ club }: Props) {
     checkIsUserMember();
     checkIsUserAdmin();
   }, []);
+
+  const onSelectFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setPreviewImageUrl(undefined);
+      return;
+    }
+
+    const selectedFile = e.target.files[0];
+
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setPreviewImageUrl(objectUrl);
+    setImage(selectedFile);
+  };
 
   const handleJoinClub = async () => {
     try {
@@ -105,17 +183,86 @@ export function ClubPageTemplate({ club }: Props) {
     }
   };
 
+  const handleLogoUpload = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+
+    let logoImageId = '';
+
+    if (image) {
+      try {
+        const logoUrlData = await uploadLogoImage(club.id, image);
+        logoImageId = logoUrlData.Key.split('logos/')[1];
+      } catch (error) {
+        return toast({
+          status: 'error',
+          description: error.message,
+          title: 'error',
+        });
+      }
+    }
+    try {
+      await UpdateClub(club.id, {
+        logoImageId,
+      });
+
+      toast({
+        status: 'success',
+        description: 'Club logo has been saved!',
+        title: 'Success',
+      });
+    } catch (error) {
+      toast({
+        status: 'error',
+        description: error.message,
+        title: 'error',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEditableChange = async (e) => {
+    try {
+      await UpdateClub(club.id, {
+        name: clubName,
+      });
+    } catch (error) {
+      toast({
+        status: 'error',
+        description: error.message,
+        title: 'error',
+      });
+    }
+  };
+
   return (
-    <Flex justifyContent="center" minH="calc(100vh - 80px)">
-      <Box display="block">
+    <Flex flexDir="column" minH="calc(100vh - 80px)">
+      <Box>
         <PageHeader
+          image={
+            <Flex w="full" justifyContent="center">
+              <Box position="relative">
+                <Box p="4" display="block">
+                  <Avatar
+                    my="-2"
+                    onClick={onOpen}
+                    borderColor="white"
+                    showBorder
+                    size="xl"
+                    left="2"
+                    src={previewImageUrl}
+                  />
+                </Box>
+              </Box>
+            </Flex>
+          }
           title={club.name}
           secondaryAction={
             !userIsMember ? (
               <Button
                 color="black"
-                right="-10"
-                variant="ghost"
+                variant="unstyled"
                 bg="transparent"
                 isLoading={state.isMemberLoading || state.isAdminLoading}
                 onClick={handleJoinClub}
@@ -131,13 +278,21 @@ export function ClubPageTemplate({ club }: Props) {
               >
                 Join
               </Button>
+            ) : userIsAdmin ? (
+              <Button
+                justifySelf="flex-end"
+                variant="unstyled"
+                color="white"
+                borderRadius="70"
+                bg="transparent"
+                onClick={() => console.log('add edit club from krills branch')}
+              >
+                Edit
+              </Button>
             ) : (
               <Button
-                mx="auto"
-                pr="1"
                 justifySelf="flex-end"
-                right="-10"
-                variant="ghost"
+                variant="unstyled"
                 color="white"
                 borderRadius="70"
                 bg="transparent"
@@ -167,7 +322,7 @@ export function ClubPageTemplate({ club }: Props) {
               color="white"
               variant="ghost"
               leftIcon={<AddIcon />}
-              href={`/clubs/${clubId}/teams/team-registration`}
+              href={`/clubs/${club.id}/teams/team-registration`}
               as={Link}
             >
               Register New Team
