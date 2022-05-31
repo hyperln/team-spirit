@@ -14,6 +14,10 @@ import {
 import { createClub } from '@lib/db';
 import { Center } from '@components/atoms/center';
 import { useToast } from '@hooks/use-toast';
+<<<<<<< HEAD
+=======
+import { useState } from 'react';
+>>>>>>> 56625385e767d348dfb28ae836ac2a986e6041fe
 import { Spinner } from '@components/atoms/spinner';
 
 export function RegisterClubTemplate() {
