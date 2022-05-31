@@ -34,10 +34,12 @@ export function PageHeader({
       <Grid w="full" templateColumns="repeat(5, 1fr)">
         <GridItem colSpan={1}>
           <Button
-            alignItems="left"
+            mx="1"
+            alignItems="flex-start"
             outline="0"
             _focus={{ boxShadow: '0 0 0 0px' }}
             display={{ lg: 'none' }}
+            // textColor={backgroundColor === 'white' ? 'brand' : backgroundColor}
             textColor={getContrastingTextColor(backgroundColor)}
             variant="unstyled"
             onClick={() => router.back()}
@@ -47,12 +49,19 @@ export function PageHeader({
         </GridItem>
         <GridItem colSpan={3}>
           {typeof title === 'string' ? (
-            <Heading textAlign="center">{title}</Heading>
+            <Heading
+              textColor={backgroundColor === 'white' ? 'black' : 'white'}
+              textAlign="center"
+            >
+              {title}
+            </Heading>
           ) : (
             title
           )}
         </GridItem>
         <GridItem
+          mx="1"
+          // color={backgroundColor === 'white' ? 'brand' : backgroundColor}
           color={getContrastingTextColor(backgroundColor)}
           display="flex"
           justifyContent="flex-end"

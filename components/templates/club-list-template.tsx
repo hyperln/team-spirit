@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { getLogoImage } from '@lib/storage/storage';
 import { Avatar } from '@components/molecules/avatar-image';
 import { Icon } from '@components/atoms/icon';
+import { PageHeader } from '@components/organisms/pageheader';
+import { getContrastingTextColor } from '@utils/color-utils';
 
 function ClubListing({ club }) {
   const [logoUrl, setLogoUrl] = useState('');
@@ -58,9 +60,12 @@ function ClubListing({ club }) {
 export function ClubListTemplate({ clubs }) {
   return (
     <List>
-      <Center>
-        <Heading p="2">Clubs</Heading>
-      </Center>
+      <PageHeader
+        title={'Clubs'}
+        backgroundColor={'white'}
+        secondaryAction={<Text>Filter</Text>}
+      />
+
       {clubs.map((club) => (
         <ClubListing club={club} />
       ))}

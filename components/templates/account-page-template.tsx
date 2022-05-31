@@ -15,6 +15,7 @@ import { Heading } from '@components/atoms/typography/heading';
 import { FormControl, FormLabel } from '@components/molecules/form';
 import { Center } from '@components/atoms/center';
 import { Text } from '@components/atoms/typography/text';
+import { PageHeader } from '@components/organisms/pageheader';
 
 export function AccountPageTemplate() {
   const toast = useToast();
@@ -108,6 +109,7 @@ export function AccountPageTemplate() {
         p="12"
         width="full"
       >
+        <PageHeader />
         <Center>
           <Avatar
             borderColor="white"
