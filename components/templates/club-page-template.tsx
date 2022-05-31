@@ -29,7 +29,6 @@ function SecondaryAction({
 }: SecondaryActionProps) {
   return memberState === 'notMember' ? (
     <Button
-      color="black"
       variant="unstyled"
       bg="transparent"
       onClick={handleJoinClub}
@@ -49,7 +48,6 @@ function SecondaryAction({
     <Button
       justifySelf="flex-end"
       variant="unstyled"
-      color="white"
       borderRadius="70"
       bg="transparent"
       onClick={() => console.log('add edit club from krills branch')}
@@ -60,7 +58,6 @@ function SecondaryAction({
     <Button
       justifySelf="flex-end"
       variant="unstyled"
-      color="white"
       borderRadius="70"
       bg="transparent"
       onClick={handleLeaveClub}
@@ -123,7 +120,7 @@ export function ClubPageTemplate({ club }: Props) {
 
   return (
     <Flex w="full" flexDir="column">
-      <Box>
+      <Box w="full">
         <PageHeader
           image={
             <Flex w="full" justifyContent="center">
