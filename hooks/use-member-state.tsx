@@ -1,12 +1,17 @@
 import { useEffect, useReducer } from 'react';
-import { isUserAdmin, isUserMember } from '@lib/db';
+import {
+  isUserAdmin,
+  isUserMember,
+  isUserTeamAdmin,
+  isUserTeamMember,
+} from '@lib/db';
 import { useToast } from './use-toast';
 
 export type MemberState = 'member' | 'admin' | 'notMember';
 
 interface State {
   loadingState: 'pending' | 'success' | 'error' | 'ready';
-  userState: MemberState;
+  memberState: MemberState;
 }
 
 const actions = {
@@ -16,14 +21,14 @@ const actions = {
   }),
   setMemberState: (state: State, payload: string) => ({
     ...state,
-    userState: payload,
+    memberState: payload,
     loadingState: 'success',
   }),
 };
 
 const initialState: State = {
   loadingState: 'ready',
-  userState: 'notMember',
+  memberState: 'notMember',
 };
 
 function reducer(state: State, action: { type: string; payload: string }) {
@@ -31,14 +36,49 @@ function reducer(state: State, action: { type: string; payload: string }) {
 }
 
 interface HookReturnValue {
-  userState: MemberState;
+  memberState: MemberState;
   isLoading: boolean;
   checkMemberState: () => void;
 }
 
-export function userMemberState(clubId: number): HookReturnValue {
+type UserMemberStateProps =
+  | {
+      teamId?: never;
+      clubId: number;
+    }
+  | {
+      teamId: number;
+      clubId?: never;
+    };
+
+export function userMemberState({
+  clubId,
+  teamId,
+}: UserMemberStateProps): HookReturnValue {
   const toast = useToast();
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const checkClubMemberState = async () => {
+    const [isMember, isAdmin] = await Promise.all([
+      isUserMember(clubId),
+      isUserAdmin(clubId),
+    ]);
+    dispatch({
+      type: 'setMemberState',
+      payload: isAdmin ? 'admin' : isMember ? 'member' : 'notMember',
+    });
+  };
+
+  const checkTeamMemberState = async () => {
+    const [isMember, isAdmin] = await Promise.all([
+      isUserTeamMember(teamId),
+      isUserTeamAdmin(teamId),
+    ]);
+    dispatch({
+      type: 'setMemberState',
+      payload: isAdmin ? 'admin' : isMember ? 'member' : 'notMember',
+    });
+  };
 
   const checkMemberState = async () => {
     try {
@@ -46,14 +86,8 @@ export function userMemberState(clubId: number): HookReturnValue {
         type: 'setLoadingState',
         payload: 'pending',
       });
-      const [isMember, isAdmin] = await Promise.all([
-        isUserMember(clubId),
-        isUserAdmin(clubId),
-      ]);
-      dispatch({
-        type: 'setMemberState',
-        payload: isAdmin ? 'admin' : isMember ? 'member' : 'notMember',
-      });
+      if (clubId) checkClubMemberState();
+      else if (teamId) checkTeamMemberState();
     } catch (error) {
       toast({
         status: 'error',
@@ -72,7 +106,7 @@ export function userMemberState(clubId: number): HookReturnValue {
   }, []);
 
   return {
-    userState: state.isAdmin
+    memberState: state.isAdmin
       ? 'admin'
       : state.isMember
       ? 'member'
