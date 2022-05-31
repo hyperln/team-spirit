@@ -81,7 +81,9 @@ function SecondaryAction({
 
 export function ClubPageTemplate({ club }: Props) {
   const toast = useToast();
-  const { userState, isLoading, checkMemberState } = userMemberState(club.id);
+  const { memberState, isLoading, checkMemberState } = userMemberState({
+    clubId: club.id,
+  });
 
   const handleJoinClub = async () => {
     try {
@@ -144,7 +146,7 @@ export function ClubPageTemplate({ club }: Props) {
             <SecondaryAction
               handleLeaveClub={handleLeaveClub}
               handleJoinClub={handleJoinClub}
-              memberState={userState}
+              memberState={memberState}
             />
           }
         />
@@ -152,7 +154,7 @@ export function ClubPageTemplate({ club }: Props) {
       </Box>
       {!isLoading ? (
         <Flex mt="5" flexDir="column" gap="8">
-          {userState === 'admin' ? (
+          {memberState === 'admin' ? (
             <Button
               color="white"
               variant="ghost"
