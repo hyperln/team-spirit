@@ -3,7 +3,6 @@ import { Box } from '@components/atoms/box';
 import { Button, IconButton } from '@components/atoms/button';
 import { Center } from '@components/atoms/center';
 import { Flex } from '@components/atoms/flex';
-import { Heading } from '@components/atoms/typography/heading';
 import { useToast } from '@hooks/use-toast';
 import {
   isUserAdmin,
@@ -15,7 +14,7 @@ import {
 import { Club } from 'shared/types';
 import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
-import { AddIcon, CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
+import { AddIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import { uploadLogoImage } from '@lib/storage/storage';
 import { Input } from '@components/atoms/input';
 import { Avatar } from '@components/molecules/avatar-image';
@@ -283,6 +282,9 @@ export function ClubPageTemplate({ club }: Props) {
               </Box>
             </Box>
           </Flex>
+          {userIsAdmin ? (
+            <Link href={`/clubs/${club.id}/club-settings`}>Edit</Link>
+          ) : null}
           {!state.isMemberLoading && !state.isAdminLoading ? (
             <Flex mt="5" flexDir="column" gap="8">
               {userIsAdmin ? (
@@ -332,67 +334,67 @@ export function ClubPageTemplate({ club }: Props) {
           ) : null}
         </Flex>
       </Flex>
-      <ColorAccordion club={club} />
+      {/* <ColorAccordion club={club} />
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xs">
-        <ModalOverlay />
-        <ModalContent borderRadius="xl">
-          <ModalBody>
-            <ModalHeader textAlign="center">Upload Logo</ModalHeader>
-            <ModalCloseButton />
-            <FormControl>
-              {userIsAdmin ? (
-                <form onSubmit={handleLogoUpload}>
-                  <Input
-                    id="icon-button-file"
-                    style={{ display: 'none' }}
-                    type="file"
-                    placeholder="Club Logo"
-                    accept="image/*"
-                    onChange={onSelectFile}
-                    name="logo"
+    <Modal isOpen={isOpen} onClose={onClose} size="xs">
+      <ModalOverlay />
+      <ModalContent borderRadius="xl">
+        <ModalBody>
+          <ModalHeader textAlign="center">Upload Logo</ModalHeader>
+          <ModalCloseButton />
+          <FormControl>
+            {userIsAdmin ? (
+              <form onSubmit={handleLogoUpload}>
+                <Input
+                  id="icon-button-file"
+                  style={{ display: 'none' }}
+                  type="file"
+                  placeholder="Club Logo"
+                  accept="image/*"
+                  onChange={onSelectFile}
+                  name="logo"
+                />
+                <FormLabel
+                  border="2px"
+                  borderStyle="dotted"
+                  htmlFor="icon-button-file"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Icon
+                    width="150"
+                    height="150"
+                    src="/icons/upload-image.svg"
                   />
-                  <FormLabel
-                    border="2px"
-                    borderStyle="dotted"
-                    htmlFor="icon-button-file"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
+                </FormLabel>
+                <Center>
+                  <Avatar
+                    borderColor="white"
+                    showBorder
+                    mt="5"
+                    size="xl"
+                    src={previewImageUrl}
+                  />
+                </Center>
+                <Flex pt="2" direction="column">
+                  <Button
+                    onClick={onClose}
+                    color="white"
+                    variant="ghost"
+                    type="submit"
+                    isLoading={isLoading}
+                    spinner={<Spinner size="lg" />}
                   >
-                    <Icon
-                      width="150"
-                      height="150"
-                      src="/icons/upload-image.svg"
-                    />
-                  </FormLabel>
-                  <Center>
-                    <Avatar
-                      borderColor="white"
-                      showBorder
-                      mt="5"
-                      size="xl"
-                      src={previewImageUrl}
-                    />
-                  </Center>
-                  <Flex pt="2" direction="column">
-                    <Button
-                      onClick={onClose}
-                      color="white"
-                      variant="ghost"
-                      type="submit"
-                      isLoading={isLoading}
-                      spinner={<Spinner size="lg" />}
-                    >
-                      Save
-                    </Button>
-                  </Flex>
-                </form>
-              ) : null}
-            </FormControl>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+                    Save
+                  </Button>
+                </Flex>
+              </form>
+            ) : null}
+          </FormControl>
+        </ModalBody>
+      </ModalContent>
+    </Modal> */}
     </>
   );
 }

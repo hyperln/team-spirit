@@ -50,7 +50,7 @@ export function ColorAccordion({ club }: Props) {
 
   return (
     <>
-      <Accordion reduceMotion mt="2" allowToggle>
+      <Accordion minWidth="80" mt="2" allowToggle>
         <AccordionItem>
           <AccordionButton>
             <Text fontWeight="bold" textAlign="left" flex="1">
@@ -59,7 +59,7 @@ export function ColorAccordion({ club }: Props) {
             <AccordionIcon />
           </AccordionButton>
           <form onSubmit={handleColorSelect}>
-            <AccordionPanel display="flex" alignItems="center">
+            <AccordionPanel pb="2" display="flex" alignItems="center">
               <Box color="GrayText" fontWeight="semibold">
                 Primary
               </Box>
@@ -81,7 +81,7 @@ export function ColorAccordion({ club }: Props) {
                 Secondary
               </Text>
               <Spacer />
-              <Box width="25" height="25" borderRadius="50%">
+              <Box width="25" height="25">
                 <Input
                   border="none"
                   p="0"
