@@ -15,6 +15,7 @@ import { createClub } from '@lib/db';
 import { Center } from '@components/atoms/center';
 import { useToast } from '@hooks/use-toast';
 import { Spinner } from '@components/atoms/spinner';
+import { PageHeader } from '@components/organisms/pageheader';
 
 export function RegisterClubTemplate() {
   const toast = useToast();
@@ -51,12 +52,15 @@ export function RegisterClubTemplate() {
 
   return (
     <Flex justifyContent="center" minH="calc(100vh - 80px)">
-      <Box>
+      <Box w="full">
+        <PageHeader 
+        title={
+              "Register Club"
+        }
+        backgroundColor="white"
+        />
         <FormControl>
           <form onSubmit={handleSubmit}>
-            <FormLabel textAlign="center" my="2" htmlFor="clubName">
-              Register Your Club
-            </FormLabel>
             <Input
               onChange={(e) => setClubName(e.target.value)}
               my="2"

@@ -5,6 +5,7 @@ import { Input } from '@components/atoms/input';
 import { HStack } from '@components/atoms/stack';
 import { Heading } from '@components/atoms/typography/heading';
 import { FormControl, FormLabel } from '@components/molecules/form';
+import { PageHeader } from '@components/organisms/pageheader';
 import { withContext } from '@hoc/with-context';
 import { useProfile } from '@hooks/use-profile';
 import { api } from '@lib/api/client';
@@ -132,9 +133,10 @@ export const AddPaymentMethodTemplate = withContext(
     const { state } = useContext(FormContext);
     return (
       <Box>
-        <Heading textAlign="center" size="md">
+        <PageHeader title="Add Payment Method" backgroundColor="white" />
+        {/* <Heading textAlign="center" size="md">
           Add payment method
-        </Heading>
+        </Heading> */}
         <Box mx="8" my="4">
           {state.step === 'address' ? <AddressForm /> : null}
         </Box>

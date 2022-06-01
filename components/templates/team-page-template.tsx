@@ -119,7 +119,7 @@ export function TeamPageTemplate({ team, club }: Props) {
                     showBorder
                     size="xl"
                     left="2"
-                    src={logoUrl}
+                    src={club.logoUrl}
                   />
                 </Box>
               </Box>
