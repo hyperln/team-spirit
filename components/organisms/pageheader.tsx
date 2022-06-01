@@ -16,6 +16,7 @@ interface Props {
   backgroundColor?: string;
 }
 
+
 export function PageHeader({
   title,
   secondaryAction,
@@ -27,7 +28,7 @@ export function PageHeader({
 
   return (
     <Box
-      color={getContrastingTextColor(backgroundColor)}
+      color={getContrastingTextColor(backgroundColor, 'brand', 'white')}
       w="full"
       bgColor={backgroundColor}
     >
@@ -40,7 +41,7 @@ export function PageHeader({
             _focus={{ boxShadow: '0 0 0 0px' }}
             display={{ lg: 'none' }}
             // textColor={backgroundColor === 'white' ? 'brand' : backgroundColor}
-            textColor={getContrastingTextColor(backgroundColor)}
+            color={getContrastingTextColor(backgroundColor, 'brand', 'white')}
             variant="unstyled"
             onClick={() => router.back()}
           >
@@ -50,7 +51,7 @@ export function PageHeader({
         <GridItem colSpan={3}>
           {typeof title === 'string' ? (
             <Heading
-              textColor={backgroundColor === 'white' ? 'black' : 'white'}
+            color={getContrastingTextColor(backgroundColor, 'black', 'white')}
               textAlign="center"
             >
               {title}
@@ -62,7 +63,7 @@ export function PageHeader({
         <GridItem
           mx="1"
           // color={backgroundColor === 'white' ? 'brand' : backgroundColor}
-          color={getContrastingTextColor(backgroundColor)}
+          color={getContrastingTextColor(backgroundColor, 'brand', 'white')}
           display="flex"
           justifyContent="flex-end"
           colSpan={1}

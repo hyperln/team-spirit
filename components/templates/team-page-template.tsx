@@ -11,6 +11,9 @@ import { Link } from '@components/atoms/link';
 import { capitalizeFirstLetter } from '@utils/string-utils';
 import { MemberState, userMemberState } from '@hooks/use-member-state';
 import { PageHeader } from '@components/organisms/pageheader';
+import { Avatar } from '@components/molecules/avatar-image';
+import { getLogoImage } from '@lib/storage/storage';
+import { useEffect, useState } from 'react';
 
 interface Props {
   club: Club;
@@ -18,10 +21,10 @@ interface Props {
 }
 
 export function TeamPageTemplate({ team, club }: Props) {
+  const toast = useToast();
   const { memberState, isLoading, checkMemberState } = userMemberState({
     teamId: team.id,
   });
-  const toast = useToast();
 
   const handleLeaveTeam = async () => {
     try {
@@ -82,6 +85,19 @@ export function TeamPageTemplate({ team, club }: Props) {
     );
   }
 
+  const [logoUrl, setLogoUrl] = useState('');
+
+  const fetchLogoUrl = async () => {
+    const { signedURL } = await getLogoImage(club.logoImageId);
+    setLogoUrl(signedURL);
+  };
+
+  useEffect(() => {
+    if (club.logoImageId) {
+      fetchLogoUrl();
+    }
+  }, [club.logoImageId]);
+
   return (
     <Flex justifyContent="center">
       <Box w="full" display="block">
@@ -92,6 +108,22 @@ export function TeamPageTemplate({ team, club }: Props) {
               handleLeaveTeam={handleLeaveTeam}
               memberState={memberState}
             />
+          }
+          image={
+            <Flex w="full" justifyContent="center">
+              <Box position="relative">
+                <Box p="4" display="block">
+                  <Avatar
+                    my="-2"
+                    borderColor="white"
+                    showBorder
+                    size="xl"
+                    left="2"
+                    src={logoUrl}
+                  />
+                </Box>
+              </Box>
+            </Flex>
           }
         />
         <Text>{capitalizeFirstLetter((team.gender as Gender).name)}</Text>

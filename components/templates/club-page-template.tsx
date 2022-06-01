@@ -146,6 +146,7 @@ export function ClubPageTemplate({ club }: Props) {
               memberState={memberState}
             />
           }
+          backgroundColor={club.primaryColor ? club.primaryColor : 'brand' }
         />
         <Text fontWeight="semibold">{club.established}</Text>
       </Box>
