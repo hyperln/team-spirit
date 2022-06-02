@@ -44,7 +44,7 @@ export function RegisterTeamTemplate({ club }: Props) {
 
       toast({
         status: 'success',
-        description: 'Profile has been updated!',
+        description: 'Team has been registered!',
         title: 'Success',
       });
     } catch (error) {
