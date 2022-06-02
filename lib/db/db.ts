@@ -31,6 +31,20 @@ interface UpdateClubData {
   secondaryColor?: string;
 }
 
+interface UpdateTeamData {
+  name?: string;
+  gender?: number;
+}
+
+export async function UpdateTeam(teamId: number, teamData: UpdateTeamData) {
+  const { data, error } = await client
+    .from('teams')
+    .update(keysToSnake(removeNullUndefinedAndEmptyStrings(teamData)))
+    .match({ id: teamId });
+  if (error) throw error;
+  return keysToCamel(data);
+}
+
 export async function UpdateClub(clubId: number, clubData: UpdateClubData) {
   const { data, error } = await client
     .from('clubs')

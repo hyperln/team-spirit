@@ -10,6 +10,7 @@ import { Spinner } from '@components/atoms/spinner';
 import { Link } from '@components/atoms/link';
 import { capitalizeFirstLetter } from '@utils/string-utils';
 import { userMemberState } from '@hooks/use-member-state';
+import { useRouter } from 'next/router';
 
 interface Props {
   club: Club;
@@ -21,6 +22,9 @@ export function TeamPageTemplate({ team, club }: Props) {
     teamId: team.id,
   });
   const toast = useToast();
+
+  const router = useRouter();
+  const { clubId, teamId } = router.query;
 
   const handleLeaveTeam = async () => {
     try {
@@ -47,9 +51,11 @@ export function TeamPageTemplate({ team, club }: Props) {
         <Text>{capitalizeFirstLetter((team.gender as Gender).name)}</Text>
         {!isLoading ? (
           <Flex flexDir="column" gap="8">
-            {memberState === 'admin' ? (
-              <Link href="/clubs/teams/team-registration">Create Team</Link>
-            ) : null}
+            {/* {memberState === 'admin' ? ( */}
+            <Link href={`/clubs/${clubId}/teams/${team.id}/team-settings`}>
+              Edit
+            </Link>
+            {/* ) : null} */}
             <Button
               isLoading={isLoading}
               onClick={handleLeaveTeam}
